@@ -74,11 +74,22 @@
       (list (service openssh-service-type
              (openssh-configuration
                (x11-forwarding? #f)))
+
+            ;; Realtime features. Needed for supercollider.
+            ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
+            (pam-limits-service
+             (list
+              (pam-limits-entry "@realtime" 'both 'rtprio 99)
+              (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+
+            (service tor-service-type)
+
             (service qemu-binfmt-service-type
                      (qemu-binfmt-configuration
                       (platforms (lookup-qemu-platforms "arm" "aarch64"))))
-            (bluetooth-service
-             #:auto-enable? #t)
+
+            (bluetooth-service #:auto-enable? #t)
+
             (simple-service 'blueman dbus-root-service-type (list blueman)))
       %small-guix-desktop-services))
 

@@ -26,11 +26,7 @@
                   (openssh-configuration
                    (password-authentication? #t)))
 
-         ;; Libvirt
-         ;; (service libvirt-service-type
-         ;;          (libvirt-configuration
-         ;;           (unix-sock-group "libvirt")))
-
+         (service tor-service-type)
          ;; Power management
          (service tlp-service-type
              (tlp-configuration
