@@ -3,5 +3,5 @@
  (version 0)                            ;file format version
  (dependencies
   (channel
-   (name 'small-guix)
+   (name small-guix)
    (url "https://gitlab.com/orang3/small-guix"))))
