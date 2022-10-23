@@ -2,6 +2,7 @@
   #:use-module (gnu)
   #:use-module (gnu packages base)        ;for glibc, coreutils
   #:use-module (gnu packages compression) ;for zlib
+  #:use-module (gnu services networking)  ;for tor
   #:use-module (gnu services sddm)
   #:use-module (frastanato system input)
   #:use-module (small-guix services desktop)
