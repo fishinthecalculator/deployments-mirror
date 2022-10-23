@@ -2,9 +2,10 @@
   #:use-module (gnu)
   #:use-module (gnu packages audio)          ;for bluez-alsa
   #:use-module (gnu packages linux)          ;for bluez
-  #:use-module (gnu packages networking)     ;for blueman, tor
+  #:use-module (gnu packages networking)     ;for blueman
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
+  #:use-module (gnu services networking)     ;for tor-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services xorg)           ;for set-xorg-configuration
