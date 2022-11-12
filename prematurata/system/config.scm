@@ -27,6 +27,7 @@
                             "lp" ;for accessing D-Bus for bluetooth
                             "libvirt"
                             "kvm"
+                            "i2c"
                             "realtime"
                             "plugdev" ;for solaar
                             "wheel"
