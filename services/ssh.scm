@@ -10,5 +10,4 @@
                             "/keys/ssh/id_rsa.pub"))))
 
 (define %openssh-configuration
- (openssh-configuration
-  (authorized-keys authorized-ssh-keys)))
+  (openssh-configuration (authorized-keys authorized-ssh-keys)))
