@@ -19,6 +19,7 @@
 (define orang3-user
   (user-account
     (name "orang3")
+    (uid 1000)
     (comment "Giacomo Leidi")
     (group "users")
     (home-directory "/home/orang3")
