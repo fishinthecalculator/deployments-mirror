@@ -9,6 +9,7 @@
   #:use-module (gnu services sddm) ;for sddm-service-type
   #:use-module (gnu services xorg) ;for screen-locker-service
   #:use-module (nongnu packages linux)
+  #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix services sway)
   #:use-module (small-guix system desktop)
@@ -41,7 +42,7 @@
     (inherit small-guix-desktop-system)
     (keyboard-layout %frastanato-kl)
     (kernel linux)
-
+    (kernel-loadable-modules (list nvidia-module))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems

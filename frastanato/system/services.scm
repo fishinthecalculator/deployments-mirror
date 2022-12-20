@@ -6,6 +6,7 @@
   #:use-module (gnu services sddm)
   #:use-module (frastanato system input)
   #:use-module (small-guix services desktop)
+  #:use-module (nongnu services nvidia)
   #:export (%frastanato-desktop-services %frastanato-xorg-configuration))
 
 (use-service-modules pm sound ssh virtualization xorg)
@@ -19,6 +20,7 @@
                          (openssh-configuration (password-authentication? #t)))
 
                 (service tor-service-type)
+                (service nvidia-service-type)
                 ;; Power management
                 (service tlp-service-type
                          (tlp-configuration (cpu-scaling-governor-on-ac (list
