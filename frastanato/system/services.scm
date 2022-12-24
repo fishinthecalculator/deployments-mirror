@@ -5,7 +5,9 @@
   #:use-module (gnu services networking) ;for tor
   #:use-module (gnu services sddm)
   #:use-module (frastanato system input)
+  #:use-module (frastanato system substitute)
   #:use-module (small-guix services desktop)
+  #:use-module (small-guix services substitute)
   #:use-module (nongnu services nvidia)
   #:export (%frastanato-desktop-services %frastanato-xorg-configuration))
 
@@ -34,6 +36,13 @@
                 (extra-special-file "/usr/lib/libz.so.1"
                                     (file-append zlib "/lib/libz.so.1")))
           (modify-services %small-guix-desktop-services
+            ;; Enable additional substitute servers.
+            (guix-service-type config =>
+                               (guix-configuration (inherit config)
+                                                   (substitute-urls
+                                                    %small-guix-substitute-urls)
+                                                   (authorized-keys
+                                                    %frastanato-authorized-keys)))
             (sddm-service-type config =>
                                (sddm-configuration (inherit config)
                                                    (xorg-configuration
