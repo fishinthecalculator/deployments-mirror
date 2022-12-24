@@ -71,6 +71,12 @@
      (append (list (service openssh-service-type
                             (openssh-configuration (x11-forwarding? #f)))
 
+                   (service guix-publish-service-type
+                            (guix-publish-configuration
+                             (port 90798)
+                             (host "0.0.0.0")
+                             (advertise? #t)))
+
                    ;; Realtime features. Needed for supercollider.
                    ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
                    (pam-limits-service (list (pam-limits-entry "@realtime"
