@@ -13,4 +13,10 @@
        (signer "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
   (channel
    (name small-guix)
-   (url "https://gitlab.com/orang3/small-guix"))))
+   (url "https://gitlab.com/orang3/small-guix")
+   ;; Enable signature verification:
+   (introduction
+    (channel-introduction
+     (version 0)
+     (commit "940e21366a8c986d1e10a851c7ce62223b6891ef")
+     (signer "D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3"))))))
