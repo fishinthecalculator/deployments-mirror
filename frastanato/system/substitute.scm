@@ -3,8 +3,8 @@
   #:use-module (gnu system)
   #:use-module (small-guix services substitute))
 
-(define %frastanato-authorized-keys
-  (append %small-guix-authorized-guix-keys
+(define-public %frastanato-authorized-keys
+  (append %small-guix-authorized-keys
           (list (file-append
                  (local-file "../.." "guix-deployments-root-dir"
                              #:recursive? #t)
