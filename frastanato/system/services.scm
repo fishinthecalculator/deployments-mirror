@@ -1,11 +1,13 @@
 (define-module (frastanato system services)
   #:use-module (gnu)
-  #:use-module (gnu packages base) ;for glibc, coreutils
+  #:use-module (gnu packages base)        ;for glibc, coreutils
   #:use-module (gnu packages compression) ;for zlib
-  #:use-module (gnu services networking) ;for tor
+  #:use-module (gnu services mcron)       ;for mcron
+  #:use-module (gnu services networking)  ;for tor
   #:use-module (gnu services sddm)
   #:use-module (frastanato system input)
   #:use-module (frastanato system substitute)
+  #:use-module (small-guix services mcron)
   #:use-module (small-guix services desktop)
   #:use-module (small-guix services substitute)
   #:use-module (nongnu services nvidia)
@@ -20,6 +22,10 @@
 (define %frastanato-desktop-services
   (append (list (service openssh-service-type
                          (openssh-configuration (password-authentication? #t)))
+
+                (simple-service 'frastanato-cron-jobs
+                                mcron-service-type
+                                (list (cleanup-job "orang3")))
 
                 (service tor-service-type)
                 (service nvidia-service-type)
