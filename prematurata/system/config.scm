@@ -45,6 +45,9 @@
     (inherit small-guix-desktop-system)
 
     (kernel linux)
+    (kernel-arguments
+     (cons* "resume=/dev/mapper/swap"
+            %default-kernel-arguments))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems
@@ -107,13 +110,16 @@
                                    (list blueman)))
              %small-guix-desktop-services))
 
-    (swap-devices (list (swap-space
-                          (target (uuid "053b3b77-3e05-4c22-9d6d-2a57343fa00a")))))
-
+    ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
                             (source (uuid
                                      "bdb12e1c-92e4-4a6f-9dd9-4592192342d3"))
                             (target "cryptroot")
+                            (type luks-device-mapping))
+                          (mapped-device
+                            (source (uuid
+                                     "0a74cce0-62e3-4ced-870d-f42d645e1fc2"))
+                            (target "swap")
                             (type luks-device-mapping))))
 
     (file-systems (cons* (file-system
@@ -125,4 +131,10 @@
                            (mount-point "/boot/efi")
                            (device (uuid "720D-04C0"
                                          'fat32))
-                           (type "vfat")) %base-file-systems))))
+                           (type "vfat")) %base-file-systems))
+
+    (swap-devices
+     (list
+       (swap-space
+         (target "/dev/mapper/swap")
+         (dependencies mapped-devices))))))
