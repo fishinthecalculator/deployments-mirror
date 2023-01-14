@@ -11,6 +11,7 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix services substitute)
   #:use-module (nongnu services nvidia)
+  #:use-module (deployments-services unattended-upgrades)
   #:export (%frastanato-desktop-services %frastanato-xorg-configuration))
 
 (use-service-modules pm sound ssh virtualization xorg)
@@ -23,9 +24,7 @@
   (append (list (service openssh-service-type
                          (openssh-configuration (password-authentication? #t)))
 
-                (simple-service 'frastanato-cron-jobs
-                                mcron-service-type
-                                (list (cleanup-job "orang3")))
+                (deployments-unattended-upgrades "frastanato")
 
                 (service tor-service-type)
                 (service nvidia-service-type)
