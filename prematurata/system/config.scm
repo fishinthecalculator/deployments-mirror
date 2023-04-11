@@ -99,6 +99,10 @@
                                                                    "arm"
                                                                    "aarch64"))))
 
+                   (extra-special-file "/etc/wireguard/public.key"
+                                       (plain-file "wireguard-public.key"
+                                                   "hgxHzTrl/uNSBgv16mmCvoYFGPbbCb1EzSTdZIeFxTo="))
+
                    (service bluetooth-service-type
                             (bluetooth-configuration
                              (auto-enable? #t)))
