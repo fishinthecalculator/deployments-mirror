@@ -87,13 +87,10 @@
 
                    ;; Realtime features. Needed for supercollider.
                    ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
-                   (pam-limits-service (list (pam-limits-entry "@realtime"
-                                                               'both
-                                                               'rtprio 99)
-                                             (pam-limits-entry "@realtime"
-                                                               'both
-                                                               'memlock
-                                                               'unlimited)))
+                   (service pam-limits-service-type
+                            (list
+                             (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                             (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                    (service tor-service-type)
 
@@ -102,7 +99,9 @@
                                                                    "arm"
                                                                    "aarch64"))))
 
-                   (bluetooth-service #:auto-enable? #t)
+                   (service bluetooth-service-type
+                            (bluetooth-configuration
+                             (auto-enable? #t)))
 
                    (simple-service 'blueman dbus-root-service-type
                                    (list blueman)))
