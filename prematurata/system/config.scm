@@ -93,7 +93,7 @@
     ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
                             (source (uuid
-                                     "bdb12e1c-92e4-4a6f-9dd9-4592192342d3"))
+                                     "808fce73-23ea-4fbf-b7a4-cf584279b276"))
                             (target "cryptroot")
                             (type luks-device-mapping))
                           (mapped-device
