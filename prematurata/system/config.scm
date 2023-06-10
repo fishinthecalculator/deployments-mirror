@@ -26,8 +26,9 @@
 
     (kernel linux)
     (kernel-arguments
-     (cons* "resume=/dev/mapper/swap"
-            %default-kernel-arguments))
+      (cons* "resume=/dev/nvme0n1p2"        ;device that holds /swapfile
+             "resume_offset=76988225"       ;offset of /swapfile on device
+             %default-kernel-arguments))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems
@@ -95,11 +96,6 @@
                             (source (uuid
                                      "808fce73-23ea-4fbf-b7a4-cf584279b276"))
                             (target "cryptroot")
-                            (type luks-device-mapping))
-                          (mapped-device
-                            (source (uuid
-                                     "0a74cce0-62e3-4ced-870d-f42d645e1fc2"))
-                            (target "swap")
                             (type luks-device-mapping))))
 
     (file-systems (cons* (file-system
@@ -116,5 +112,6 @@
     (swap-devices
      (list
        (swap-space
-         (target "/dev/mapper/swap")
-         (dependencies mapped-devices))))))
+         (target "/swapfile")
+         (dependencies (filter (file-system-mount-point-predicate "/")
+                               file-systems)))))))
