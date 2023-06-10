@@ -16,26 +16,8 @@
   #:use-module (frastanato system fs)
   #:use-module (frastanato system input)
   #:use-module (frastanato system services)
+  #:use-module (common users)
   #:export (frastanato-gnome-system frastanato-sway-system))
-
-(define orang3-user
-  (user-account
-    (name "orang3")
-    (comment "Giacomo Leidi")
-    (group "users")
-    (home-directory "/home/orang3")
-    (supplementary-groups '("adbusers" ;for adb
-                            "docker"
-                            "libvirt" ;to use Gnome Boxes
-                            "lp" ;for accessing D-Bus for bluetooth
-                            "kvm"
-                            "realtime"
-                            "wheel"
-                            "netdev"
-                            "audio"
-                            "video"))))
-;; Maybe one day
-;;(shell #~(string-append #$oil "/bin/osh"))
 
 (define frastanato-system
   (operating-system
@@ -76,7 +58,7 @@
   (operating-system
     (inherit frastanato-system)
     (users (cons* (user-account
-                    (inherit orang3-user)
+                    (inherit paul-user)
                     (shell %sway-login-shell)) %base-user-accounts))
     (packages (append (map specification->package
                            '("wpa-supplicant-gui"

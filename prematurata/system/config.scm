@@ -16,30 +16,8 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
-  #:use-module (deployments-services unattended-upgrades)
+  #:use-module (commons unattended-upgrades)
   #:export (prematurata-system))
-
-(define orang3-user
-  (user-account
-    (name "orang3")
-    (uid 1000)
-    (comment "Giacomo Leidi")
-    (group "users")
-    (home-directory "/home/orang3")
-    (supplementary-groups '("adbusers" ;for adb
-                            "docker"
-                            "lp" ;for accessing D-Bus for bluetooth
-                            "libvirt"
-                            "kvm"
-                            "i2c"
-                            "realtime"
-                            "plugdev" ;for solaar
-                            "wheel"
-                            "netdev"
-                            "audio"
-                            "video"))))
-;; Maybe one day
-;;(shell #~(string-append #$oil "/bin/osh"))
 
 (define prematurata-system
   (operating-system
@@ -63,7 +41,7 @@
 
     (host-name "prematurata")
 
-    (users (cons* orang3-user %base-user-accounts))
+    (users (cons* paul-user %base-user-accounts))
 
     (bootloader (bootloader-configuration
                   (bootloader grub-efi-bootloader)

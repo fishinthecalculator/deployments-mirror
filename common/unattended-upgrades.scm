@@ -1,4 +1,4 @@
-(define-module (deployments-services unattended-upgrades)
+(define-module (common unattended-upgrades)
   #:use-module (guix channels)
   #:use-module (guix gexp)
   #:use-module (small-guix services unattended-upgrades)

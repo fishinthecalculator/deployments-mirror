@@ -11,7 +11,7 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix services substitute)
   #:use-module (nongnu services nvidia)
-  #:use-module (deployments-services unattended-upgrades)
+  #:use-module (common unattended-upgrades)
   #:export (%frastanato-desktop-services %frastanato-xorg-configuration))
 
 (use-service-modules pm sound ssh virtualization xorg)
