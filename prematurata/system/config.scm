@@ -16,7 +16,7 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
-  #:use-module (commons unattended-upgrades)
+  #:use-module (common unattended-upgrades)
   #:export (prematurata-system))
 
 (define prematurata-system
