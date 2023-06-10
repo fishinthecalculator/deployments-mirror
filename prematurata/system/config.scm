@@ -112,6 +112,8 @@
     (swap-devices
      (list
        (swap-space
-         (target "/swapfile")
+         ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+         ;; for swapfile on Btrfs
+         (target "/swap/swapfile")
          (dependencies (filter (file-system-mount-point-predicate "/")
                                file-systems)))))))
