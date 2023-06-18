@@ -6,7 +6,6 @@
   #:use-module (gnu system shadow) ;for user-group
   #:use-module (gnu services base) ;for mingetty-service-type
   #:use-module (gnu services desktop) ;for gnome-service-type
-  #:use-module (gnu services sddm) ;for sddm-service-type
   #:use-module (gnu services xorg) ;for screen-locker-service
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
@@ -17,7 +16,7 @@
   #:use-module (frastanato system input)
   #:use-module (frastanato system services)
   #:use-module (common users)
-  #:export (frastanato-gnome-system frastanato-sway-system))
+  #:export (frastanato-system frastanato-sway-system))
 
 (define frastanato-system
   (operating-system
@@ -49,7 +48,7 @@
 
     (host-name "frastanato")
 
-    (users (cons* orang3-user %base-user-accounts))
+    (users (cons* paul-user %base-user-accounts))
 
     (services
      %frastanato-desktop-services)))
@@ -112,4 +111,4 @@
                                       (mingetty-configuration (inherit config)
                                                               ;; Automatically login.
                                                               (auto-login
-                                                               "orang3"))))))))
+                                                               (user-name paul-user)))))))))
