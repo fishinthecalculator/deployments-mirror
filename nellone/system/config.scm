@@ -1,15 +1,16 @@
 (define-module (nellone system config)
   #:use-module (guix packages)
+  #:use-module (gnu services spice)
   #:use-module (gnu)
   #:use-module (gnu system) ;for %sudoers-specification
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix locales)
   #:use-module (small-guix services base)
+  #:use-module (small-guix services docker)
   #:use-module (small-guix services server)
+  #:use-module (common unattended-upgrades)
   #:use-module (srfi srfi-1))
-
-(use-service-modules avahi dbus networking ssh syncthing)
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -18,58 +19,48 @@
 (define-public nellone-system
   (operating-system
     (kernel linux)
-    (initrd microcode-initrd)
-    (firmware (list linux-firmware))
+    ;; (initrd microcode-initrd)
+    ;; (firmware (list linux-firmware))
     (locale "en_US.utf8")
     (timezone "Europe/Rome")
     (keyboard-layout (keyboard-layout "en_US"))
 
-    (host-name "nellone")
+    (host-name "virtual-nellone")
 
     (users (cons* (user-account
-                    (name "orang3")
-                    (comment "Giacomo Leidi")
+                    (name "myself")
+                    (comment "Myself")
                     (group "users")
-                    (home-directory "/home/orang3")
-                    (supplementary-groups '("wheel" "netdev" "audio" "video")))
+                    ;; Specify a SHA-512-hashed initial password.
+                    (password (crypt "myself" "$6$abc"))
+                    (home-directory "/home/myself")
+                    (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))
                   %base-user-accounts))
 
     (packages (append (list small-guix-glibc-locales)
                       (map specification->package
-                           '("curl" "git"
-                             "docker"
-                             "docker-cli"
-                             "iptables"
+                           '("curl"
+                             "fd"
+                             "git"
                              "jq"
                              "htop"
                              "ncdu"
                              "nss-certs"
+                             "ripgrep"
                              "stow"
                              "tmux"
                              "vim")) %base-packages))
 
     (services
-     (append (modify-services %small-guix-server-services
-               (guix-service-type config =>
-                                  (guix-configuration (inherit config)
-                                                      (authorized-keys (append
-                                                                        %default-authorized-guix-keys
-                                                                        authorized-guix-keys)))))
-             (list (service syncthing-service-type
-                            (syncthing-configuration (user "orang3")
-                                                     (logflags 3)))
+     (append (list (deployments-unattended-upgrades host-name)
+                   (service spice-vdagent-service-type)
+                   (simple-service 'nellone-oci-containers
+                    oci-container-service-type
+                    (list (oci-container-configuration
+                           (image "nginx:latest")))))
 
-                   (service avahi-service-type)
-                   (dbus-service) ;Needed by Avahi
-                   
-                   (service network-manager-service-type)
-                   (service wpa-supplicant-service-type)))) ;Needed by NetworkManager
+             %small-guix-server-services))
     
-    (sudoers-file (plain-file "sudoers"
-                              (string-append (plain-file-content
-                                              %sudoers-specification)
-                                             "\norang3 ALL=(ALL) NOPASSWD: ALL\n")))
-
     (bootloader (bootloader-configuration
                   (bootloader grub-efi-bootloader)
                   (targets (list "/boot/efi"))
@@ -92,3 +83,5 @@
                            (device (uuid "D0F8-E8D1"
                                          'fat32))
                            (type "vfat")) %base-file-systems))))
+
+nellone-system

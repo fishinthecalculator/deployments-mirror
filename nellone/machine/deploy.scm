@@ -5,20 +5,20 @@
   #:use-module (nellone system config))
 
 (define %user
-  "orang3")
+  "paul")
 (define %host
-  "192.168.1.56")
+  "localhost")
 (define %host-key
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOHyT9bXduTo1i0x5oS+fw79VCylT47ZHr4L4xK6jIW orang3@192.168.1.56")
+  (string-append
+   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOHyT9bXduTo1i0x5oS+fw79VCylT47ZHr4L4xK6jIW " %user "@" %host))
 
 (define nellone-local
   (machine (operating-system
              nellone-system)
            (environment managed-host-environment-type)
-           (configuration (machine-ssh-configuration (host-name %host)
-                                                     (host-key %host-key)
-                                                     (system "x86_64-linux")
+           (configuration (machine-ssh-configuration (host-name "guix-latest")
                                                      (user %user)
+                                                     (system "x86_64-linux")
                                                      (identity
                                                       "../../keys/ssh/id_rsa.pub")))))
 
