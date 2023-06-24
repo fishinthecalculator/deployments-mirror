@@ -10,11 +10,13 @@
   #:use-module (small-guix services docker)
   #:use-module (small-guix services server)
   #:use-module (common unattended-upgrades)
+  #:use-module (common users)
   #:use-module (srfi srfi-1))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
-  (list (local-file "../../keys/guix/frastanato.pub")))
+  (list (local-file "../../keys/guix/frastanato.pub")
+        (local-file "../../keys/guix/prematurata.pub")))
 
 (define-public nellone-system
   (operating-system
@@ -27,14 +29,12 @@
 
     (host-name "virtual-nellone")
 
+    ;; The list of user accounts ('root' is implicit).
     (users (cons* (user-account
-                    (name "myself")
-                    (comment "Myself")
-                    (group "users")
-                    ;; Specify a SHA-512-hashed initial password.
-                    (password (crypt "myself" "$6$abc"))
-                    (home-directory "/home/myself")
-                    (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))
+                   (inherit paul-user)
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker"))
+                   ;; Specify a SHA-512-hashed initial password.
+                   (password (crypt "test" "$6$abc")))
                   %base-user-accounts))
 
     (packages (append (list small-guix-glibc-locales)
@@ -51,6 +51,14 @@
                              "tmux"
                              "vim")) %base-packages))
 
+    (sudoers-file
+     (plain-file "sudoers"
+                 (string-append (plain-file-content %sudoers-specification)
+                                "\n" (user-account-name paul-user)
+                                " ALL=(ALL) NOPASSWD: ALL\n")))
+
+    ;; Below is the list of system services.  To search for available
+    ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list (deployments-unattended-upgrades host-name)
                    (service spice-vdagent-service-type)
@@ -59,29 +67,26 @@
                     (list (oci-container-configuration
                            (image "nginx:latest")))))
 
-             %small-guix-server-services))
+             (modify-services %small-guix-server-services
+              (guix-service-type config =>
+                                 (guix-configuration (inherit config)
+                                                     (authorized-keys
+                                                      authorized-guix-keys))))))
     
     (bootloader (bootloader-configuration
-                  (bootloader grub-efi-bootloader)
-                  (targets (list "/boot/efi"))
+                  (bootloader grub-bootloader)
+                  (targets (list "/dev/vda"))
                   (keyboard-layout keyboard-layout)))
-    (swap-devices (list (uuid "3fc8688e-9a4b-4713-a4d5-796d87c28fd5")))
+    (swap-devices (list (swap-space
+                          (target (uuid
+                                   "c2917e2f-a138-4fc7-9d8f-a6bb9936218c")))))
+
+    ;; The list of file systems that get "mounted".  The unique
+    ;; file system identifiers there ("UUIDs") can be obtained
+    ;; by running 'blkid' in a terminal.
     (file-systems (cons* (file-system
-                           (mount-point "/home")
-                           (device (uuid
-                                    "5f6383fc-1e53-4baa-b2ef-75c2c22eff75"
-                                    'ext4))
-                           (type "ext4"))
-                         (file-system
                            (mount-point "/")
                            (device (uuid
-                                    "3836b21b-9c07-42ba-a79f-cb320a24e096"
+                                    "0c6e6cce-840f-400d-800a-bbc1ee8fbf5d"
                                     'ext4))
-                           (type "ext4"))
-                         (file-system
-                           (mount-point "/boot/efi")
-                           (device (uuid "D0F8-E8D1"
-                                         'fat32))
-                           (type "vfat")) %base-file-systems))))
-
-nellone-system
+                           (type "ext4")) %base-file-systems))))
