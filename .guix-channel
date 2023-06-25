@@ -23,6 +23,7 @@
   (channel
    (name guix-nas)
    (url "https://gitlab.com/orang3/guix-nas")
+   (branch "main")
    ;; Enable signature verification:
    (introduction
     (channel-introduction
