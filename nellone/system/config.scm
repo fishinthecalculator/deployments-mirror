@@ -1,7 +1,9 @@
 (define-module (nellone system config)
+  #:use-module (guix utils)
   #:use-module (gnu)
   #:use-module (nas records mapper)
-  #:use-module (nas records system))
+  #:use-module (nas records system)
+  #:use-module (common users))
 
 (define authorized-ssh-keys
   ;; List of authorized SSH keys.
@@ -32,7 +34,8 @@
 
      (bootloader (bootloader-configuration
                    (bootloader grub-bootloader)
-                   (targets (list "/dev/vda"))))
+                   (targets (list "/dev/vda"))
+                   (keyboard-layout (keyboard-layout "us"))))
 
      (swap-devices (list (swap-space
                            (target (uuid
