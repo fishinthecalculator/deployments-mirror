@@ -10,8 +10,7 @@
   #:use-module (small-guix services base)
   #:use-module (small-guix services docker)
   #:use-module (small-guix services server)
-  #:use-module (nas services grafana)
-  #:use-module (nas services prometheus)
+  #:use-module (nas system config)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:use-module (srfi srfi-1))
@@ -23,12 +22,10 @@
 
 (define-public nellone-system
   (operating-system
+    (inherit guix-nas-system)
     (kernel linux)
     ;; (initrd microcode-initrd)
     ;; (firmware (list linux-firmware))
-    (locale "en_US.utf8")
-    (timezone "Europe/Rome")
-    (keyboard-layout (keyboard-layout "en_US"))
 
     (host-name "virtual-nellone")
 
@@ -40,20 +37,6 @@
                    (password (crypt "test" "$6$abc")))
                   %base-user-accounts))
 
-    (packages (append (list small-guix-glibc-locales)
-                      (map specification->package
-                           '("curl"
-                             "fd"
-                             "git"
-                             "jq"
-                             "htop"
-                             "ncdu"
-                             "nss-certs"
-                             "ripgrep"
-                             "stow"
-                             "tmux"
-                             "vim")) %base-packages))
-
     (sudoers-file
      (plain-file "sudoers"
                  (string-append (plain-file-content %sudoers-specification)
@@ -64,12 +47,8 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list (deployments-unattended-upgrades host-name)
-                   (service spice-vdagent-service-type)
-
-                   (service nas-grafana-service-type)
-                   (service nas-prometheus-service-type)
-                   (service prometheus-node-exporter-service-type))
-             (modify-services %small-guix-server-services
+                   (service spice-vdagent-service-type))
+             (modify-services (operating-system-services guix-nas-system)
               (guix-service-type config =>
                                  (guix-configuration (inherit config)
                                                      (authorized-keys
