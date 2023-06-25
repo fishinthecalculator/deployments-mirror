@@ -1,7 +1,9 @@
 (define-module (nellone system config)
   #:use-module (guix packages)
+  #:use-module (guix utils)
   #:use-module (gnu services monitoring)
   #:use-module (gnu services spice)
+  #:use-module (gnu services ssh)
   #:use-module (gnu)
   #:use-module (gnu system) ;for %sudoers-specification
   #:use-module (nongnu packages linux)
@@ -14,6 +16,13 @@
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:use-module (srfi srfi-1))
+
+(define authorized-ssh-keys
+  ;; List of authorized SSH keys.
+  `((,(user-account-name paul-user) ,(local-file (string-append (current-source-directory)
+                                                                "/../../keys/ssh/id_rsa.pub")
+                                                 (string-append (user-account-name paul-user)
+                                                                ".pub")))))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -46,9 +55,13 @@
     ;; Below is the list of system services.  To search for available
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
-     (append (list (deployments-unattended-upgrades host-name)
+     (append (list (deployments-unattended-upgrades "nellone")
                    (service spice-vdagent-service-type))
              (modify-services (operating-system-services guix-nas-system)
+              (openssh-service-type config =>
+                                    (openssh-configuration (inherit config)
+                                                           (authorized-keys
+                                                            authorized-ssh-keys)))
               (guix-service-type config =>
                                  (guix-configuration (inherit config)
                                                      (authorized-keys
@@ -57,10 +70,10 @@
     (bootloader (bootloader-configuration
                   (bootloader grub-bootloader)
                   (targets (list "/dev/vda"))
-                  (keyboard-layout keyboard-layout)))
+                  (keyboard-layout (operating-system-keyboard-layout guix-nas-system))))
     (swap-devices (list (swap-space
                           (target (uuid
-                                   "c2917e2f-a138-4fc7-9d8f-a6bb9936218c")))))
+                                   "c8499bec-6c46-412c-a555-150c3a97b0ee")))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
@@ -68,6 +81,6 @@
     (file-systems (cons* (file-system
                            (mount-point "/")
                            (device (uuid
-                                    "0c6e6cce-840f-400d-800a-bbc1ee8fbf5d"
+                                    "b3535693-c9fa-4f00-93fe-3ff83c3f8598"
                                     'ext4))
                            (type "ext4")) %base-file-systems))))
