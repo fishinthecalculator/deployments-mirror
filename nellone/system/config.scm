@@ -1,5 +1,6 @@
 (define-module (nellone system config)
   #:use-module (guix packages)
+  #:use-module (gnu services monitoring)
   #:use-module (gnu services spice)
   #:use-module (gnu)
   #:use-module (gnu system) ;for %sudoers-specification
@@ -9,6 +10,8 @@
   #:use-module (small-guix services base)
   #:use-module (small-guix services docker)
   #:use-module (small-guix services server)
+  #:use-module (nas services grafana)
+  #:use-module (nas services prometheus)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:use-module (srfi srfi-1))
@@ -62,11 +65,10 @@
     (services
      (append (list (deployments-unattended-upgrades host-name)
                    (service spice-vdagent-service-type)
-                   (simple-service 'nellone-oci-containers
-                    oci-container-service-type
-                    (list (oci-container-configuration
-                           (image "nginx:latest")))))
 
+                   (service nas-grafana-service-type)
+                   (service nas-prometheus-service-type)
+                   (service prometheus-node-exporter-service-type))
              (modify-services %small-guix-server-services
               (guix-service-type config =>
                                  (guix-configuration (inherit config)
