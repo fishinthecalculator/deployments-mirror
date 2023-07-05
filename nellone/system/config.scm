@@ -15,11 +15,17 @@
   (list (local-file "../../keys/guix/frastanato.pub")
         (local-file "../../keys/guix/prematurata.pub")))
 
+(define public-host
+  "136.244.87.15")
+
 (define-public nellone-system
   (guix-nas-system->operating-system
    (guix-nas-system
+     (admin-email "goodoldpaul@autistici.org")
+     (public-host public-host)
+     (enable-https? #f)
      (host-name "virtual-nellone")
-      ;; The list of user accounts ('root' is implicit).
+     ;; The list of user accounts ('root' is implicit).
      (users (list (user-account
                    (inherit paul-user)
                    (supplementary-groups '("wheel" "netdev" "audio" "video" "docker"))
