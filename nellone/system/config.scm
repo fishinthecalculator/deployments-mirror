@@ -16,7 +16,7 @@
         (local-file "../../keys/guix/prematurata.pub")))
 
 (define public-host
-  "136.244.87.15")
+  "2001:19f0:6c01:578:5400:4ff:fe7f:ec7f")
 
 (define-public nellone-system
   (guix-nas-system->operating-system
@@ -38,6 +38,7 @@
 
      (ssh-keys authorized-ssh-keys)
 
+     ;; Hardware dependent settings.
      (bootloader (bootloader-configuration
                    (bootloader grub-bootloader)
                    (targets (list "/dev/vda"))
@@ -45,7 +46,7 @@
 
      (swap-devices (list (swap-space
                            (target (uuid
-                                    "c8499bec-6c46-412c-a555-150c3a97b0ee")))))
+                                    "043f842a-2b1f-45a2-91ff-4b1104788622")))))
 
      ;; The list of file systems that get "mounted".  The unique
      ;; file system identifiers there ("UUIDs") can be obtained
@@ -53,6 +54,6 @@
      (file-systems (cons* (file-system
                             (mount-point "/")
                             (device (uuid
-                                     "b3535693-c9fa-4f00-93fe-3ff83c3f8598"
+                                     "d338670c-1a48-46fa-bf36-36bb6fa6d3f7"
                                      'ext4))
                             (type "ext4")) %base-file-systems)))))
