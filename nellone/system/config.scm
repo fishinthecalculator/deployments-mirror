@@ -16,7 +16,7 @@
         (local-file "../../keys/guix/prematurata.pub")))
 
 (define public-host
-  "2001:19f0:6c01:578:5400:4ff:fe7f:ec7f")
+  "45.32.154.228")
 
 (define-public nellone-system
   (guix-nas-system->operating-system
