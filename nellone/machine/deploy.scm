@@ -7,10 +7,10 @@
 (define %user
   "paul")
 (define %host
-  "2001:19f0:6c01:578:5400:4ff:fe7f:ec7f")
+  "2001:19f0:6c01:2073:5400:4ff:fe81:ce1")
 (define %host-key
   (string-append
-   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLojfSBpWKZo5BwClBnq/B2lqL1eioHv7mK4Y/OzCG9 " %user "@" %host))
+   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL1q2bXoOTL5A1Pfnqf5vftQv5D6dqlDx+CMKYpgvJAf " %user "@" %host))
 
 (define nellone-local
   (machine (operating-system
