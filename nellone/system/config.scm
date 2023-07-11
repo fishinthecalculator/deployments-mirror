@@ -16,7 +16,7 @@
         (local-file "../../keys/guix/prematurata.pub")))
 
 (define public-host
-  "45.32.154.228")
+  "192.248.184.52")
 
 (define-public nellone-system
   (guix-nas-system->operating-system
@@ -28,9 +28,7 @@
      ;; The list of user accounts ('root' is implicit).
      (users (list (user-account
                    (inherit paul-user)
-                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker"))
-                   ;; Specify a SHA-512-hashed initial password.
-                   (password (crypt "test" "$6$abc")))))
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))))
 
      (admin-users (list (user-account-name paul-user)))
 
@@ -46,7 +44,7 @@
 
      (swap-devices (list (swap-space
                            (target (uuid
-                                    "043f842a-2b1f-45a2-91ff-4b1104788622")))))
+                                    "ba1b7761-8b81-4b71-8a1a-ebdcd0fbcdf6")))))
 
      ;; The list of file systems that get "mounted".  The unique
      ;; file system identifiers there ("UUIDs") can be obtained
@@ -54,6 +52,6 @@
      (file-systems (cons* (file-system
                             (mount-point "/")
                             (device (uuid
-                                     "d338670c-1a48-46fa-bf36-36bb6fa6d3f7"
+                                     "f0890300-9702-428f-93ed-a7058a33b2ab"
                                      'ext4))
                             (type "ext4")) %base-file-systems)))))
