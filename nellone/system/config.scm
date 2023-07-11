@@ -16,14 +16,14 @@
         (local-file "../../keys/guix/prematurata.pub")))
 
 (define public-host
-  "192.248.184.52")
+  "nellone.fishinthecalculator.me")
 
 (define-public nellone-system
   (guix-nas-system->operating-system
    (guix-nas-system
      (admin-email "goodoldpaul@autistici.org")
      (public-host public-host)
-     (enable-https? #f)
+     (enable-https? #t)
      (host-name "virtual-nellone")
      ;; The list of user accounts ('root' is implicit).
      (users (list (user-account
