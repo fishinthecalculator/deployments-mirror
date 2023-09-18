@@ -3,12 +3,14 @@
   #:use-module (gnu packages audio)          ;for bluez-alsa
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
+  #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
   #:use-module (gnu services mcron)          ;for mcron-service-type
   #:use-module (gnu services networking)     ;for tor-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
+  #:use-module (gnu services vpn)            ;for wireguard-service-type
   #:use-module (gnu services xorg)           ;for set-xorg-configuration
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
@@ -19,6 +21,9 @@
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:export (prematurata-system))
+
+(define authorized-guix-keys
+  (list (local-file "../../keys/guix/pinebook-armbian.key")))
 
 (define prematurata-system
   (operating-system
@@ -79,9 +84,21 @@
                                                                    "arm"
                                                                    "aarch64"))))
 
-                   (extra-special-file "/etc/wireguard/public.key"
-                                       (plain-file "wireguard-public.key"
-                                                   "hgxHzTrl/uNSBgv16mmCvoYFGPbbCb1EzSTdZIeFxTo="))
+                   (service wireguard-service-type
+                     (wireguard-configuration
+                      (private-key (plain-file "private.key"
+                                               "wCvDLACjjRtbQzNgj08PvnSwWm56wGfzvBfkRQC0Hkk="))
+                      (addresses '("192.168.27.67/32"))
+                      (dns '("212.27.38.253"))
+                      (peers
+                       (list
+                        (wireguard-peer
+                         (name "iliadbox")
+                         (endpoint "81.56.8.195:10455")
+                         (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
+                         (allowed-ips '("0.0.0.0/0"
+                                        "192.168.27.64/27"
+                                        "192.168.1.0/24")))))))
 
                    (service bluetooth-service-type
                             (bluetooth-configuration
@@ -89,7 +106,11 @@
 
                    (simple-service 'blueman dbus-root-service-type
                                    (list blueman)))
-             %small-guix-desktop-services))
+             (modify-services %small-guix-desktop-services
+               (guix-daemon-service-type config =>
+                                         (guix-daemon-configuration (inherit config)
+                                                                    (authorized-keys (append authorized-guix-keys
+                                                                                             (guix-daemon-configuration-authorized-keys config))))))))
 
     ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
