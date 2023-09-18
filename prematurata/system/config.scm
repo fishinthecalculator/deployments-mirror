@@ -107,10 +107,12 @@
                    (simple-service 'blueman dbus-root-service-type
                                    (list blueman)))
              (modify-services %small-guix-desktop-services
-               (guix-daemon-service-type config =>
-                                         (guix-daemon-configuration (inherit config)
-                                                                    (authorized-keys (append authorized-guix-keys
-                                                                                             (guix-daemon-configuration-authorized-keys config))))))))
+               (guix-service-type config =>
+                                  (guix-configuration (inherit config)
+                                                      (authorized-keys
+                                                       (append
+                                                        authorized-guix-keys
+                                                        (guix-configuration-authorized-keys config))))))))
 
     ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
