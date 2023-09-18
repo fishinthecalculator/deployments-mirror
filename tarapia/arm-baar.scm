@@ -1,20 +1,5 @@
-;; This is an operating system configuration template
-;; for a "bare bones" pinebook pro
 
-;; The default image's kernel 4.4.190 has
-;;    microSD: /dev/mmcblk0
-;;    eMMC: /dev/mmcblk1
-;;
-;; Note that after booting the Guix System with linux-libre
-;; 5.5-pinebook-pro this changes to
-;;    microSD: /dev/mmcblk1
-;;    eMMC: /dev/mmcblk2
-
-;; Assuming https://gitlab.com/janneke/guix.git wip-pinebook-pro
-;; has been built in .
-;; cp gnu/system/examples/pinebook-pro.tmpl arm-baar.scm
-;; sudo -E ./pre-inst-env guix system init arm-baar.scm /mnt --fallback
-
+(define-module (tarapia arm-baar))
 (use-modules (gnu) (gnu bootloader u-boot))
 (use-service-modules avahi networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)

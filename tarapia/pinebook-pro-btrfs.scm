@@ -1,3 +1,5 @@
+
+(define-module (tarapia pinebook-pro-btrfs))
 (use-modules (gnu system images pinebook-pro)
 	     (gnu system file-systems))
 

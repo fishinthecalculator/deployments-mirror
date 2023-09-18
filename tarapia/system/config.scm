@@ -1,4 +1,4 @@
-(define-module (config))
+(define-module (tarapia system config))
 
 (use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot) (srfi srfi-1))
 (use-service-modules avahi networking ssh)
