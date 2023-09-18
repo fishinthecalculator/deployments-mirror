@@ -72,7 +72,7 @@
     (users (cons* (user-account (name "paul")
                                 (group "users")
                                 (password (crypt "testino" "$6$abc"))
-                                (supplementary-groups '("wheel" "audio" "video")))
+                                (supplementary-groups '("wheel" "audio" "video" "netdev" "plugdev")))
                   %base-user-accounts))
     (name-service-switch %mdns-host-lookup-nss)
     (packages (cons* nss-certs openssh wpa-supplicant-minimal %base-packages))
