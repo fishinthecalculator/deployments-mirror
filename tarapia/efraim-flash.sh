@@ -12,7 +12,7 @@ guix_root="$here/efraim-root"
 rm -rfv "$guix_root"
 dev="/dev/nvme0n1"
 part="${dev}p2"
-image="$(guix time-machine --commit=$guix_commit -- system image -r "$guix_root"  --image-type=efi-raw $here/system/config.scm "$@")"
+image="$(guix system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm" "$@")"
 
 
 sudo dd "if=${image}" "of=${dev}" bs=4M status=progress oflag=sync
