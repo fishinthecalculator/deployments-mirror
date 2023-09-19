@@ -84,21 +84,18 @@
                                                                    "arm"
                                                                    "aarch64"))))
 
-                   ;; (service wireguard-service-type
-                   ;;   (wireguard-configuration
-                   ;;    (private-key (plain-file "private.key"
-                   ;;                             "wCvDLACjjRtbQzNgj08PvnSwWm56wGfzvBfkRQC0Hkk="))
-                   ;;    (addresses '("192.168.27.67/32"))
-                   ;;    (dns '("212.27.38.253"))
-                   ;;    (peers
-                   ;;     (list
-                   ;;      (wireguard-peer
-                   ;;       (name "iliadbox")
-                   ;;       (endpoint "81.56.8.195:10455")
-                   ;;       (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
-                   ;;       (allowed-ips '("0.0.0.0/0"
-                   ;;                      "192.168.27.64/27"
-                   ;;                      "192.168.1.0/24")))))))
+                   (service wireguard-service-type
+                     (wireguard-configuration
+                      (private-key (plain-file "private.key"
+                                               "wCvDLACjjRtbQzNgj08PvnSwWm56wGfzvBfkRQC0Hkk="))
+                      (addresses '("192.168.27.67/32"))
+                      (peers
+                       (list
+                        (wireguard-peer
+                         (name "iliadbox")
+                         (endpoint "81.56.8.195:10455")
+                         (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
+                         (allowed-ips '("192.168.27.64/27")))))))
 
                    (service bluetooth-service-type
                             (bluetooth-configuration
