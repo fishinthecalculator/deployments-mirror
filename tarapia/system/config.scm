@@ -59,7 +59,7 @@
                           "cw2015_battery"
                           "gpio_charger"
                           "rtc_rk808"))
-    (kernel linux-libre-arm64-generic)
+    (kernel linux-arm64-generic)
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
