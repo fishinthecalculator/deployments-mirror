@@ -1,6 +1,7 @@
 (define-module (tarapia system config))
 
-(use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot) (srfi srfi-1))
+(use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
+
 (use-service-modules avahi networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)
 
@@ -101,5 +102,14 @@
                                       (mount-point "/")
                                       (type "ext4"))
                          %base-file-systems))))
+
+(define-public tarapia-pinebook-pro-btrfs
+  (operating-system
+    (inherit pinebook-pro-barebones-os)
+    (file-systems (cons (file-system
+                          (device (file-system-label "guix-root"))
+                          (mount-point "/")
+                          (type "btrfs"))
+                        %base-file-systems))))
 
 tarapia-system
