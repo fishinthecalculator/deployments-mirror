@@ -64,11 +64,14 @@
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
-                                    "console=tty0"
-                                    "cma=32M"
+                                    "console=tty1"
+                                    "rootfstype=ext4"
+                                    "console=ttyS2,1500000"
+                                    "consoleblank=0"
+                                    "loglevel=7"
                                     "console=ttyS0,115200n8"
                                     "console=ttyAMA0,115200n8")))
-    (firmware (list ath9k-htc-firmware linux-firmware))
+    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
 
     (users (cons* (user-account (name "paul")
                                 (group "users")
