@@ -51,7 +51,7 @@ tmp_config="/tmp/config.scm"
 echo '(@ (tarapia system config) tarapia-one-partition-system)' > "$tmp_config"
 
 sudo mount $part /mnt
-sudo -E guix system -L "${here}/.." init "$tmp_config" /mnt
+sudo -E guix system -L "$(cd "${here}/.." && pwd)" init "$tmp_config" /mnt
 guix shell e2fsprogs -- sudo resize2fs "$part"
 guix shell e2fsck-static -- sudo -E e2fsck "$part"
 sudo umount /mnt
