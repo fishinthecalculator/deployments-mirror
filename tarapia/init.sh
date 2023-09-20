@@ -47,5 +47,7 @@ guix shell e2fsprogs -- sudo tune2fs -L Guix_image "${part}"
 #guix shell btrfs-progs -- sudo btrfstune -U "$old_uuid" "$part"
 
 sudo mount $part /mnt
-sudo -E guix system init -L "${here}/.." -e '(@ (tarapia system config) tarapia-one-partition-system)' /mnt
+sudo -E guix system -L "${here}/.." -e '(@ (tarapia system config) tarapia-one-partition-system)' init /mnt
+guix shell e2fsprogs -- sudo resize2fs "$part"
+guix shell e2fsck-static -- sudo -E e2fsck "$part"
 sudo umount /mnt
