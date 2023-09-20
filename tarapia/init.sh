@@ -25,10 +25,9 @@ part="${dev}p1"
 # Note that a blank line (commented as "default" will send a empty
 # line terminated with a newline to take the fdisk default.
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk "${dev}"
-  o # clear the in memory partition table
+  g # clear the in memory partition table
   n # new partition
   p # primary partition
-  1 # partition number 1
     # default - start at beginning of disk
     # default, extend partition to end of disk
   a # make a partition bootable
@@ -53,7 +52,7 @@ echo 'tarapia-one-partition-system' >> "$tmp_config"
 
 sudo mount $part /mnt
 sudo -E guix time-machine -C "${here}/channels.scm" -- system init "$tmp_config" /mnt
-guix shell e2fsprogs -- sudo resize2fs "$part"
-guix shell e2fsck-static -- sudo -E e2fsck "$part"
 sudo umount /mnt
 rm -rfv "$tmp_config"
+
+guix shell e2fsck-static -- sudo -E e2fsck "$part"
