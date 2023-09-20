@@ -35,7 +35,6 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk "${dev}"
   1 # partition number 1
     # default - start at beginning of disk
     # default, extend partition to end of disk
-  Y # confirm removal of ext4 signature
   x # enable expert mode
   A # make a partition bootable
   p # print the in-memory partition table
