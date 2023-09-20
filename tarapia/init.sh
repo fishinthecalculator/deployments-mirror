@@ -48,10 +48,11 @@ guix shell e2fsprogs -- sudo tune2fs -L Guix_image "${part}"
 
 tmp_config="/tmp/config.scm"
 
-echo '(@ (tarapia system config) tarapia-one-partition-system)' > "$tmp_config"
+head -n -1 "${here}/system/config.scm" > "$tmp_config"
+echo 'tarapia-one-partition-system' >> "$tmp_config"
 
 sudo mount $part /mnt
-sudo -E guix system -L "$(cd "${here}/.." && pwd)" init "$tmp_config" /mnt
+sudo -E guix system init "$tmp_config" /mnt
 guix shell e2fsprogs -- sudo resize2fs "$part"
 guix shell e2fsck-static -- sudo -E e2fsck "$part"
 sudo umount /mnt
