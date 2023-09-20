@@ -1,20 +1,25 @@
 set -ex
 
+here="$(dirname "$0")"
+guix_root="$here/efraim-root"
+rm -rfv "$guix_root"
+
 guix_git ()  {
   cd "${HOME}/code/guix"
   guix shell --pure -D guix -- make -j6
   guix shell --pure -D guix -- ./pre-inst-env guix "$@"
 }
 
-here="$(dirname "$0")"
-guix_root="$here/efraim-root"
-rm -rfv "$guix_root"
+image () {
+    guix time-machine -C "${here}/channels.scm" -- system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm"
+}
+
+
 dev="/dev/nvme0n1"
 part="${dev}p2"
-image="$(guix time-machine -C "${here}/channels.scm" -- system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm" "$@")"
 
 
-sudo dd "if=${image}" "of=${dev}" bs=4M status=progress oflag=sync
+sudo dd "if=$(image)" "of=${dev}" bs=4M status=progress oflag=sync
 sync
 sudo cfdisk "$dev"
 guix shell e2fsprogs -- sudo resize2fs "$part"
