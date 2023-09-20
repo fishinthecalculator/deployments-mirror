@@ -1,18 +1,18 @@
 set -ex
 
-guix-git ()  {
-  cd $HOME/code/guix
+guix_git ()  {
+  cd "${HOME}/code/guix"
   guix shell --pure -D guix -- make -j6
   guix shell --pure -D guix -- ./pre-inst-env guix "$@"
 }
 
-guix_commit="0dc83ce53b8bad8473c80689ba212d9f9bb712b3"
+guix_commit="fc3a53525ab3dcaf7c22eec8d62294017f9760fe"
 here="$(dirname "$0")"
 guix_root="$here/efraim-root"
 rm -rfv "$guix_root"
 dev="/dev/nvme0n1"
 part="${dev}p2"
-image="$(guix system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm" "$@")"
+image="$(guix time-machine "--commit=${guix_commit}" -- system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm" "$@")"
 
 
 sudo dd "if=${image}" "of=${dev}" bs=4M status=progress oflag=sync
