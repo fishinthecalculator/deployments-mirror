@@ -2,6 +2,8 @@
 
 set -ex
 
+[ "$#" -ne 1 ] && echo "Usage: $(basename "$0") OPERATING-SYSTEM-NAME"
+
 here="$(dirname "$0")"
 guix_root="$here/efraim-root"
 rm -rfv "$guix_root"
@@ -51,7 +53,7 @@ guix shell e2fsprogs -- sudo tune2fs -L Guix_image "${part}"
 tmp_config="/tmp/config.scm"
 
 head -n -1 "${here}/system/config.scm" > "$tmp_config"
-echo 'tarapia-one-partition-system' >> "$tmp_config"
+echo "$1" >> "$tmp_config"
 
 sudo mount $part /mnt
 sudo -E guix time-machine -C "${here}/channels.scm" -- system init "$tmp_config" /mnt

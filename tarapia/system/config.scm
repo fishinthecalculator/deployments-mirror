@@ -106,6 +106,20 @@
                                       (type "ext4"))
                          %base-file-systems))))
 
+(define-public tarapia-pinebook-pro
+  (operating-system
+    (inherit pinebook-pro-barebones-os)
+    (host-name "tarapia")
+    (timezone "Europe/Rome")
+    (locale "en_US.utf8")
+    (kernel linux-arm64-generic)
+    (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
+                              (list "debug"
+                                    "nosplash"
+                                    "consoleblank=0"
+                                    "loglevel=7")))
+    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))))
+
 (define-public tarapia-pinebook-pro-btrfs
   (operating-system
     (inherit pinebook-pro-barebones-os)
