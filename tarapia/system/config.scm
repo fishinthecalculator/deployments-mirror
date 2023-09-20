@@ -4,10 +4,10 @@
 (use-service-modules avahi networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)
 
-(define-public efraim-config
+(define-public tarapia-system
   (operating-system
-    (host-name "armzalig")
-    (timezone "Europe/Amsterdam")
+    (host-name "tarapia")
+    (timezone "Europe/Rome")
     (locale "en_US.utf8")
 
     (keyboard-layout (keyboard-layout "us" "altgr-intl"))
@@ -78,15 +78,28 @@
     (name-service-switch %mdns-host-lookup-nss)
     (packages (cons* nss-certs openssh wpa-supplicant-minimal %base-packages))
     (services (cons* (service dhcp-client-service-type)
-		             (service agetty-service-type
+                     (service agetty-service-type
                               (agetty-configuration
                                (extra-options '("-L")) ; no carrier detect
                                (baud-rate "1500000")
                                (term "vt100")
-                               (tty "ttyS2")))
+                               (tty "ttyS0")))
                      (service openssh-service-type
                               (openssh-configuration
                                (port-number 2222)))
                      %base-services))))
 
-efraim-config
+(define-public tarapia-one-partition-system
+  (operating-system
+    (inherit tarapia-system)
+    (keyboard-layout (keyboard-layout "us" "altgr-intl"))
+
+    (bootloader (bootloader-configuration
+                 (bootloader u-boot-pinebook-pro-rk3399-bootloader)
+                 (targets '("/dev/vda"))))
+    (file-systems (cons* (file-system (device (file-system-label "Guix_image"))
+                                      (mount-point "/")
+                                      (type "ext4"))
+                         %base-file-systems))))
+
+tarapia-system
