@@ -44,12 +44,12 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk "${dev}"
   q # and we're done
 EOF
 sudo mkfs.ext4 -F $part
-guix shell e2fsprogs -- sudo tune2fs -L Guix_image "${part}"
+guix shell e2fsprogs -- sudo tune2fs -L guix-root "${part}"
 
 #old_uuid="$(guix shell util-linux -- blkid -s UUID -o value "$part")"
 #guix shell btrfs-progs -- sudo btrfs-convert -L "$part"
 #guix shell btrfs-progs -- sudo btrfs check --readonly "$part"
-#guix shell btrfs-progs -- sudo btrfs filesystem label "$part" Guix_image
+#guix shell btrfs-progs -- sudo btrfs filesystem label "$part" guix-root
 #guix shell btrfs-progs -- sudo btrfstune -U "$old_uuid" "$part"
 
 tmp_config="/tmp/config.scm"

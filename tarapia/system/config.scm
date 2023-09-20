@@ -19,7 +19,7 @@
       (targets '("/boot/efi"))
       (keyboard-layout keyboard-layout)))
 
-    (file-systems (cons* (file-system (device (file-system-label "Guix_image"))
+    (file-systems (cons* (file-system (device (file-system-label "guix-root"))
                                       (mount-point "/")
                                       (type "ext4"))
                          (file-system
@@ -101,7 +101,7 @@
     (bootloader (bootloader-configuration
                  (bootloader u-boot-pinebook-pro-rk3399-bootloader)
                  (targets '("/dev/vda"))))
-    (file-systems (cons* (file-system (device (file-system-label "Guix_image"))
+    (file-systems (cons* (file-system (device (file-system-label "guix-root"))
                                       (mount-point "/")
                                       (type "ext4"))
                          %base-file-systems))))
@@ -118,7 +118,12 @@
                                     "nosplash"
                                     "consoleblank=0"
                                     "loglevel=7")))
-    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))))
+    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
+    (file-systems (cons (file-system
+                          (device (file-system-label "guix-root"))
+                          (mount-point "/")
+                          (type "ext4"))
+                        %base-file-systems))))
 
 (define-public tarapia-pinebook-pro-btrfs
   (operating-system

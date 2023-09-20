@@ -27,5 +27,5 @@ guix shell e2fsck-static -- sudo -E e2fsck "$part"
 #old_uuid="$(guix shell util-linux -- blkid -s UUID -o value "$part")"
 #guix shell btrfs-progs -- sudo btrfs-convert -L "$part"
 #guix shell btrfs-progs -- sudo btrfs check --readonly "$part"
-#guix shell btrfs-progs -- sudo btrfs filesystem label "$part" Guix_image
+#guix shell btrfs-progs -- sudo btrfs filesystem label "$part" guix-root
 #guix shell btrfs-progs -- sudo btrfstune -U "$old_uuid" "$part"
