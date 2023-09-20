@@ -2,7 +2,7 @@
 
 set -ex
 
-[ "$#" -ne 1 ] && echo "Usage: $(basename "$0") OPERATING-SYSTEM-NAME"
+[ "$#" -ne 1 ] && echo "Usage: $(basename "$0") OPERATING-SYSTEM-NAME" >&2 && exit 1
 
 here="$(dirname "$0")"
 guix_root="$here/efraim-root"
