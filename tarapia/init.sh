@@ -52,7 +52,7 @@ head -n -1 "${here}/system/config.scm" > "$tmp_config"
 echo 'tarapia-one-partition-system' >> "$tmp_config"
 
 sudo mount $part /mnt
-sudo -E guix system init "$tmp_config" /mnt
+sudo -E guix time-machine -C "${here}/channels.scm" -- system init "$tmp_config" /mnt
 guix shell e2fsprogs -- sudo resize2fs "$part"
 guix shell e2fsck-static -- sudo -E e2fsck "$part"
 sudo umount /mnt
