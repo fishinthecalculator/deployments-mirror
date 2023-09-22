@@ -76,8 +76,8 @@
     (users (cons* (user-account (name "paul")
                                 (group "users")
                                 (password (crypt "testino" "$6$abc"))
-                                (supplementary-groups '("wheel" "audio" "video" "netdev" ;; "plugdev"
-                                                        )))
+                                (supplementary-groups '("wheel" "audio" "video" "netdev"))) ;; "plugdev"
+
                   %base-user-accounts))
     (name-service-switch %mdns-host-lookup-nss)
     (packages (cons* nss-certs openssh wpa-supplicant-minimal %base-packages))
@@ -106,24 +106,65 @@
                                       (type "ext4"))
                          %base-file-systems))))
 
-(define-public tarapia-pinebook-pro
+(define-public tarapia-pinebook-pro-libre
   (operating-system
     (inherit pinebook-pro-barebones-os)
     (host-name "tarapia")
     (timezone "Europe/Rome")
     (locale "en_US.utf8")
+    (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
+                              (list "debug"
+                                    "nosplash"
+                                    "consoleblank=0"
+                                    "loglevel=7")))
+    (file-systems (cons (file-system
+                          (device (file-system-label "guix-root"))
+                          (mount-point "/")
+                          (type "ext4"))
+                        %base-file-systems))))
+
+(define-public tarapia-pinebook-pro-corrupted
+  (operating-system
+    (inherit tarapia-pinebook-pro-libre)
+    (initrd-modules (list "nvme"
+                          "pcie_rockchip_host"
+                          "phy_rockchip_pcie"
+
+                          ;; Rockchip modules
+                          "rockchip_rga"
+                          ;;"rockchip_saradc"
+                          "rockchip_thermal"
+                          "rockchipdrm"
+
+                          ;; GPU/Display modules
+                          "analogix_dp"
+                          "cec"
+                          "drm"
+                          "drm_kms_helper"
+                          "dw_hdmi"
+                          "dw_mipi_dsi"
+                          "gpu_sched"
+                          "panel_edp"
+                          "panel_simple"
+                          "panfrost"
+                          "pwm_bl"
+
+                          ;; USB / Type-C related modules
+                          "fusb302"
+                          "tcpm"
+                          "typec"
+
+                          ;; Misc. modules
+                          "cw2015_battery"
+                          "gpio_charger"
+                          "rtc_rk808"))
     (kernel linux-arm64-generic)
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
                                     "consoleblank=0"
                                     "loglevel=7")))
-    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
-    (file-systems (cons (file-system
-                          (device (file-system-label "guix-root"))
-                          (mount-point "/")
-                          (type "ext4"))
-                        %base-file-systems))))
+    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))))
 
 (define-public tarapia-pinebook-pro-btrfs
   (operating-system

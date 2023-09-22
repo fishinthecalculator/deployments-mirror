@@ -1,7 +1,7 @@
 set -ex
 
 here="$(dirname "$0")"
-guix_root="$here/efraim-root"
+guix_root="$here/tarapia-root"
 rm -rfv "$guix_root"
 
 guix_git ()  {
