@@ -2,7 +2,7 @@
 
 (use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
 
-(use-service-modules avahi networking ssh)
+(use-service-modules avahi desktop networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)
 
 (define-public tarapia-system
@@ -81,17 +81,10 @@
                   %base-user-accounts))
     (name-service-switch %mdns-host-lookup-nss)
     (packages (cons* nss-certs openssh wpa-supplicant-minimal %base-packages))
-    (services (cons* (service dhcp-client-service-type)
-                     (service agetty-service-type
-                              (agetty-configuration
-                               (extra-options '("-L")) ; no carrier detect
-                               (baud-rate "1500000")
-                               (term "vt100")
-                               (tty "ttyS0")))
-                     (service openssh-service-type
+    (services (cons* (service openssh-service-type
                               (openssh-configuration
                                (port-number 2222)))
-                     %base-services))))
+                     %desktop-services))))
 
 (define-public tarapia-one-partition-system
   (operating-system
