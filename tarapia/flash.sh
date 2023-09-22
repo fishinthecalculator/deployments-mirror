@@ -1,7 +1,8 @@
 set -ex
 
 here="$(dirname "$0")"
-guix_root="$here/tarapia-root"
+system_name="$1"
+guix_root="${here}/${system_name}-root"
 rm -rfv "$guix_root"
 
 guix_git ()  {
@@ -18,9 +19,8 @@ image () {
 dev="/dev/nvme0n1"
 part="${dev}p2"
 
+"${here}/pbp-flash.sh" "$(image)" "${dev}"
 
-sudo dd "if=$(image)" "of=${dev}" bs=4M status=progress oflag=sync
-sync
 sudo cfdisk "$dev"
 guix shell e2fsprogs -- sudo resize2fs "$part"
 guix shell e2fsck-static -- sudo -E e2fsck "$part"

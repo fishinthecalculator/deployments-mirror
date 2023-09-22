@@ -8,7 +8,8 @@ set -eu
 set -x
 
 here="$(dirname "$0")"
-guix_root="$here/efraim-root"
+system_name="$1"
+guix_root="${here}/${system_name}-root"
 rm -rfv "$guix_root"
 
 guix_git ()  {
@@ -55,7 +56,7 @@ guix shell e2fsprogs -- sudo tune2fs -L guix-root "${part}"
 tmp_config="/tmp/config.scm"
 
 head -n -1 "${here}/system/config.scm" > "$tmp_config"
-echo "$1" >> "$tmp_config"
+echo "$system_name" >> "$tmp_config"
 
 sudo mount $part /mnt
 sudo -E guix time-machine -C "${here}/channels.scm" -- system init "$tmp_config" /mnt
