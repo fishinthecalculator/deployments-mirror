@@ -11,6 +11,16 @@
 (define %esp-fs-label
   "GNU-ESP")
 
+(define %verbose-boot-kernel-arguments
+  (append
+   (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
+   (list "debug"
+         "nosplash"
+         "console=tty0"
+         "loglevel=7"
+         "console=ttyS0,115200n8"
+         "console=ttyAMA0,115200n8")))
+
 (define-public tarapia-system
   (operating-system
     (host-name "tarapia")
@@ -67,13 +77,7 @@
                           "gpio_charger"
                           "rtc_rk808"))
     (kernel linux-arm64-generic)
-    (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
-                              (list "debug"
-                                    "nosplash"
-                                    "console=tty0"
-                                    "loglevel=7"
-                                    "console=ttyS0,115200n8"
-                                    "console=ttyAMA0,115200n8")))
+    (kernel-arguments %verbose-boot-kernel-arguments)
     (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
 
     (users (cons* (user-account (name "paul")
@@ -108,13 +112,7 @@
     (host-name "tarapia")
     (timezone "Europe/Rome")
     (locale "en_US.utf8")
-    (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
-                              (list "debug"
-                                    "nosplash"
-                                    "console=tty0"
-                                    "loglevel=7"
-                                    "console=ttyS0,115200n8"
-                                    "console=ttyAMA0,115200n8")))
+    (kernel-arguments %verbose-boot-kernel-arguments)
     (file-systems (cons (file-system
                           (device (file-system-label %root-fs-label))
                           (mount-point "/")
@@ -157,13 +155,7 @@
                           "gpio_charger"
                           "rtc_rk808"))
     (kernel linux-arm64-generic)
-    (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
-                              (list "debug"
-                                    "nosplash"
-                                    "console=tty0"
-                                    "loglevel=7"
-                                    "console=ttyS0,115200n8"
-                                    "console=ttyAMA0,115200n8")))
+    (kernel-arguments %verbose-boot-kernel-arguments)
     (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))))
 
 tarapia-system
