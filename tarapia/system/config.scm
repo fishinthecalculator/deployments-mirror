@@ -19,7 +19,9 @@
          "console=tty0"
          "loglevel=7"
          "console=ttyS0,115200n8"
-         "console=ttyAMA0,115200n8")))
+         "console=ttyAMA0,115200n8"
+         "video=eDP-1:1920x1080@60"
+         "video=HDMI-A-1:1920x1080@60")))
 
 (define (make-boot-variant config bootloader file-systems)
   (operating-system
