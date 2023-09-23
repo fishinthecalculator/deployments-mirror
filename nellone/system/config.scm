@@ -21,7 +21,7 @@
     (admin-email "goodoldpaul@autistici.org")
     (public-host "nellone.fishinthecalculator.me")
     (enable-https? #t)
-    (host-name "virtual-nellone")
+    (host-name "nellone")
     ;; The list of user accounts ('root' is implicit).
     (users (list (user-account
                   (inherit paul-user)

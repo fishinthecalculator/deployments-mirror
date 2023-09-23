@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -eu
+
+here="$(dirname "$0")"
+
+$(guix system vm -L "$(cd "${here}/.."; pwd)" -e '(@@ (nellone system config) nellone-system)')  -m 10024 -smp 10 -nic user,model=virtio-net-pci
