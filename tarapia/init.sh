@@ -53,14 +53,11 @@ guix shell e2fsprogs -- sudo tune2fs -L guix-root "${part}"
 #guix shell btrfs-progs -- sudo btrfs filesystem label "$part" guix-root
 #guix shell btrfs-progs -- sudo btrfstune -U "$old_uuid" "$part"
 
-tmp_config="/tmp/config.scm"
-
-head -n -1 "${here}/system/config.scm" > "$tmp_config"
-echo "$system_name" >> "$tmp_config"
+"${here}/config_trick" "$system_name" "${here}/system/config.scm"
 
 sudo mount $part /mnt
-sudo -E guix time-machine -C "${here}/channels.scm" -- system init "$tmp_config" /mnt
+sudo -E guix time-machine -C "${here}/channels.scm" -- system init /tmp/config.scm /mnt
 sudo umount /mnt
-rm -rfv "$tmp_config"
+rm -rfv "/tmp/config.scm"
 
 guix shell e2fsck-static -- sudo -E e2fsck "$part"

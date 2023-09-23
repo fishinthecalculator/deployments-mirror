@@ -19,7 +19,8 @@ guix_git ()  {
 }
 
 image () {
-    guix time-machine -C "${here}/channels.scm" -- system image -r "$guix_root"  --image-type=efi-raw "$here/system/config.scm"
+    "${here}/config_trick" "$system_name" "${here}/system/config.scm"
+    guix time-machine -C "${here}/channels.scm" -- system image -r "$guix_root"  --image-type=efi-raw "/tmp/config.scm"
 }
 
 
@@ -36,3 +37,5 @@ guix shell e2fsck-static -- sudo -E e2fsck "$part"
 #guix shell btrfs-progs -- sudo btrfs check --readonly "$part"
 #guix shell btrfs-progs -- sudo btrfs filesystem label "$part" guix-root
 #guix shell btrfs-progs -- sudo btrfstune -U "$old_uuid" "$part"
+
+rm -rfv "/tmp/config.scm"
