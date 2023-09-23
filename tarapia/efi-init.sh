@@ -38,7 +38,7 @@ EOF
 
 # ESP
 sudo mkfs.vfat -F 32 $esp_part
-guix shell e2fsprogs -- sudo tune2fs -L GNU-ESP "${esp_part}"
+guix shell dosfstools -- sudo fatlabel "${esp_part}" GNU-ESP
 
 # Root
 sudo mkfs.ext4 -F $root_part
