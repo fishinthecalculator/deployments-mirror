@@ -64,10 +64,7 @@
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
-                                    "console=tty1"
-                                    "rootfstype=ext4"
-                                    "console=ttyS2,1500000"
-                                    "consoleblank=0"
+                                    "console=tty0"
                                     "loglevel=7"
                                     "console=ttyS0,115200n8"
                                     "console=ttyAMA0,115200n8")))
@@ -108,8 +105,10 @@
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
-                                    "consoleblank=0"
-                                    "loglevel=7")))
+                                    "console=tty0"
+                                    "loglevel=7"
+                                    "console=ttyS0,115200n8"
+                                    "console=ttyAMA0,115200n8")))
     (file-systems (cons (file-system
                           (device (file-system-label "guix-root"))
                           (mount-point "/")
@@ -155,17 +154,10 @@
     (kernel-arguments (append (remove (lambda (el) (string=? el "quiet")) %default-kernel-arguments)
                               (list "debug"
                                     "nosplash"
-                                    "consoleblank=0"
-                                    "loglevel=7")))
+                                    "console=tty0"
+                                    "loglevel=7"
+                                    "console=ttyS0,115200n8"
+                                    "console=ttyAMA0,115200n8")))
     (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))))
-
-(define-public tarapia-pinebook-pro-btrfs
-  (operating-system
-    (inherit pinebook-pro-barebones-os)
-    (file-systems (cons (file-system
-                          (device (file-system-label "guix-root"))
-                          (mount-point "/")
-                          (type "btrfs"))
-                        %base-file-systems))))
 
 tarapia-system
