@@ -53,7 +53,6 @@ sudo mount $esp_part /mnt/boot/efi
 sudo -E guix time-machine -C "${here}/channels.scm" -- system init /tmp/config.scm /mnt
 
 sudo umount /mnt/boot/efi
-sudo rm -rfv /mnt/boot
 sudo umount /mnt
 rm -rfv "/tmp/config.scm"
 
