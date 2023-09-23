@@ -1,4 +1,11 @@
-set -ex
+#!/usr/bin/env sh
+
+set -eu
+
+[ "$#" -ne 1 ] && echo "Usage: $(basename "$0") OPERATING-SYSTEM-NAME" >&2 && exit 1
+
+
+set -x
 
 here="$(dirname "$0")"
 system_name="$1"
