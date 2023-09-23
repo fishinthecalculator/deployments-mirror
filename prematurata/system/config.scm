@@ -31,9 +31,9 @@
 
     (kernel linux)
     (kernel-arguments
-      (cons* "resume=/dev/nvme0n1p2"        ;device that holds /swapfile
-             "resume_offset=76988225"       ;offset of /swapfile on device
-             %default-kernel-arguments))
+     (cons* "resume=/dev/nvme0n1p2"        ;device that holds /swapfile
+            "resume_offset=76988225"       ;offset of /swapfile on device
+            %default-kernel-arguments))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems
@@ -51,9 +51,9 @@
     (users (cons* paul-user %base-user-accounts))
 
     (bootloader (bootloader-configuration
-                  (bootloader grub-efi-bootloader)
-                  (targets (list "/boot/efi"))
-                  (keyboard-layout small-guix-kl)))
+                 (bootloader grub-efi-bootloader)
+                 (targets (list "/boot/efi"))
+                 (keyboard-layout small-guix-kl)))
 
     (packages (append (list bluez bluez-alsa blueman)
                       (operating-system-packages small-guix-desktop-system)))
@@ -85,17 +85,16 @@
                                                                    "aarch64"))))
 
                    (service wireguard-service-type
-                     (wireguard-configuration
-                      (private-key (plain-file "private.key"
-                                               "wCvDLACjjRtbQzNgj08PvnSwWm56wGfzvBfkRQC0Hkk="))
-                      (addresses '("192.168.27.67/32"))
-                      (peers
-                       (list
-                        (wireguard-peer
-                         (name "iliadbox")
-                         (endpoint "81.56.8.195:10455")
-                         (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
-                         (allowed-ips '("192.168.27.64/27")))))))
+                            (wireguard-configuration
+                             (private-key "/etc/wireguard/private.key")
+                             (addresses '("192.168.27.67/32"))
+                             (peers
+                              (list
+                               (wireguard-peer
+                                (name "iliadbox")
+                                (endpoint "81.56.8.195:10455")
+                                (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
+                                (allowed-ips '("192.168.27.64/27")))))))
 
                    (service bluetooth-service-type
                             (bluetooth-configuration
@@ -113,10 +112,10 @@
 
     ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
-                            (source (uuid
-                                     "808fce73-23ea-4fbf-b7a4-cf584279b276"))
-                            (target "cryptroot")
-                            (type luks-device-mapping))))
+                           (source (uuid
+                                    "808fce73-23ea-4fbf-b7a4-cf584279b276"))
+                           (target "cryptroot")
+                           (type luks-device-mapping))))
 
     (file-systems (cons* (file-system
                            (mount-point "/")
@@ -131,9 +130,9 @@
 
     (swap-devices
      (list
-       (swap-space
-         ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
-         ;; for swapfile on Btrfs
-         (target "/swap/swapfile")
-         (dependencies (filter (file-system-mount-point-predicate "/")
-                               file-systems)))))))
+      (swap-space
+       ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+       ;; for swapfile on Btrfs
+       (target "/swap/swapfile")
+       (dependencies (filter (file-system-mount-point-predicate "/")
+                             file-systems)))))))
