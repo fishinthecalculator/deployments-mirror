@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# This script implements the automation of fdisk commands.
+
+set -eu
+
+usage () {
+    echo "Usage: ... | $(basename "$0") TARGET-DEVICE" >&2
+}
+
+[[ "$#" -ne 1 ]] && usage && exit 1
+
+if [[ -p /dev/stdin ]]; then
+    # Thanks to https://superuser.com/a/984637
+    # to create the partitions programatically (rather than manually)
+    # we're going to simulate the manual input to fdisk
+    # The sed script strips off all the comments so that we can
+    # document what we're doing in-line with the actual commands
+    # Note that a blank line (commented as "default") will send a empty
+    # line terminated with a newline to take the fdisk default.
+    cat - | sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' | sudo fdisk "$1"
+    exit 0
+fi
+
+usage
+
+exit 1

@@ -12,12 +12,6 @@ system_name="$1"
 guix_root="${here}/${system_name}-root"
 rm -rfv "$guix_root"
 
-guix_git ()  {
-  cd "${HOME}/code/guix"
-  guix shell --pure -D guix -- make -j6
-  guix shell --pure -D guix -- ./pre-inst-env guix "$@"
-}
-
 image () {
     "${here}/config_trick" "$system_name" "${here}/system/config.scm"
     guix time-machine -C "${here}/channels.scm" -- system image -r "$guix_root"  --image-type=efi-raw "/tmp/config.scm"
@@ -28,6 +22,7 @@ dev="/dev/nvme0n1"
 part="${dev}p2"
 
 "${here}/pbp-flash.sh" "$(image)" "${dev}"
+guix shell e2fsprogs -- sudo tune2fs -L guix-root "${part}"
 
 sudo cfdisk "$dev"
 guix shell e2fsprogs -- sudo resize2fs "$part"

@@ -12,28 +12,13 @@ system_name="$1"
 guix_root="${here}/${system_name}-root"
 rm -rfv "$guix_root"
 
-guix_git ()  {
-  cd "${HOME}/code/guix"
-  guix shell --pure -D guix -- make -j6
-  guix shell --pure -D guix -- ./pre-inst-env guix "$@"
-}
-
-
 dev="/dev/nvme0n1"
 part="${dev}p1"
 
-
-# Thanks to https://superuser.com/a/984637
-# to create the partitions programatically (rather than manually)
-# we're going to simulate the manual input to fdisk
-# The sed script strips off all the comments so that we can
-# document what we're doing in-line with the actual commands
-# Note that a blank line (commented as "default" will send a empty
-# line terminated with a newline to take the fdisk default.
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk "${dev}"
+cat << EOF | "${here}/auto-fdisk" "${dev}"
   g # clear the in memory partition table
   n # new partition
-  1 # partition number 1
+    # default, partition number 1
     # default - start at beginning of disk
     # default, extend partition to end of disk
   x # enable expert mode
