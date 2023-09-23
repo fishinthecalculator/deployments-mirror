@@ -5,6 +5,12 @@
 (use-service-modules avahi desktop networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)
 
+(define %root-fs-label
+  "guix-root")
+
+(define %esp-fs-label
+  "GNU-ESP")
+
 (define-public tarapia-system
   (operating-system
     (host-name "tarapia")
@@ -19,12 +25,12 @@
       (targets '("/boot/efi"))
       (keyboard-layout keyboard-layout)))
 
-    (file-systems (cons* (file-system (device (file-system-label "guix-root"))
+    (file-systems (cons* (file-system (device (file-system-label %root-fs-label))
                                       (mount-point "/")
                                       (type "ext4"))
                          (file-system
                            (mount-point "/boot/efi")
-                           (device (file-system-label "GNU-ESP"))
+                           (device (file-system-label %esp-fs-label))
                            (type "vfat"))
                          %base-file-systems))
 
@@ -91,7 +97,7 @@
     (bootloader (bootloader-configuration
                  (bootloader u-boot-pinebook-pro-rk3399-bootloader)
                  (targets '("/dev/vda"))))
-    (file-systems (cons* (file-system (device (file-system-label "guix-root"))
+    (file-systems (cons* (file-system (device (file-system-label %root-fs-label))
                                       (mount-point "/")
                                       (type "ext4"))
                          %base-file-systems))))
@@ -110,7 +116,7 @@
                                     "console=ttyS0,115200n8"
                                     "console=ttyAMA0,115200n8")))
     (file-systems (cons (file-system
-                          (device (file-system-label "guix-root"))
+                          (device (file-system-label %root-fs-label))
                           (mount-point "/")
                           (type "ext4"))
                         %base-file-systems))))
