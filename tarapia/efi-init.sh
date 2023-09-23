@@ -47,8 +47,8 @@ guix shell e2fsprogs -- sudo tune2fs -L guix-root "${root_part}"
 "${here}/config_trick" "$system_name" "${here}/system/config.scm"
 
 sudo mount $root_part /mnt
-sudo mkdir -p /mnt/boot
-sudo mount $esp_part /mnt/boot
+sudo mkdir -p /mnt/boot/efi
+sudo mount $esp_part /mnt/boot/efi
 
 sudo -E guix time-machine -C "${here}/channels.scm" -- system init /tmp/config.scm /mnt
 
