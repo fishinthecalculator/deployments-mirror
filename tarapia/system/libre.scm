@@ -1,4 +1,4 @@
-(use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
+(use-modules (gnu) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
 
 (use-service-modules avahi desktop networking ssh)
 (use-package-modules admin bootloaders certs firmware linux ssh)
