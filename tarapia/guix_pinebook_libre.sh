@@ -1,9 +1,9 @@
 set -ex
 
 here="$(dirname "$0")"
-dev="/dev/mmcblk1"
+dev="/dev/nvme0n1"
 part="${dev}p1"
-image="$(guix time-machine -C "${here}/upstream.scm" -- system image -e '(@ (gnu system images pinebook-pro) pinebook-pro-barebones-raw-image)' --system=aarch64-linux)"
+image="$(guix time-machine -C "${here}/upstream.scm" -- system image --image-type=pinebook-pro-raw "${here}/system/libre.scm" --system=aarch64-linux)"
 
 
 "${here}/pbp-flash.sh" "${image}" "${dev}"
