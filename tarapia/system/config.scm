@@ -128,9 +128,6 @@
 (define-public tarapia-one-partition-system
   (make-uboot-system tarapia-system))
 
-(define-public tarapia-pinebook-pro-libre
-  (make-uboot-system pinebook-pro-barebones-os))
-
 (define-public tarapia-pinebook-pro-libre-efi
   (make-efi-system pinebook-pro-barebones-os))
 
