@@ -1,4 +1,4 @@
-(define-module (tarapia channels)
+(define-module (tarapia upstream)
   #:use-module (guix channels))
 
 (list (channel
