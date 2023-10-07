@@ -1,3 +1,4 @@
+(define-module (tarapia system libre))
 (use-modules (gnu) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
 
 (use-service-modules avahi desktop networking ssh)
