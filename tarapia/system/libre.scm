@@ -7,8 +7,7 @@
    (cons* (file-system
             (device (file-system-label "Guix_image"))
             (mount-point "/")
-            (type "btrfs")
-            (options "compress=zstd,discard,space_cache=v2"))
+            (type "ext4"))
           (file-system
             (mount-point "/boot/efi")
             (device (file-system-label "GNU-ESP"))
