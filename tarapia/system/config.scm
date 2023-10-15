@@ -6,7 +6,7 @@
 (use-package-modules admin bootloaders certs firmware linux ssh)
 
 (define %root-fs-label
-  "guix-root")
+  "Guix_image")
 
 (define %esp-fs-label
   "GNU-ESP")
