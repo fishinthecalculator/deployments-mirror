@@ -1,18 +1,21 @@
 (define-module (tarapia system libre))
 (use-modules (gnu) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
 
-(use-service-modules avahi desktop networking ssh)
-(use-package-modules admin bootloaders certs firmware linux ssh)
-
 (operating-system
   (inherit pinebook-pro-barebones-os)
   (file-systems
-   (cons* (file-system (device "/dev/nvme0n1")
-                       (mount-point "/")
-                       (type "ext4"))
+   (cons* (file-system
+            (device (file-system-label "Guix_image"))
+            (mount-point "/")
+            (type "btrfs")
+            (options "compress=zstd,discard,space_cache=v2"))
+          (file-system
+            (mount-point "/boot/efi")
+            (device (file-system-label "GNU-ESP"))
+            (type "vfat"))
           %base-file-systems))
-  (initrd-modules (list "nvme"))
   (bootloader
    (bootloader-configuration
-    (bootloader u-boot-pinebook-pro-rk3399-bootloader)
-    (targets '("/dev/nvme0n1")))))
+    (bootloader grub-efi-removable-bootloader)
+    (targets '("/boot/efi"))
+    (keyboard-layout (operating-system-keyboard-layout pinebook-pro-barebones-os)))))
