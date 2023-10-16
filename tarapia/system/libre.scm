@@ -1,8 +1,11 @@
 (define-module (tarapia system libre))
-(use-modules (gnu) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
+(use-modules (gnu)
+             (gnu packages bootloaders)
+             (gnu system images pinebook-pro))
 
 (operating-system
   (inherit pinebook-pro-barebones-os)
+  (keyboard-layout (keyboard-layout "us" "altgr-intl"))
   (file-systems
    (cons* (file-system
             (device (file-system-label "Guix_image"))
@@ -17,4 +20,4 @@
    (bootloader-configuration
     (bootloader grub-efi-removable-bootloader)
     (targets '("/boot/efi"))
-    (keyboard-layout (operating-system-keyboard-layout pinebook-pro-barebones-os)))))
+    (keyboard-layout keyboard-layout))))
