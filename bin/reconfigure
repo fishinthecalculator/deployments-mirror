@@ -4,10 +4,6 @@
 
 set -eux
 
-if [ "$#" -lt 1 ]; then
-    guix_host="$(hostname)"
-else
-    guix_host="$1"
-fi
+guix_host="$(hostname)"
 
 guix system reconfigure -e "(@@ (${guix_host} system config) ${guix_host}-system)" "$@"

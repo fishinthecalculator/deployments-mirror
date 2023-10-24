@@ -17,4 +17,4 @@
                         "This package provides some utility scripts mostly for deploying Guix systems."
                         "https://gitlab.com/orang3/guix-deployments"
                         license:gpl3+
-                        #:version "0.1.0"))
+                        #:version "0.1.1"))
