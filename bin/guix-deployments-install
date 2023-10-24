@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [ "$#" -lt 1 ]; then
+    machine="$(hostname)"
+else
+    machine="$1"
+fi
+
+
+guix shell curl -- curl https://substitutes.nonguix.org/signing-key.pub > /tmp/substitutes.nonguix.org.pub
+sudo guix archive --authorize < /tmp/substitutes.nonguix.org.pub
+sudo herd stop guix-daemon
+
+set -x
+sudo guix-daemon --build-users-group guixbuild --max-silent-time 0 --timeout 0 --log-compression gzip --discover=no --substitute-urls="https://ci.guix.gnu.org https://bordeaux.guix.gnu.org https://substitutes.nonguix.org" &
+set +x
+
+sudo reconfigure "$machine"
+
+exit 0

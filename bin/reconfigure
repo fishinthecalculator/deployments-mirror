@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ "$(id -u)" -ne 0 ] && echo "ERROR: This script must be run as root!" && exit 1
+
+set -eux
+
+if [ "$#" -lt 1 ]; then
+    guix_host="$(hostname)"
+else
+    guix_host="$1"
+fi
+
+guix system reconfigure -e "(@@ (${guix_host} system config) ${guix_host}-system)" "$@"
