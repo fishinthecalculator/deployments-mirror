@@ -3,23 +3,33 @@
  (version 0)                            ;file format version
  (dependencies
   (channel
-     (name nonguix)
-     (url "https://gitlab.com/nonguix/nonguix")
-     ;; Enable signature verification:
-     (introduction
-      (channel-introduction
-       (version 0)
-       (commit "897c1a470da759236cc11798f4e0a5f7d4d59fbc")
-       (signer "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
+   (name nonguix)
+   (url "https://gitlab.com/nonguix/nonguix")
+   ;; Enable signature verification:
+   (introduction
+    (channel-introduction
+     (version 0)
+     (commit "897c1a470da759236cc11798f4e0a5f7d4d59fbc")
+     (signer "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
   (channel
-     (name small-guix)
-     (url "https://gitlab.com/orang3/small-guix")
-     ;; Enable signature verification:
-     (introduction
-      (channel-introduction
-       (version 0)
-       (commit "940e21366a8c986d1e10a851c7ce62223b6891ef")
-       (signer "D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3"))))
+   (name small-guix)
+   (url "https://gitlab.com/orang3/small-guix")
+   ;; Enable signature verification:
+   (introduction
+    (channel-introduction
+     (version 0)
+     (commit "940e21366a8c986d1e10a851c7ce62223b6891ef")
+     (signer "D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3"))))
+  (channel
+   (name sops-guix)
+   (url "https://git.sr.ht/~fishinthecalculator/sops-guix")
+   (branch "main")
+   ;; Enable signature verification:
+   (introduction
+    (channel-introduction
+     (version 0)
+     (commit "bea63b9b2d07d7a978db8d271130171cdcc410e6")
+     (signer "D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3"))))
   (channel
    (name guix-nas)
    (url "https://gitlab.com/orang3/guix-nas")
