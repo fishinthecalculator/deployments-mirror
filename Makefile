@@ -1,5 +1,5 @@
 ##
-# SOPS Guix
+# Deployments
 #
 # @file
 # @version 0.1
