@@ -5,7 +5,7 @@
 # @version 0.1
 
 # Introduction of the 'small-guix' channel.
-channel_intro_commit = 7a9193e29d9536867edcda28940f51dd564942e2
+channel_intro_commit = 1feaa92d3ff8ac1745c619454e38b6a7bfe605d4
 channel_intro_signer = D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3
 
 authenticate:
