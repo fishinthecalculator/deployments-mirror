@@ -41,7 +41,7 @@
 
     (swap-devices (list (swap-space
                          (target (uuid
-                                  "ba1b7761-8b81-4b71-8a1a-ebdcd0fbcdf6")))))
+                                  "86021678-3700-4717-b29e-744477d0ea0c")))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
@@ -49,6 +49,6 @@
     (file-systems (cons* (file-system
                            (mount-point "/")
                            (device (uuid
-                                    "f0890300-9702-428f-93ed-a7058a33b2ab"
+                                    "c2b4a64f-8654-461b-aebd-6752eabfe7cb"
                                     'ext4))
                            (type "ext4")) %base-file-systems)))))
