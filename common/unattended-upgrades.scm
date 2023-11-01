@@ -29,8 +29,9 @@
                "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
            %default-channels))
 
-(define* (deployments-unattended-upgrades host-name #:key (channels %unattended-upgrades-channels) (hours 23) (minutes 10))
+(define* (deployments-unattended-upgrades host-name #:key (expiration-days 7) (channels %unattended-upgrades-channels) (hours 23) (minutes 10))
   (small-guix-unattended-upgrades-service host-name
+                                          #:expiration-days expiration-days
                                           #:channels channels
                                           #:hours hours
                                           #:minutes minutes))

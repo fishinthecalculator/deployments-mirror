@@ -62,7 +62,8 @@
      (append (list (service openssh-service-type
                             (openssh-configuration (x11-forwarding? #f)))
 
-                   (deployments-unattended-upgrades host-name)
+                   (deployments-unattended-upgrades host-name
+                                                    #:expiration-days 14)
 
                    (service guix-publish-service-type
                             (guix-publish-configuration
