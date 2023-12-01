@@ -8,16 +8,22 @@
   #~(cons* (channel
             (name 'deployments)
             (url "https://gitlab.com/orang3/guix-deployments.git")
-            (branch "main"))
+            (branch "main")
+            ;; Enable signature verification:
+            (introduction
+             (make-channel-introduction
+              "9d101a2b1f38571e75e7d256bbc8d754177d11f3"
+              (openpgp-fingerprint
+               "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
            (channel
             (name 'small-guix)
             (url "https://gitlab.com/orang3/small-guix")
             ;; Enable signature verification:
             (introduction
              (make-channel-introduction
-              "940e21366a8c986d1e10a851c7ce62223b6891ef"
+              "f260da13666cd41ae3202270784e61e062a3999c"
               (openpgp-fingerprint
-               "D088 4467 87F7 CBB2 AE08  BE6D D075 F59A 4805 49C3"))))
+               "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
            (channel
             (name 'nonguix)
             (url "https://gitlab.com/nonguix/nonguix")
