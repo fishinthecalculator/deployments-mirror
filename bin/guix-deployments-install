@@ -10,6 +10,8 @@ sudo guix-daemon --build-users-group guixbuild --max-silent-time 0 --timeout 0 -
 
 sudo guix archive --authorize < /tmp/substitutes.nonguix.org.pub
 
-sudo reconfigure
+cd /tmp && guix shell git -- git clone https://gitlab.com/orang3/guix-deployments
+
+sudo "/tmp/guix-deployments/bin/reconfigure"
 
 exit 0

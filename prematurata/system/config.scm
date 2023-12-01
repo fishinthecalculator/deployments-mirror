@@ -114,7 +114,7 @@
     ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
                            (source (uuid
-                                    "808fce73-23ea-4fbf-b7a4-cf584279b276"))
+                                    "252ab0f7-b682-44c2-9a20-9dfdab17de78"))
                            (target "cryptroot")
                            (type luks-device-mapping))))
 
@@ -125,7 +125,7 @@
                            (dependencies mapped-devices))
                          (file-system
                            (mount-point "/boot/efi")
-                           (device (uuid "720D-04C0"
+                           (device (uuid "16CE-D943"
                                          'fat32))
                            (type "vfat")) %base-file-systems))
 
