@@ -1,6 +1,7 @@
 (define-module (prematurata system config)
   #:use-module (gnu)
   #:use-module (gnu packages audio)          ;for bluez-alsa
+  #:use-module (gnu packages backup)         ;for restic
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
   #:use-module (gnu services base)           ;for guix-daemon-service-type
@@ -12,18 +13,52 @@
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services vpn)            ;for wireguard-service-type
   #:use-module (gnu services xorg)           ;for set-xorg-configuration
+  #:use-module (guix utils)                  ;for current-source-directory
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix services mcron)
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
+  #:use-module (sops services sops)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:export (prematurata-system))
 
+(define deployments-root
+  (dirname (dirname (current-source-directory))))
+
 (define authorized-guix-keys
-  (list (local-file "../../keys/guix/pinebook-armbian.key")))
+  (list
+   (local-file
+    (string-append deployments-root "/keys/guix/pinebook-armbian.key"))))
+
+(define sops.yaml
+  (local-file (string-append deployments-root "/.sops.yaml")
+              "sops.yaml"))
+
+(define (secrets-file file-name)
+  (local-file (string-append deployments-root "/secrets/" file-name)))
+
+(define common.yaml
+  (secrets-file "common.yaml"))
+
+(define prematurata.yaml
+  (secrets-file "prematurata.yaml"))
+
+(define-public backup-system-job
+  ;; Run 'restic' at 23:00 every day.
+  #~(job "0 23 * * *"
+         (lambda ()
+           (let ((repos '("rclone:onedrive:backup"
+                          "rclone:nasa-ftp:backup/restic")))
+             (for-each
+              (lambda (repo)
+                (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
+                                                  #$restic "/bin/restic"
+                                                  " -r " repo " --verbose backup /root/.gnupg /root/.config/rclone /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key.pub /etc/guix/signing-key.pub /etc/guix/signing-key.sec")))
+              repos)))
+
+         "restic"))
 
 (define prematurata-system
   (operating-system
@@ -65,6 +100,21 @@
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
 
+                   (service sops-secrets-service-type
+                            (sops-service-configuration
+                             (config sops.yaml)
+                             (generate-key? #t)
+                             (secrets
+                              (list
+                               (sops-secret
+                                (key "[\"restic\"]")
+                                (file common.yaml)
+                                (path "/run/secrets/restic"))
+                               (sops-secret
+                                (key "[\"wireguard\"][\"private\"]")
+                                (file prematurata.yaml)
+                                (path "/run/secrets/wireguard"))))))
+
                    (service guix-publish-service-type
                             (guix-publish-configuration
                              (port 90798)
@@ -79,6 +129,9 @@
                              (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                    (service tor-service-type)
+                   (simple-service 'prematurata-cron-jobs
+                                   mcron-service-type
+                                   (list backup-system-job))
 
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
@@ -87,7 +140,7 @@
 
                    (service wireguard-service-type
                             (wireguard-configuration
-                             (private-key "/etc/wireguard/private.key")
+                             (private-key "/run/secrets/wireguard")
                              (addresses '("192.168.27.67/32"))
                              (peers
                               (list

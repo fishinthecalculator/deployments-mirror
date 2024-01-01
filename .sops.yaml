@@ -1,0 +1,15 @@
+keys:
+    - &user_paul 8D1060B96BB8292E829B7249AED41CC193B701E2
+    - &host_prematurata 8C3E4F6EB38828939029AE7BE9B6AF0CD39DD935
+
+creation_rules:
+    - path_regex: .*common\.yaml$
+      key_groups:
+          - pgp:
+                - *user_paul
+                - *host_prematurata
+    - path_regex: .*prematurata\.yaml$
+      key_groups:
+          - pgp:
+                - *user_paul
+                - *host_prematurata
