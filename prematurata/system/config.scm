@@ -103,7 +103,6 @@
                    (service sops-secrets-service-type
                             (sops-service-configuration
                              (config sops.yaml)
-                             (generate-key? #t)
                              (secrets
                               (list
                                (sops-secret
