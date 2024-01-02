@@ -107,8 +107,7 @@
                               (list
                                (sops-secret
                                 (key "[\"restic\"]")
-                                (file common.yaml)
-                                (path "/run/secrets/restic"))
+                                (file common.yaml))
                                (sops-secret
                                 (key "[\"wireguard\"][\"private\"]")
                                 (file prematurata.yaml)
