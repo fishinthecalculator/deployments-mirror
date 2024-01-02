@@ -57,8 +57,21 @@
                                                   #$restic "/bin/restic"
                                                   " -r " repo " --verbose backup /root/.gnupg /root/.config/rclone /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key.pub /etc/guix/signing-key.pub /etc/guix/signing-key.sec")))
               repos)))
+         "restic-system-backup"))
 
-         "restic"))
+(define-public restic-prune-job
+  ;; Run 'restic prune' at 21:02 every Sunday.
+  #~(job "2 21 * * 7"
+         (lambda ()
+           (let ((repos '("rclone:onedrive:backup"
+                          "rclone:nasa-ftp:backup/restic")))
+             (for-each
+              (lambda (repo)
+                (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
+                                                  #$restic "/bin/restic"
+                                                  " -r " repo " --verbose prune")))
+              repos)))
+         "restic-prune"))
 
 (define prematurata-system
   (operating-system
@@ -128,7 +141,8 @@
                    (service tor-service-type)
                    (simple-service 'prematurata-cron-jobs
                                    mcron-service-type
-                                   (list backup-system-job))
+                                   (list backup-system-job
+                                         restic-prune-job))
 
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
