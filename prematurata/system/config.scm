@@ -110,8 +110,7 @@
                                 (file common.yaml))
                                (sops-secret
                                 (key "[\"wireguard\"][\"private\"]")
-                                (file prematurata.yaml)
-                                (path "/run/secrets/wireguard"))))))
+                                (file prematurata.yaml))))))
 
                    (service guix-publish-service-type
                             (guix-publish-configuration
