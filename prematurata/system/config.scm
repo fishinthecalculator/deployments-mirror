@@ -120,6 +120,7 @@
                               (list
                                (sops-secret
                                 (key "[\"restic\"]")
+                                (user "paul")
                                 (file common.yaml))
                                (sops-secret
                                 (key "[\"wireguard\"][\"private\"]")
