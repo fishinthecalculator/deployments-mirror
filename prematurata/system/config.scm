@@ -151,7 +151,7 @@
 
                    (service wireguard-service-type
                             (wireguard-configuration
-                             (private-key "/run/secrets/wireguard")
+                             (private-key "/run/secrets/wireguard-private")
                              (addresses '("192.168.27.67/32"))
                              (peers
                               (list
