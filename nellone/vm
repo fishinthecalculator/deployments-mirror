@@ -2,4 +2,7 @@
 
 set -eu
 
-$(guix system vm $@ -e '(@@ (nellone system config) nellone-system)')  -m 10024 -smp 10 -nic user,model=virtio-net-pci
+cpus="10"
+memory="10024"
+
+$(guix system vm $@ -e '(@@ (nellone system config) nellone-system)')  -m "${memory}" -smp "${cpus}" -nic user,model=virtio-net-pci
