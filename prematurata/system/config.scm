@@ -19,6 +19,7 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
+  #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
