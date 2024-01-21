@@ -120,11 +120,11 @@
                              (secrets
                               (list
                                (sops-secret
-                                (key "[\"restic\"]")
+                                (key '("restic"))
                                 (user "paul")
                                 (file common.yaml))
                                (sops-secret
-                                (key "[\"wireguard\"][\"private\"]")
+                                (key '("wireguard" "private"))
                                 (file prematurata.yaml))))))
 
                    (service guix-publish-service-type
