@@ -50,7 +50,7 @@
   ;; Run 'restic' at 23:00 every day.
   #~(job "0 23 * * *"
          (lambda ()
-           (let ((repos '("rclone:onedrive:backup"
+           (let ((repos '("rclone:onedrive:backup/restic"
                           "rclone:nasa-ftp:backup/restic")))
              (for-each
               (lambda (repo)
@@ -64,7 +64,7 @@
   ;; Run 'restic prune' at 21:02 every Sunday.
   #~(job "2 21 * * 7"
          (lambda ()
-           (let ((repos '("rclone:onedrive:backup"
+           (let ((repos '("rclone:onedrive:backup/restic"
                           "rclone:nasa-ftp:backup/restic")))
              (for-each
               (lambda (repo)
