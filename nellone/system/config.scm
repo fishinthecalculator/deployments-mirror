@@ -21,13 +21,14 @@
     (admin-email "goodoldpaul@autistici.org")
     (public-host "nellone.fishinthecalculator.me")
     (enable-https? #t)
-    (host-name "nellone")
+    (host-name "virtual-nellone")
     ;; The list of user accounts ('root' is implicit).
     (users (list (user-account
                   (inherit paul-user)
                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))))
 
-    (admin-users (list (user-account-name paul-user)))
+    (admin-users (list (user-account-name (user-account (inherit paul-user)
+                                                        (comment "Tino il Cotechino")))))
 
     (guix-keys authorized-guix-keys)
 
