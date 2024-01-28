@@ -5,10 +5,13 @@
   #:use-module (nas records system)
   #:use-module (common users))
 
+(define paul-key
+  (string-append (current-source-directory)
+                 "/../../keys/ssh/id_rsa.pub"))
+
 (define authorized-ssh-keys
   ;; List of authorized SSH keys.
-  `((,paul-user ,(string-append (current-source-directory)
-                                "/../../keys/ssh/id_rsa.pub"))))
+  `((,paul-user ,paul-key)))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -25,10 +28,10 @@
     ;; The list of user accounts ('root' is implicit).
     (users (list (user-account
                   (inherit paul-user)
+                  (comment "Tino il Cotechino")
                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))))
 
-    (admin-users (list (user-account-name (user-account (inherit paul-user)
-                                                        (comment "Tino il Cotechino")))))
+    (deploy-users (list paul-key))
 
     (guix-keys authorized-guix-keys)
 
@@ -40,16 +43,17 @@
                  (targets (list "/dev/vda"))
                  (keyboard-layout (keyboard-layout "us"))))
 
-    (swap-devices (list (swap-space
-                         (target (uuid
-                                  "86021678-3700-4717-b29e-744477d0ea0c")))))
+    (mapped-devices (list (mapped-device
+                           (source (uuid
+                                    "73e13cd8-1f4e-472c-bb8b-ceb94a6ff8d4"))
+                           (target "cryptroot")
+                           (type luks-device-mapping))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
     ;; by running 'blkid' in a terminal.
     (file-systems (cons* (file-system
                            (mount-point "/")
-                           (device (uuid
-                                    "c2b4a64f-8654-461b-aebd-6752eabfe7cb"
-                                    'ext4))
-                           (type "ext4")) %base-file-systems)))))
+                           (device "/dev/mapper/cryptroot")
+                           (type "ext4")
+                           (dependencies mapped-devices)) %base-file-systems)))))
