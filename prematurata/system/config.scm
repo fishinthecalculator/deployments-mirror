@@ -153,7 +153,7 @@
 
                    (service wireguard-service-type
                             (wireguard-configuration
-                             (private-key "/run/secrets/wireguard-private")
+                             (private-key "/run/secrets/wireguard/private")
                              (addresses '("192.168.27.67/32"))
                              (peers
                               (list
@@ -177,12 +177,12 @@
                                                         authorized-guix-keys
                                                         (guix-configuration-authorized-keys config))))))))
 
-    ;; You can find out this UUIDs with sudo lsblk -o +name,mountpoint,uuid .
+    ;; You can find out UUIDs with sudo lsblk -o +name,mountpoint,uuid .
     (mapped-devices (list (mapped-device
-                           (source (uuid
-                                    "252ab0f7-b682-44c2-9a20-9dfdab17de78"))
+                           (source "/dev/nvme0n1p2")
                            (target "cryptroot")
-                           (type luks-device-mapping))))
+                           (type (luks-device-mapping-with-options
+                                  #:key-file "/crypto.key")))))
 
     (file-systems (cons* (file-system
                            (mount-point "/")
