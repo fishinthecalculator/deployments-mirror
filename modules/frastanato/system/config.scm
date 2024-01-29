@@ -122,6 +122,17 @@
               (service network-manager-service-type)
               (service wpa-supplicant-service-type)
 
+              (service sops-secrets-service-type
+                       (sops-service-configuration
+                        (config sops.yaml)))
+
+              (service oci-meilisearch-service-type
+                       (oci-meilisearch-configuration
+                        (master-key
+                         (sops-secret
+                          (key '("meilisearch" "master"))
+                          (file frastanato.yml)))))
+
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
 
