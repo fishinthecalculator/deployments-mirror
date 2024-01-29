@@ -28,9 +28,6 @@
   #:use-module (common users)
   #:export (prematurata-system))
 
-(define deployments-root
-  (dirname (dirname (current-source-directory))))
-
 (define authorized-guix-keys
   (list
    pinebook-guix-key))
