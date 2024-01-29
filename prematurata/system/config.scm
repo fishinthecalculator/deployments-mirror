@@ -21,6 +21,9 @@
   #:use-module (small-guix system input)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
+  #:use-module (common keys)
+  #:use-module (common secrets)
+  #:use-module (common self)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:export (prematurata-system))
@@ -30,18 +33,7 @@
 
 (define authorized-guix-keys
   (list
-   (local-file
-    (string-append deployments-root "/keys/guix/pinebook-armbian.key"))))
-
-(define sops.yaml
-  (local-file (string-append deployments-root "/.sops.yaml")
-              "sops.yaml"))
-
-(define (secrets-file file-name)
-  (local-file (string-append deployments-root "/secrets/" file-name)))
-
-(define common.yaml
-  (secrets-file "common.yaml"))
+   pinebook-guix-key))
 
 (define prematurata.yaml
   (secrets-file "prematurata.yaml"))

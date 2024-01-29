@@ -3,20 +3,16 @@
   #:use-module (gnu)
   #:use-module (nas records mapper)
   #:use-module (nas records system)
+  #:use-module (common keys)
   #:use-module (common users))
-
-(define paul-key
-  (string-append (current-source-directory)
-                 "/../../keys/ssh/id_rsa.pub"))
 
 (define authorized-ssh-keys
   ;; List of authorized SSH keys.
-  `((,paul-user ,paul-key)))
+  `((,paul-user ,paul-ssh-key)))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
-  (list (local-file "../../keys/guix/frastanato.pub")
-        (local-file "../../keys/guix/prematurata.pub")))
+  (list prematurata-guix-key))
 
 (define-public nellone-system
   (guix-nas-system->operating-system
