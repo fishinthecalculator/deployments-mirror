@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2023 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (common scripts)
   #:use-module ((guix licenses)

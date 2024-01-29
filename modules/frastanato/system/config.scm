@@ -12,11 +12,11 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix services server)
   #:use-module (common keys)
+  #:use-module (common scripts)
   #:use-module (common secrets)
   #:use-module (common self)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
- #:use-module (common users)
   #:export (frastanato-system))
 
 (define authorized-ssh-keys
@@ -102,8 +102,6 @@
                              "tmux"
                              "vim"
 
-                             "common-deploy-scripts"
-
                              ;; Network administration
                              "bind"
                              "bind:utils"
@@ -116,6 +114,7 @@
                              "rclone"
                              "emacs"
                              "ripgrep"))
+                      (list common-deploy-scripts)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
