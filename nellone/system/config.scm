@@ -8,7 +8,7 @@
 
 (define authorized-ssh-keys
   ;; List of authorized SSH keys.
-  `((,(user-account-name paul-user) ,paul-ssh-key)))
+  `((,paul-user ,paul-ssh-key)))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
