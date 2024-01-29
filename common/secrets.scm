@@ -16,7 +16,7 @@
               "sops.yaml"))
 
 (define-public (secrets-file file-name)
-  (file-append %common-secrets-dir "/" file-name))
+  #~(string-append #$%common-secrets-dir "/" #$file-name))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Common Secrets
