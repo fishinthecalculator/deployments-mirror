@@ -1,27 +1,43 @@
+;;; SPDX-License-Identifier: GPL-3.0-or-later
+;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
+
 (define-module (frastanato system config)
   #:use-module (gnu)
-  #:use-module (gnu packages linux) ;for light, pipewire
-  #:use-module (gnu packages wm) ;for swaylock
-  #:use-module (gnu system linux-initrd) ;for %base-initrd-modules
-  #:use-module (gnu system shadow) ;for user-group
-  #:use-module (gnu services base) ;for mingetty-service-type
-  #:use-module (gnu services desktop) ;for gnome-service-type
-  #:use-module (gnu services xorg) ;for screen-locker-service
+  #:use-module (gnu services networking)
+  #:use-module (gnu services ssh)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix services sway)
-  #:use-module (small-guix system desktop)
-  #:use-module (frastanato system fs)
-  #:use-module (frastanato system input)
-  #:use-module (frastanato system services)
+  #:use-module (small-guix services server)
+  #:use-module (common keys)
+  #:use-module (common secrets)
+  #:use-module (common self)
+  #:use-module (common unattended-upgrades)
   #:use-module (common users)
-  #:export (frastanato-system frastanato-sway-system))
+ #:use-module (common users)
+  #:export (frastanato-system))
+
+(define authorized-ssh-keys
+  (let ((paul (user-account-name paul-user)))
+    ;; List of authorized SSH keys.
+    `((,paul ,paul-ssh-key)
+      ("deploy" ,paul-ssh-key)
+      (,paul ,gleidi-suse-ssh-key))))
+
+(define authorized-guix-keys
+  ;; List of authorized 'guix archive' keys.
+  (list prematurata-guix-key))
+
+;; (define frastanato.yaml
+;;   (secrets-file "frastanato.yaml"))
 
 (define frastanato-system
   (operating-system
-    (inherit small-guix-desktop-system)
-    (keyboard-layout %frastanato-kl)
+    (locale "en_US.utf8")
+    (timezone "Europe/Rome")
+    (keyboard-layout (keyboard-layout "us"))
+    (host-name "frastanato")
+
     (kernel linux)
     (kernel-loadable-modules (list nvidia-module))
     (initrd (lambda (file-systems . rest)
@@ -32,83 +48,125 @@
                      #:keyboard-layout keyboard-layout
                      #:linux-modules %base-initrd-modules
                      rest)))
-
     (firmware (cons* realtek-firmware atheros-firmware %base-firmware))
 
-    (bootloader (bootloader-configuration
-                  (bootloader grub-efi-bootloader)
-                  (targets '("/boot/efi"))
-                  (keyboard-layout %frastanato-kl)))
+    ;; The list of user accounts ('root' is implicit).
+    (users (cons* paul-user
+                  (user-account
+                   (name "deploy")
+                   (comment "Guix deploy user")
+                   (group "users")
+                   (supplementary-groups '("tty"))
+                   (system? #t)
+                   (home-directory "/var/empty")
+                   (shell (file-append shadow "/sbin/nologin")))
+                  %base-user-accounts))
 
-    (mapped-devices %frastanato-mapped-devices)
+    (sudoers-file
+     (plain-file "sudoers"
+                 (string-append
+                  (plain-file-content %sudoers-specification)
+                  "\n deploy ALL=(ALL) NOPASSWD: ALL\n")))
 
-    (file-systems %frastanato-file-systems)
+    ;; Packages installed system-wide.  Users can also install packages
+    ;; under their own account: use 'guix search KEYWORD' to search
+    ;; for packages and 'guix install PACKAGE' to install a package.
+    (packages (append (map specification->package+output
+                           '("ncurses"  ;for the search path
 
-    (swap-devices %frastanato-swap-devices)
+                             ;; Standard FreeDesktop directory paths
+                             "xdg-user-dirs"
+                             "xdg-utils"
+                             ;; HTTPS
+                             "nss-certs"
+                             ;; User mounts
+                             "gvfs"
 
-    (host-name "frastanato")
-
-    (users (cons* paul-user %base-user-accounts))
-
-    (services
-     %frastanato-desktop-services)))
-
-(define frastanato-sway-system
-  (operating-system
-    (inherit frastanato-system)
-    (users (cons* (user-account
-                    (inherit paul-user)
-                    (shell %sway-login-shell)) %base-user-accounts))
-    (packages (append (map specification->package
-                           '("wpa-supplicant-gui"
-
-                             ;; Wayland
-                             "sway"
-                             "swaybg"
-                             "swaylock"
-                             "swayidle"
-                             "wofi"
-                             "waybar"
-                             "wl-clipboard"
-                             "gammastep" ;light Night
-                             "mako" ;Notifications
-                             "grim" ;Screenshots
-                             "slurp" ;Select screen portion
-                             "light" ;Screen brightness
-                             "qtbase"
-                             "qtwayland" ;Qt
-                             
-                             ;; Root permissions dialogs
-                             "polkit-gnome"
-
-                             ;; Wayland screen sharing
-                             "xdg-desktop-portal-wlr"
-
-                             ;; Theming
-                             "gtk-engines"
-                             "gsettings-desktop-schemas"
-                             "qt5ct"
-
+                             ;;OpenGPG
+                             "gnupg"
                              ;; Misc
-                             "file-roller"
-                             "gedit"
-                             "evince"
-                             "gnome-keyring"
-                             "gnome-system-monitor"
-                             "nautilus"))
-                      (operating-system-packages frastanato-system)))
-    (services
-     (append (list (service gnome-keyring-service-type)
-                   ;; udev rules
-                   (udev-rules-service 'light light)
-                   (udev-rules-service 'pipewire pipewire-0.3)
+                             "lsof"
+                             "jq"
+                             "ncdu"
+                             "tree"
+                             "curl"
+                             "fd"
+                             "git"
+                             "htop"
+                             "ripgrep"
+                             "tmux"
+                             "vim"
 
-                   %sway-environment-service
-                   (screen-locker-service swaylock "swaylock"))
+                             ;; Network administration
+                             "bind"
+                             "bind:utils"
+                             "tcpdump"
 
-             (modify-services %frastanato-desktop-services
-               (mingetty-service-type config =>
-                                      (mingetty-configuration (inherit config)
-                                                              ;; Automatically login.
-                                                              (auto-login
-                                                               (user-name paul-user)))))))))
+                             ;; Btrfs
+                             "btrfs-progs"
+                             "compsize"
+                             "restic"
+                             "rclone"
+                             "emacs"
+                             "ripgrep")))
+              %base-packages))
+
+  ;; Below is the list of system services.  To search for available
+  ;; services, run 'guix system search KEYWORD' in a terminal.
+  (services
+   (append (list
+            (service network-manager-service-type)
+            (service wpa-supplicant-service-type)
+
+            (deployments-unattended-upgrades host-name
+                                             #:expiration-days 30)
+
+            (service qemu-binfmt-service-type
+                     (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
+                                                            "arm"
+                                                            "aarch64")))))
+
+
+           ;; This is the default list of services we
+           ;; are appending to.
+           (modify-services %small-guix-server-services
+             (delete dhcp-client-service-type)
+             (openssh-service-type ssh-config =>
+                                   (openssh-configuration (inherit ssh-config)
+                                                          (authorized-keys (append
+                                                                            (openssh-configuration-authorized-keys ssh-config)
+                                                                            ssh-keys))))
+             (guix-service-type guix-config =>
+                                (guix-configuration (inherit guix-config)
+                                                    (authorized-keys (append
+                                                                      (guix-configuration-authorized-keys guix-config)
+                                                                      guix-keys)))))))
+
+  (bootloader (bootloader-configuration
+               (bootloader grub-efi-bootloader)
+               (targets (list "/boot/efi"))
+               (keyboard-layout keyboard-layout)))
+
+  (swap-devices
+   (list
+    (swap-space
+     ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+     ;; for swapfile on Btrfs
+     (target "/swap/swapfile")
+     (dependencies (filter (file-system-mount-point-predicate "/")
+                           file-systems)))))
+
+  ;; The list of file systems that get "mounted".  The unique
+  ;; file system identifiers there ("UUIDs") can be obtained
+  ;; by running 'blkid' in a terminal.
+  (file-systems (cons* (file-system
+                         (mount-point "/")
+                         (device (uuid
+                                  "4d3ff686-809a-454d-8744-17f4ecd2adab"
+                                  'btrfs))
+                         (type "btrfs"))
+                       (file-system
+                         (mount-point "/boot/efi")
+                         (device (uuid "EB17-1A0F"
+                                       'fat32))
+                         (type "vfat")) %base-file-systems))))
