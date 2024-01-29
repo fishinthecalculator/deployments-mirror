@@ -24,4 +24,4 @@
                                                      (identity
                                                       "../../../keys/ssh/id_rsa.pub")))))
 
-(list nellone-local)
+(list frastanato-local)
