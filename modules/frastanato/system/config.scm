@@ -137,12 +137,12 @@
                                    (openssh-configuration (inherit ssh-config)
                                                           (authorized-keys (append
                                                                             (openssh-configuration-authorized-keys ssh-config)
-                                                                            ssh-keys))))
+                                                                            authorized-ssh-keys))))
              (guix-service-type guix-config =>
                                 (guix-configuration (inherit guix-config)
                                                     (authorized-keys (append
                                                                       (guix-configuration-authorized-keys guix-config)
-                                                                      guix-keys)))))))
+                                                                      authorized-guix-keys)))))))
 
   (bootloader (bootloader-configuration
                (bootloader grub-efi-bootloader)
