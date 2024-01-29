@@ -27,7 +27,7 @@
                   (comment "Tino il Cotechino")
                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))))
 
-    (deploy-users (list paul-key))
+    (deploy-users (list paul-ssh-key))
 
     (guix-keys authorized-guix-keys)
 
