@@ -9,6 +9,7 @@
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
+  #:use-module (oci services meilisearch)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
@@ -32,8 +33,8 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
-;; (define frastanato.yaml
-;;   (secrets-file "frastanato.yaml"))
+(define frastanato.yaml
+  (secrets-file "frastanato.yaml"))
 
 (define frastanato-system
   (operating-system
@@ -133,7 +134,7 @@
                         (master-key
                          (sops-secret
                           (key '("meilisearch" "master"))
-                          (file frastanato.yml)))))
+                          (file frastanato.yaml)))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
