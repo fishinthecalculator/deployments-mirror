@@ -6,7 +6,7 @@
   #:use-module (guix utils))
 
 (define-public %deployments-channel-root
-  (dirname (dirname (current-source-directory))))
+  (dirname (current-source-directory)))
 
 (define-public %common-scripts-dir
   (local-file (string-append %deployments-channel-root "/bin")
