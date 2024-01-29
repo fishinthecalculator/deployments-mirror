@@ -12,46 +12,9 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix services sway)
   #:use-module (small-guix system desktop)
-  #:use-module (frastanato system fs)
-  #:use-module (frastanato system input)
-  #:use-module (frastanato system services)
   #:use-module (common users)
-  #:export (frastanato-system frastanato-sway-system))
-
-(define frastanato-system
-  (operating-system
-    (inherit small-guix-desktop-system)
-    (keyboard-layout %frastanato-kl)
-    (kernel linux)
-    (kernel-loadable-modules (list nvidia-module))
-    (initrd (lambda (file-systems . rest)
-              (apply microcode-initrd
-                     file-systems
-                     #:initrd base-initrd
-                     #:microcode-packages (list intel-microcode)
-                     #:keyboard-layout keyboard-layout
-                     #:linux-modules %base-initrd-modules
-                     rest)))
-
-    (firmware (cons* realtek-firmware atheros-firmware %base-firmware))
-
-    (bootloader (bootloader-configuration
-                  (bootloader grub-efi-bootloader)
-                  (targets '("/boot/efi"))
-                  (keyboard-layout %frastanato-kl)))
-
-    (mapped-devices %frastanato-mapped-devices)
-
-    (file-systems %frastanato-file-systems)
-
-    (swap-devices %frastanato-swap-devices)
-
-    (host-name "frastanato")
-
-    (users (cons* paul-user %base-user-accounts))
-
-    (services
-     %frastanato-desktop-services)))
+  #:use-module (frastanato system config)
+  #:export (frastanato-sway-system))
 
 (define frastanato-sway-system
   (operating-system
