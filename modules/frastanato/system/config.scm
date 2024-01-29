@@ -3,6 +3,7 @@
 
 (define-module (frastanato system config)
   #:use-module (gnu)
+  #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu services networking)
   #:use-module (gnu services ssh)
   #:use-module (nongnu packages linux)
@@ -108,8 +109,8 @@
                              "restic"
                              "rclone"
                              "emacs"
-                             "ripgrep")))
-              %base-packages))
+                             "ripgrep"))
+                      %base-packages))
 
   ;; Below is the list of system services.  To search for available
   ;; services, run 'guix system search KEYWORD' in a terminal.
@@ -147,15 +148,6 @@
                (targets (list "/boot/efi"))
                (keyboard-layout keyboard-layout)))
 
-  (swap-devices
-   (list
-    (swap-space
-     ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
-     ;; for swapfile on Btrfs
-     (target "/swap/swapfile")
-     (dependencies (filter (file-system-mount-point-predicate "/")
-                           file-systems)))))
-
   ;; The list of file systems that get "mounted".  The unique
   ;; file system identifiers there ("UUIDs") can be obtained
   ;; by running 'blkid' in a terminal.
@@ -169,4 +161,13 @@
                          (mount-point "/boot/efi")
                          (device (uuid "EB17-1A0F"
                                        'fat32))
-                         (type "vfat")) %base-file-systems))))
+                         (type "vfat")) %base-file-systems))
+
+  (swap-devices
+   (list
+    (swap-space
+     ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+     ;; for swapfile on Btrfs
+     (target "/swap/swapfile")
+     (dependencies (filter (file-system-mount-point-predicate "/")
+                           file-systems)))))))
