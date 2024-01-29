@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-set -eu
-
-cpus="10"
-memory="10024"
-
-$(guix system vm $@ -e '(@@ (nellone system config) nellone-system)')  -m "${memory}" -smp "${cpus}" -nic user,model=virtio-net-pci
