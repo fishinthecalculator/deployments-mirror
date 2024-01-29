@@ -15,13 +15,13 @@
   (file-append %common-keys-dir "/guix"))
 
 (define-public (guix-key basename)
-  #~(string-append #$%common-guix-keys-dir "/" #$basename))
+  (file-append %common-guix-keys-dir "/" basename))
 
 (define-public %common-ssh-keys-dir
   (file-append %common-keys-dir "/ssh"))
 
 (define-public (ssh-key basename)
-  #~(string-append #$%common-ssh-keys-dir "/" #$basename))
+  (file-append %common-ssh-keys-dir "/" basename))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Guix Keys
