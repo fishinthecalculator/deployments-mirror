@@ -7,6 +7,8 @@
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
+  #:use-module (sops secrets)
+  #:use-module (sops services sops)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
