@@ -102,6 +102,8 @@
                              "tmux"
                              "vim"
 
+                             "common-deploy-scripts"
+
                              ;; Network administration
                              "bind"
                              "bind:utils"
