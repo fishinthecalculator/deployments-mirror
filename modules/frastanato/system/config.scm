@@ -41,7 +41,7 @@
     (host-name "frastanato")
 
     (kernel linux)
-    (kernel-loadable-modules (list nvidia-module))
+    ;(kernel-loadable-modules (list nvidia-module))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems
