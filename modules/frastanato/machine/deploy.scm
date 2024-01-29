@@ -5,12 +5,12 @@
   #:use-module (frastanato system config))
 
 (define %user
-  "paul")
+  "deploy")
 (define %host
-  "2001:19f0:6c01:13bc:5400:04ff:febe:a945")
+  "192.168.1.80")
 (define %host-key
   (string-append
-   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL1q2bXoOTL5A1Pfnqf5vftQv5D6dqlDx+CMKYpgvJAf " %user "@" %host))
+   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDIt3RXHCdBBstNR36i7VgXfCS4fmiOdqo+wjALebETj " %user "@" %host))
 
 (define frastanato-local
   (machine (operating-system

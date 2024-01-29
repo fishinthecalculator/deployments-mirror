@@ -62,9 +62,7 @@
                    (comment "Guix deploy user")
                    (group "users")
                    (supplementary-groups '("tty"))
-                   (system? #t)
-                   (home-directory "/var/empty")
-                   (shell (file-append shadow "/sbin/nologin")))
+                   (system? #t))
                   %base-user-accounts))
 
     (sudoers-file
