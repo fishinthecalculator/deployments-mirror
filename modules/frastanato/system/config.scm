@@ -130,40 +130,58 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
               ;; Monitoring
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-              ;; Prometheus node exporter
               (service prometheus-node-exporter-service-type)
-              ;; Prometheus OCI backed Shepherd service
+
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
                         (network "host")))
-              ;; Grafana OCI backed Shepherd service
+
               (service oci-grafana-service-type
                        (oci-grafana-configuration
                         (network "host")))
 
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
               ;; Bonfire
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+              (service oci-bonfire-service-type
+                       (oci-bonfire-configuration
+                        (configuration
+                         (bonfire-configuration
+                          (hostname "192.168.1.80")))
+                        (network "host")
+                        (requirement
+                         '(posgres docker-meilisearch))
+                        (master-key
+                         (sops-secret
+                          (key '("meilisearch" "master"))
+                          (file frastanato.yaml)))
+
+                        ))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
                         (network "host")
-                        (master-key
+                        (secret-key-base
                          (sops-secret
-                          (key '("meilisearch" "master"))
+                          (key '("postgres" "bonfire"))
+                          (file frastanato.yaml)))
+                        (secret-key-base
+                         (sops-secret
+                          (key '("bonfire" "secret_key_base"))
+                          (file frastanato.yaml)))
+                        (secret-key-base
+                         (sops-secret
+                          (key '("bonfire" "signing_salt"))
+                          (file frastanato.yaml)))
+                        (secret-key-base
+                         (sops-secret
+                          (key '("bonfire" "encryption_salt"))
                           (file frastanato.yaml)))))
 
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)))
 
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
               ;; Misc
-              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
               (service network-manager-service-type)
               (service wpa-supplicant-service-type)
