@@ -4,12 +4,15 @@
 (define-module (frastanato system config)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
+  #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
+  #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
+  #:use-module (oci services prometheus)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
@@ -129,12 +132,23 @@
                        (sops-service-configuration
                         (config sops.yaml)))
 
-              (service oci-meilisearch-service-type
-                       (oci-meilisearch-configuration
-                        (master-key
-                         (sops-secret
-                          (key '("meilisearch" "master"))
-                          (file frastanato.yaml)))))
+              ;; Prometheus node exporter
+              (service prometheus-node-exporter-service-type)
+              ;; Prometheus OCI backed Shepherd service
+              (service oci-prometheus-service-type
+                       (oci-prometheus-configuration
+                        (network "host")))
+              ;; Grafana OCI backed Shepherd service
+              (service oci-grafana-service-type
+                       (oci-grafana-configuration
+                        (network "host")))
+
+              ;; (service oci-meilisearch-service-type
+              ;;          (oci-meilisearch-configuration
+              ;;           (master-key
+              ;;            (sops-secret
+              ;;             (key '("meilisearch" "master"))
+              ;;             (file frastanato.yaml)))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
