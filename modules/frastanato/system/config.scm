@@ -4,6 +4,8 @@
 (define-module (frastanato system config)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
+  #:use-module (gnu packages databases)      ;for postgresql-12
+  #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -128,12 +130,9 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
-              (service network-manager-service-type)
-              (service wpa-supplicant-service-type)
-
-              (service sops-secrets-service-type
-                       (sops-service-configuration
-                        (config sops.yaml)))
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+              ;; Monitoring
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
               ;; Prometheus node exporter
               (service prometheus-node-exporter-service-type)
@@ -146,12 +145,32 @@
                        (oci-grafana-configuration
                         (network "host")))
 
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+              ;; Bonfire
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
+                        (network "host")
                         (master-key
                          (sops-secret
                           (key '("meilisearch" "master"))
                           (file frastanato.yaml)))))
+
+              (service postgresql-service-type
+                       (postgresql-configuration
+                        (postgresql postgresql-13)))
+
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+              ;; Misc
+              ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+              (service network-manager-service-type)
+              (service wpa-supplicant-service-type)
+
+              (service sops-secrets-service-type
+                       (sops-service-configuration
+                        (config sops.yaml)))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
@@ -160,7 +179,6 @@
                        (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
                                                               "arm"
                                                               "aarch64")))))
-
 
              ;; This is the default list of services we
              ;; are appending to.
