@@ -143,12 +143,12 @@
                        (oci-grafana-configuration
                         (network "host")))
 
-              ;; (service oci-meilisearch-service-type
-              ;;          (oci-meilisearch-configuration
-              ;;           (master-key
-              ;;            (sops-secret
-              ;;             (key '("meilisearch" "master"))
-              ;;             (file frastanato.yaml)))))
+              (service oci-meilisearch-service-type
+                       (oci-meilisearch-configuration
+                        (master-key
+                         (sops-secret
+                          (key '("meilisearch" "master"))
+                          (file frastanato.yaml)))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
