@@ -56,7 +56,7 @@
                      #:keyboard-layout keyboard-layout
                      #:linux-modules %base-initrd-modules
                      rest)))
-    (firmware (cons* atheros-firmware %base-firmware))
+    (firmware (cons* realtek-firmware atheros-firmware %base-firmware))
 
     ;; The list of user accounts ('root' is implicit).
     (users (cons* (user-account
