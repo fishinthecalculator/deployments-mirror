@@ -12,6 +12,7 @@
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
+  #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
@@ -149,18 +150,13 @@
                           (hostname "192.168.1.80")))
                         (network "host")
                         (requirement
-                         '(posgres docker-meilisearch))
-                        (master-key
-                         (sops-secret
-                          (key '("meilisearch" "master"))
-                          (file frastanato.yaml)))
-
-                        ))
-
-              (service oci-meilisearch-service-type
-                       (oci-meilisearch-configuration
-                        (network "host")
-                        (secret-key-base
+                         '(postgresql docker-meilisearch))
+                        (extra-variables
+                         '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")
+                           ("POSTGRES_HOST" . "localhost")
+                           ("POSTGRES_USER" . "bonfire")
+                           ("POSTGRES_DB" . "bonfire")))
+                        (postgres-password
                          (sops-secret
                           (key '("postgres" "bonfire"))
                           (file frastanato.yaml)))
@@ -168,13 +164,21 @@
                          (sops-secret
                           (key '("bonfire" "secret_key_base"))
                           (file frastanato.yaml)))
-                        (secret-key-base
+                        (signing-salt
                          (sops-secret
                           (key '("bonfire" "signing_salt"))
                           (file frastanato.yaml)))
-                        (secret-key-base
+                        (encryption-salt
                          (sops-secret
                           (key '("bonfire" "encryption_salt"))
+                          (file frastanato.yaml)))))
+
+              (service oci-meilisearch-service-type
+                       (oci-meilisearch-configuration
+                        (network "host")
+                        (master-key
+                         (sops-secret
+                          (key '("meilisearch" "master"))
                           (file frastanato.yaml)))))
 
               (service postgresql-service-type
