@@ -115,6 +115,9 @@
                              "btrfs-progs"
                              "compsize"
                              "restic"
+
+                             "efibootmgr"
+
                              "rclone"
                              "emacs"
                              "ripgrep"))
