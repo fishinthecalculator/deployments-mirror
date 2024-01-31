@@ -11,6 +11,7 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (sops secrets)
+  #:use-module (sops services databases)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
   #:use-module (oci services forgejo)
@@ -42,6 +43,11 @@
 
 (define frastanato.yaml
   (secrets-file "frastanato.yaml"))
+
+(define postgres-password-secret
+  (sops-secret
+   (key '("postgres" "bonfire"))
+   (file frastanato.yaml)))
 
 (define frastanato-system
   (operating-system
@@ -152,18 +158,23 @@
                        (oci-bonfire-configuration
                         (configuration
                          (bonfire-configuration
-                          (hostname "192.168.1.80")))
+                          (hostname "192.168.1.80")
+                          (postgres-user "bonfire")
+                          (postgres-db "bonfire")
+                          (mail-server "smtp.gmail.com")
+                          (mail-domain "gmail.com")
+                          (mail-from "lalloni@gmail.com")
+                          (mail-user "leidigiacomo")))
                         (network "host")
                         (requirement
-                         '(postgresql docker-meilisearch))
+                         '(sops-secrets-postgresql-role docker-meilisearch))
                         (extra-variables
-                         '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")
-                           ("POSTGRES_HOST" . "localhost")
-                           ("POSTGRES_USER" . "bonfire")
-                           ("POSTGRES_DB" . "bonfire")))
+                         '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")))
                         (postgres-password
+                         postgres-password-secret)
+                        (secret-key-base
                          (sops-secret
-                          (key '("postgres" "bonfire"))
+                          (key '("smtp" "password"))
                           (file frastanato.yaml)))
                         (secret-key-base
                          (sops-secret
@@ -189,6 +200,16 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)))
+
+              (service sops-secrets-postgresql-role-service-type
+                       (list
+                        (sops-secrets-postgresql-role
+                         (password
+                          postgres-password-secret)
+                         (value
+                          (postgresql-role
+                           (name "bonfire")
+                           (create-database? #t))))))
 
               ;; Misc
 
