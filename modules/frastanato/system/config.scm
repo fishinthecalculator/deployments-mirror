@@ -13,6 +13,7 @@
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
+  #:use-module (oci services forgejo)
   #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
@@ -131,6 +132,10 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
+              ;; Git
+              (service oci-forgejo-service-type
+                 (forgejo-configuration
+                  (port "3001")))
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
 
