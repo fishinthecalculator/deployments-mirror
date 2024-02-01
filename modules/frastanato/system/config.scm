@@ -181,13 +181,11 @@
               ;;             (key '("bonfire" "encryption_salt"))
               ;;             (file frastanato.yaml)))))
 
-              ;; (service oci-meilisearch-service-type
-              ;;          (oci-meilisearch-configuration
-              ;;           (network "host")
-              ;;           (master-key
-              ;;            (sops-secret
-              ;;             (key '("meilisearch" "master"))
-              ;;             (file frastanato.yaml)))))
+              (service oci-meilisearch-service-type
+                       (oci-meilisearch-configuration
+                        (network "host")
+                        (master-key
+                         meilisearch-key-secret)))
 
               (service postgresql-service-type
                        (postgresql-configuration
@@ -214,10 +212,10 @@
                         (config sops.yaml)
                         (secrets
                          (list postgres-password-secret
-                               mail-password
-                               secret-key-base
-                               signing-salt
-                               encryption-salt))))
+                               mail-password-secret
+                               secret-key-base-secret
+                               signing-salt-secret
+                               encryption-salt-secret))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
