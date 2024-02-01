@@ -108,6 +108,8 @@
                              "tmux"
                              "vim"
 
+                             "kodi"
+
                              ;; Network administration
                              "bind"
                              "bind:utils"
