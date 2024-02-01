@@ -10,7 +10,6 @@
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
-  #:use-module (sops secrets)
   #:use-module (sops services databases)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
@@ -28,6 +27,7 @@
   #:use-module (common self)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
+  #:use-module (frastanato system secrets)
   #:export (frastanato-system))
 
 (define authorized-ssh-keys
@@ -40,14 +40,6 @@
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
-
-(define frastanato.yaml
-  (secrets-file "frastanato.yaml"))
-
-(define postgres-password-secret
-  (sops-secret
-   (key '("postgres" "bonfire"))
-   (file frastanato.yaml)))
 
 (define frastanato-system
   (operating-system
@@ -139,9 +131,9 @@
     (services
      (append (list
               ;; Git
-              (service oci-forgejo-service-type
-                 (forgejo-configuration
-                  (port "3001")))
+              ;; (service oci-forgejo-service-type
+              ;;    (forgejo-configuration
+              ;;     (port "3001")))
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
 
@@ -153,63 +145,64 @@
                        (oci-grafana-configuration
                         (network "host")))
 
-              ;; Bonfire
-              (service oci-bonfire-service-type
-                       (oci-bonfire-configuration
-                        (configuration
-                         (bonfire-configuration
-                          (hostname "192.168.1.80")
-                          (postgres-user "bonfire")
-                          (postgres-db "bonfire")
-                          (mail-server "smtp.gmail.com")
-                          (mail-domain "gmail.com")
-                          (mail-from "lalloni@gmail.com")
-                          (mail-user "leidigiacomo")))
-                        (network "host")
-                        (requirement
-                         '(sops-secrets-postgresql-role docker-meilisearch))
-                        (extra-variables
-                         '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")))
-                        (postgres-password
-                         postgres-password-secret)
-                        (secret-key-base
-                         (sops-secret
-                          (key '("smtp" "password"))
-                          (file frastanato.yaml)))
-                        (secret-key-base
-                         (sops-secret
-                          (key '("bonfire" "secret_key_base"))
-                          (file frastanato.yaml)))
-                        (signing-salt
-                         (sops-secret
-                          (key '("bonfire" "signing_salt"))
-                          (file frastanato.yaml)))
-                        (encryption-salt
-                         (sops-secret
-                          (key '("bonfire" "encryption_salt"))
-                          (file frastanato.yaml)))))
+              ;; ;; Bonfire
+              ;; (service oci-bonfire-service-type
+              ;;          (oci-bonfire-configuration
+              ;;           (configuration
+              ;;            (bonfire-configuration
+              ;;             (hostname "192.168.1.80")
+              ;;             (postgres-user "bonfire")
+              ;;             (postgres-db "bonfire")
+              ;;             (mail-server "smtp.gmail.com")
+              ;;             (mail-domain "gmail.com")
+              ;;             (mail-from "lalloni@gmail.com")
+              ;;             (mail-user "leidigiacomo")))
+              ;;           (network "host")
+              ;;           (requirement
+              ;;            '(sops-secrets-postgres-roles docker-meilisearch))
+              ;;           (extra-variables
+              ;;            '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")))
+              ;;           (postgres-password
+              ;;            postgres-password-secret)
+              ;;           (mail-password
+              ;;            (sops-secret
+              ;;             (key '("smtp" "password"))
+              ;;             (file frastanato.yaml)))
+              ;;           (secret-key-base
+              ;;            (sops-secret
+              ;;             (key '("bonfire" "secret_key_base"))
+              ;;             (file frastanato.yaml)))
+              ;;           (signing-salt
+              ;;            (sops-secret
+              ;;             (key '("bonfire" "signing_salt"))
+              ;;             (file frastanato.yaml)))
+              ;;           (encryption-salt
+              ;;            (sops-secret
+              ;;             (key '("bonfire" "encryption_salt"))
+              ;;             (file frastanato.yaml)))))
 
-              (service oci-meilisearch-service-type
-                       (oci-meilisearch-configuration
-                        (network "host")
-                        (master-key
-                         (sops-secret
-                          (key '("meilisearch" "master"))
-                          (file frastanato.yaml)))))
+              ;; (service oci-meilisearch-service-type
+              ;;          (oci-meilisearch-configuration
+              ;;           (network "host")
+              ;;           (master-key
+              ;;            (sops-secret
+              ;;             (key '("meilisearch" "master"))
+              ;;             (file frastanato.yaml)))))
 
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)))
 
-              (service sops-secrets-postgresql-role-service-type
-                       (list
-                        (sops-secrets-postgresql-role
-                         (password
-                          postgres-password-secret)
-                         (value
-                          (postgresql-role
-                           (name "bonfire")
-                           (create-database? #t))))))
+              (simple-service 'bonfire-postgresql-role
+                              sops-secrets-postgresql-role-service-type
+                              (list
+                               (sops-secrets-postgresql-role
+                                (password
+                                 postgres-password-secret)
+                                (value
+                                 (postgresql-role
+                                  (name "bonfire")
+                                  (create-database? #t))))))
 
               ;; Misc
 
@@ -218,7 +211,13 @@
 
               (service sops-secrets-service-type
                        (sops-service-configuration
-                        (config sops.yaml)))
+                        (config sops.yaml)
+                        (secrets
+                         (list postgres-password-secret
+                               mail-password
+                               secret-key-base
+                               signing-salt
+                               encryption-salt))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
