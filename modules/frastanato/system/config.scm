@@ -4,8 +4,9 @@
 (define-module (frastanato system config)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
-  ;; #:use-module (gnu packages databases)      ;for postgresql-13
-  ;; #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu packages databases)      ;for postgresql-13
+  #:use-module (gnu services cuirass)        ;for transmission-service-type
+  #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for network-manager-service-type
@@ -41,6 +42,23 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
+(define %cuirass-specs
+  #~(list (specification
+           (name "mobilizon-reshare")
+           (build '(packages
+                    "mobilizon-reshare@0.3.6"
+                    "mobilizon-reshare@0.3.5"
+                    "mobilizon-reshare@0.3.2"
+                    "mobilizon-reshare@0.3.1"
+                    "mobilizon-reshare@0.3.0"
+                    "mobilizon-reshare@0.1.0"))
+           (channels
+            (cons (channel
+                   (name 'my-channel)
+                   (url "https://git.sr.ht/~fishinthecalculator/mobilizon-reshare-guix")
+                   (branch "main"))
+                  %default-channels)))))
+
 (define frastanato-system
   (operating-system
     (locale "en_US.utf8")
@@ -49,7 +67,6 @@
     (host-name "frastanato")
 
     (kernel linux)
-    ;(kernel-loadable-modules (list nvidia-module))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
                      file-systems
@@ -132,6 +149,14 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
+              ;; Cuirass
+              (service cuirass-service-type
+                       (cuirass-configuration
+                        (host "0.0.0.0")
+                        (port 8081)
+                        (use-substitutes? #t)
+                        (specifications %cuirass-specs)))
+
               ;; File sharing
               (service transmission-daemon-service-type
                        (transmission-daemon-configuration
@@ -211,20 +236,9 @@
               ;;           (master-key
               ;;            meilisearch-key-secret)))
 
-              ;; (service postgresql-service-type
-              ;;          (postgresql-configuration
-              ;;           (postgresql postgresql-13)))
-
-              ;; (simple-service 'bonfire-postgresql-role
-              ;;                 sops-secrets-postgresql-role-service-type
-              ;;                 (list
-              ;;                  (sops-secrets-postgresql-role
-              ;;                   (password
-              ;;                    postgres-password-secret)
-              ;;                   (value
-              ;;                    (postgresql-role
-              ;;                     (name "bonfire")
-              ;;                     (create-database? #t))))))
+              (service postgresql-service-type
+                       (postgresql-configuration
+                        (postgresql postgresql-13)))
 
               ;; Misc
 
