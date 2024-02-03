@@ -135,7 +135,11 @@
               ;; File sharing
               (service transmission-daemon-service-type
                        (transmission-daemon-configuration
-                        ;; Restrict access to the RPC ("control") interface
+                        ;; mkdir -pv /torrents-watchdir
+                        ;; chown -Rv paul:users /torrents-watchdir
+                        ;; chmod -v o+r /torrents-watchdir
+                        (watch-dir-enabled? #t)
+                        (watch-dir "/torrents-watchdir")
 
                         ;; Accept requests from this and other hosts on the
                         ;; local network
