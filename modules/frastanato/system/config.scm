@@ -54,7 +54,7 @@
                     "mobilizon-reshare@0.1.0"))
            (channels
             (cons (channel
-                   (name 'my-channel)
+                   (name 'mobilizon-reshare)
                    (url "https://git.sr.ht/~fishinthecalculator/mobilizon-reshare-guix")
                    (branch "main"))
                   %default-channels)))))
@@ -154,6 +154,8 @@
                        (cuirass-configuration
                         (host "0.0.0.0")
                         (port 8081)
+                        ;; 2 days
+                        (interval (* 48 (* 60 60)))
                         (use-substitutes? #t)
                         (specifications %cuirass-specs)))
 
