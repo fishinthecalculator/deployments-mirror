@@ -14,7 +14,6 @@
   #:use-module (sops services databases)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
-  #:use-module (oci services forgejo)
   #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
