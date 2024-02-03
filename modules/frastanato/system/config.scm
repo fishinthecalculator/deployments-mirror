@@ -200,26 +200,26 @@
               ;;             (key '("bonfire" "encryption_salt"))
               ;;             (file frastanato.yaml)))))
 
-              (service oci-meilisearch-service-type
-                       (oci-meilisearch-configuration
-                        (network "host")
-                        (master-key
-                         meilisearch-key-secret)))
+              ;; (service oci-meilisearch-service-type
+              ;;          (oci-meilisearch-configuration
+              ;;           (network "host")
+              ;;           (master-key
+              ;;            meilisearch-key-secret)))
 
-              (service postgresql-service-type
-                       (postgresql-configuration
-                        (postgresql postgresql-13)))
+              ;; (service postgresql-service-type
+              ;;          (postgresql-configuration
+              ;;           (postgresql postgresql-13)))
 
-              (simple-service 'bonfire-postgresql-role
-                              sops-secrets-postgresql-role-service-type
-                              (list
-                               (sops-secrets-postgresql-role
-                                (password
-                                 postgres-password-secret)
-                                (value
-                                 (postgresql-role
-                                  (name "bonfire")
-                                  (create-database? #t))))))
+              ;; (simple-service 'bonfire-postgresql-role
+              ;;                 sops-secrets-postgresql-role-service-type
+              ;;                 (list
+              ;;                  (sops-secrets-postgresql-role
+              ;;                   (password
+              ;;                    postgres-password-secret)
+              ;;                   (value
+              ;;                    (postgresql-role
+              ;;                     (name "bonfire")
+              ;;                     (create-database? #t))))))
 
               ;; Misc
 
