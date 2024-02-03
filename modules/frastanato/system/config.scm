@@ -64,7 +64,7 @@
     (users (cons* (user-account
                    (inherit paul-user)
                    (comment "Tino il Cotechino")
-                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker")))
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker" "transmission")))
                   (user-account
                    (name "deploy")
                    (comment "Guix deploy user")
@@ -140,6 +140,7 @@
                         ;; chmod -v o+r /torrents-watchdir
                         (watch-dir-enabled? #t)
                         (watch-dir "/torrents-watchdir")
+                        (peer-port 16383)
 
                         ;; Accept requests from this and other hosts on the
                         ;; local network
