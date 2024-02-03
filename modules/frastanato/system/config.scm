@@ -4,18 +4,18 @@
 (define-module (frastanato system config)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
-  #:use-module (gnu packages databases)      ;for postgresql-12
-  #:use-module (gnu services databases)      ;for postgresql-service-type
+  ;; #:use-module (gnu packages databases)      ;for postgresql-13
+  ;; #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
-  #:use-module (sops services databases)
+  ;; #:use-module (sops services databases)
   #:use-module (sops services sops)
-  #:use-module (oci services bonfire)
+  ;; #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
-  #:use-module (oci services meilisearch)
+  ;; #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
