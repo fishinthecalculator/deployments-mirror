@@ -6,6 +6,7 @@
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-12
   #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu services file-sharing)   ;for transmission-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -132,10 +133,27 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
-              ;; Git
-              ;; (service oci-forgejo-service-type
-              ;;    (forgejo-configuration
-              ;;     (port "3001")))
+              ;; File sharing
+              (service transmission-daemon-service-type
+                       (transmission-daemon-configuration
+                        ;; Restrict access to the RPC ("control") interface
+
+                        ;; Accept requests from this and other hosts on the
+                        ;; local network
+                        (rpc-whitelist-enabled? #t)
+                        (rpc-whitelist '("::1" "127.0.0.1" "192.168.1.*"))
+
+                        ;; Limit bandwidth use during work hours
+                        (alt-speed-down (* 1024 2)) ;   2 MB/s
+                        (alt-speed-up 512)          ; 512 kB/s
+
+                        (alt-speed-time-enabled? #t)
+                        (alt-speed-time-day 'weekdays)
+                        (alt-speed-time-begin
+                         (+ (* 60 8) 00)) ; 8:00 am
+                        (alt-speed-time-end
+                         (+ (* 60 (+ 12 5)) 00)))) ; 5:00 pm
+
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
 
