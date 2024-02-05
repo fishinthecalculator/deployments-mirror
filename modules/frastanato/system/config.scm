@@ -43,21 +43,37 @@
   (list prematurata-guix-key))
 
 (define %cuirass-specs
-  #~(list (specification
-           (name "mobilizon-reshare")
-           (build '(packages
-                    "mobilizon-reshare@0.3.6"
-                    "mobilizon-reshare@0.3.5"
-                    "mobilizon-reshare@0.3.2"
-                    "mobilizon-reshare@0.3.1"
-                    "mobilizon-reshare@0.3.0"
-                    "mobilizon-reshare@0.1.0"))
-           (channels
-            (cons (channel
-                   (name 'mobilizon-reshare)
-                   (url "https://git.sr.ht/~fishinthecalculator/mobilizon-reshare-guix")
-                   (branch "main"))
-                  %default-channels)))))
+  #~(list
+     (specification
+      (name "mobilizon-reshare")
+      (build '(packages
+               "mobilizon-reshare@0.3.6"
+               "mobilizon-reshare@0.3.5"
+               "mobilizon-reshare@0.3.2"
+               "mobilizon-reshare@0.3.1"
+               "mobilizon-reshare@0.3.0"
+               "mobilizon-reshare@0.1.0"))
+      (channels
+       (cons (channel
+              (name 'mobilizon-reshare)
+              (url "https://git.sr.ht/~fishinthecalculator/mobilizon-reshare-guix")
+              (branch "main"))
+             %default-channels)))
+     (specification
+      (name "pot")
+      (build '(packages "pot.git"))
+      (channels
+       (cons (channel
+              (name 'pot)
+              (url "https://github.com/fishinthecalculator/pot.git")
+              (branch "main")
+              ;; Enable signature verification:
+              (introduction
+               (make-channel-introduction
+                "10ed759852825149eb4b08c9b75777111a92048e"
+                (openpgp-fingerprint
+                 "97A2 CB8F B066 F894 9928  CF80 DE9B E0AC E824 6F08"))))
+             %default-channels)))))
 
 (define frastanato-system
   (operating-system
