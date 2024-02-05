@@ -42,10 +42,14 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
+(define %cuirass-period
+  (* 24 (* 60 60)))
+
 (define %cuirass-specs
   #~(list
      (specification
       (name "mobilizon-reshare")
+      (period #$%cuirass-period)
       (build '(packages
                "mobilizon-reshare@0.3.6"
                "mobilizon-reshare@0.3.5"
@@ -61,6 +65,7 @@
              %default-channels)))
      (specification
       (name "pot")
+      (period #$%cuirass-period)
       (build '(packages "pot.git"))
       (channels
        (cons (channel
@@ -170,8 +175,6 @@
                        (cuirass-configuration
                         (host "0.0.0.0")
                         (port 8081)
-                        ;; 2 days
-                        (interval (* 48 (* 60 60)))
                         (use-substitutes? #t)
                         (specifications %cuirass-specs)))
 
