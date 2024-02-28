@@ -40,5 +40,8 @@
 (define-public paul-ssh-key
   (ssh-key "id_rsa.pub"))
 
+(define-public termux-ssh-key
+  (ssh-key "id_termux.pub"))
+
 (define-public gleidi-suse-ssh-key
   (ssh-key "id_ed25519.pub"))
