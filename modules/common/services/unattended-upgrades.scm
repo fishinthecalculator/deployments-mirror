@@ -1,7 +1,8 @@
-(define-module (common unattended-upgrades)
-  #:use-module (guix channels)
+(define-module (common services unattended-upgrades)
   #:use-module (guix gexp)
-  #:use-module (small-guix services unattended-upgrades)
+  #:use-module (gnu)
+  #:use-module (gnu services admin)
+  #:use-module (ice-9 format)
   #:export (deployments-unattended-upgrades))
 
 (define %unattended-upgrades-channels
@@ -36,8 +37,14 @@
            %default-channels))
 
 (define* (deployments-unattended-upgrades host-name #:key (expiration-days 7) (channels %unattended-upgrades-channels) (hours 23) (minutes 10))
-  (small-guix-unattended-upgrades-service host-name
-                                          #:expiration-days expiration-days
-                                          #:channels channels
-                                          #:hours hours
-                                          #:minutes minutes))
+  (let ((host-name-symbol
+         (string->symbol host-name)))
+    (service unattended-upgrade-service-type
+             (unattended-upgrade-configuration
+              (schedule (format #f "~a ~a * * *" minutes hours))
+              (system-expiration
+               (* expiration-days 24 3600))
+              (channels channels)
+              (operating-system-expression
+               #~(@ (#$host-name-symbol system config)
+                    #$(symbol-append host-name-symbol '-system)))))))

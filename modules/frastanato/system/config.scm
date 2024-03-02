@@ -24,11 +24,11 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup)
-  #:use-module (small-guix services server)
   #:use-module (common keys)
   #:use-module (common scripts)
   #:use-module (common secrets)
   #:use-module (common self)
+  #:use-module (common services server)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:use-module (frastanato system secrets)
@@ -329,7 +329,7 @@
 
              ;; This is the default list of services we
              ;; are appending to.
-             (modify-services %small-guix-server-services
+             (modify-services %common-server-services
                (delete dhcp-client-service-type)
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)

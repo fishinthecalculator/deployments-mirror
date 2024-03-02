@@ -27,6 +27,12 @@
 ;; Guix Keys
 ;;;;;;;;;;;;;;;;;;;;
 
+(define-public guix.bordeaux.inria.fr.pub
+  (guix-key "guix.bordeaux.inria.fr.pub"))
+
+(define-public substitutes.nonguix.org.pub
+  (guix-key "substitutes.nonguix.org.pub"))
+
 (define-public pinebook-guix-key
   (guix-key "pinebook-armbian.key"))
 

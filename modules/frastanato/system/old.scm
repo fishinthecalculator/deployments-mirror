@@ -11,7 +11,7 @@
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix services sway)
-  #:use-module (small-guix system desktop)
+  #:use-module (common system desktop)
   #:use-module (common users)
   #:use-module (frastanato system config)
   #:export (frastanato-sway-system))

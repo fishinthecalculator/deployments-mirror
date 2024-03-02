@@ -18,14 +18,14 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup)
-  #:use-module (small-guix services desktop)
-  #:use-module (small-guix system desktop)
-  #:use-module (small-guix system input)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
   #:use-module (common secrets)
   #:use-module (common self)
+  #:use-module (common services desktop)
+  #:use-module (common system desktop)
+  #:use-module (common system input)
   #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:export (prematurata-system))
@@ -116,7 +116,7 @@
 
 (define prematurata-system
   (operating-system
-    (inherit small-guix-desktop-system)
+    (inherit common-desktop-system)
 
     (kernel linux)
     (kernel-arguments
@@ -128,7 +128,7 @@
                      file-systems
                      #:initrd base-initrd
                      #:microcode-packages (list amd-microcode)
-                     #:keyboard-layout small-guix-kl
+                     #:keyboard-layout common-kl
                      #:linux-modules %base-initrd-modules
                      rest)))
 
@@ -142,10 +142,10 @@
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
-                 (keyboard-layout small-guix-kl)))
+                 (keyboard-layout common-kl)))
 
     (packages (append (list bluez bluez-alsa blueman)
-                      (operating-system-packages small-guix-desktop-system)))
+                      (operating-system-packages common-desktop-system)))
 
     (services
      (append (list (service openssh-service-type
@@ -213,7 +213,7 @@
 
                    (simple-service 'blueman dbus-root-service-type
                                    (list blueman)))
-             (modify-services %small-guix-desktop-services
+             (modify-services %common-desktop-services
                (guix-service-type config =>
                                   (guix-configuration (inherit config)
                                                       (authorized-keys
