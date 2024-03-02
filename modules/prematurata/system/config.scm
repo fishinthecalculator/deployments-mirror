@@ -21,7 +21,6 @@
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
-  #:use-module (benwr services tailscale)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
