@@ -171,7 +171,7 @@
                              "tmux"
                              "vim"
 
-                             "kodi"
+                             ;"kodi"
 
                              ;; Network administration
                              "bind"
