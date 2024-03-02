@@ -312,7 +312,8 @@
                        (sops-service-configuration
                         (config sops.yaml)
                         (secrets
-                         (list postgres-password-secret
+                         (list restic-secret
+                               postgres-password-secret
                                mail-password-secret
                                secret-key-base-secret
                                signing-salt-secret

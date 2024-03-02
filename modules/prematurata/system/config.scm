@@ -165,10 +165,7 @@
                              (config sops.yaml)
                              (secrets
                               (list
-                               (sops-secret
-                                (key '("restic"))
-                                (user "paul")
-                                (file common.yaml))
+                               restic-secret
                                (sops-secret
                                 (key '("wireguard" "private"))
                                 (file prematurata.yaml))))))

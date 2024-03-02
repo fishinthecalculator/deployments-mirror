@@ -2,9 +2,12 @@
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (common secrets)
+  #:use-module (gnu)
   #:use-module (guix gexp)
   #:use-module (guix utils)
-  #:use-module (common self))
+  #:use-module (sops secrets)
+  #:use-module (common self)
+  #:use-module (common users))
 
 (define-public %common-secrets-dir
   (local-file (string-append %deployments-channel-root "/secrets")
@@ -24,3 +27,10 @@
 
 (define-public common.yaml
   (secrets-file "common.yaml"))
+
+;; Restic
+(define-public restic-secret
+  (sops-secret
+   (key '("restic"))
+   (user (user-account-name paul-user))
+   (file common.yaml)))
