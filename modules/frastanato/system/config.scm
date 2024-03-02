@@ -29,7 +29,7 @@
   #:use-module (common secrets)
   #:use-module (common self)
   #:use-module (common services server)
-  #:use-module (common unattended-upgrades)
+  #:use-module (common services unattended-upgrades)
   #:use-module (common users)
   #:use-module (frastanato system secrets)
   #:export (frastanato-system))

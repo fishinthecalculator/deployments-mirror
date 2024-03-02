@@ -24,9 +24,9 @@
   #:use-module (common secrets)
   #:use-module (common self)
   #:use-module (common services desktop)
+  #:use-module (common services unattended-upgrades)
   #:use-module (common system desktop)
   #:use-module (common system input)
-  #:use-module (common unattended-upgrades)
   #:use-module (common users)
   #:export (prematurata-system))
 
