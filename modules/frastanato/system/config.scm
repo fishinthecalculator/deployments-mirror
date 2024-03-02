@@ -22,6 +22,8 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
+  #:use-module (small-guix packages scripts) ;for restic-bin
+  #:use-module (small-guix services backup)
   #:use-module (small-guix services server)
   #:use-module (common keys)
   #:use-module (common scripts)
@@ -31,6 +33,27 @@
   #:use-module (common users)
   #:use-module (frastanato system secrets)
   #:export (frastanato-system))
+
+(define restic-repositories
+  '("rclone:onedrive:backup/restic"
+    "rclone:nasa-ftp:backup/restic"))
+
+(define-public backup-system-jobs
+  (map (lambda (repo)
+         (restic-backup-job
+          (restic restic-bin)
+          (repository repo)
+          (password-file "/run/secrets/restic")
+          ;; Every day at 23.
+          (specification "0 23 * * *")
+          (included '("/root/.gnupg"
+                      "/root/.config/rclone"
+                      "/etc/ssh/ssh_host_rsa_key"
+                      "/etc/ssh/ssh_host_rsa_key.pub"
+                      "/etc/guix/signing-key.pub"
+                      "/etc/guix/signing-key.sec"))
+          (verbose? #t)))
+       restic-repositories))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
@@ -179,6 +202,12 @@
                         (port 8081)
                         (use-substitutes? #t)
                         (specifications %cuirass-specs)))
+
+              ;; Backups
+              (service restic-backup-service-type
+                       (restic-backup-configuration
+                        (jobs
+                         (append backup-system-jobs))))
 
               ;; File sharing
               (service transmission-daemon-service-type
