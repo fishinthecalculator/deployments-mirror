@@ -16,9 +16,12 @@
   #:use-module (guix utils)                  ;for current-source-directory
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
+  #:use-module (small-guix packages scripts) ;for restic-bin
+  #:use-module (small-guix services backup)
   #:use-module (small-guix services desktop)
   #:use-module (small-guix system desktop)
   #:use-module (small-guix system input)
+  #:use-module (benwr services tailscale)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
@@ -35,32 +38,81 @@
 (define prematurata.yaml
   (secrets-file "prematurata.yaml"))
 
-(define-public backup-system-job
-  ;; Run 'restic' at 23:00 every day.
-  #~(job "0 23 * * *"
-         (lambda ()
-           (let ((repos '("rclone:onedrive:backup/restic"
-                          "rclone:nasa-ftp:backup/restic")))
-             (for-each
-              (lambda (repo)
-                (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
-                                                  #$restic "/bin/restic"
-                                                  " -r " repo " --verbose backup /root/.gnupg /root/.config/rclone /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key.pub /etc/guix/signing-key.pub /etc/guix/signing-key.sec")))
-              repos)))
-         "restic-system-backup"))
+(define restic-repositories
+  '("rclone:onedrive:backup/restic"
+    "rclone:nasa-ftp:backup/restic"))
+
+(define-public backup-system-jobs
+  (map (lambda (repo)
+         (restic-backup-job
+          (restic restic-bin)
+          (repository repo)
+          (password-file "/run/secrets/restic")
+          ;; Every day at 23.
+          (specification "0 23 * * *")
+          (included '("/root/.gnupg"
+                      "/root/.config/rclone"
+                      "/etc/ssh/ssh_host_rsa_key"
+                      "/etc/ssh/ssh_host_rsa_key.pub"
+                      "/etc/guix/signing-key.pub"
+                      "/etc/guix/signing-key.sec"))
+          (verbose? #t)))
+       restic-repositories))
+
+(define-public backup-home-jobs
+  (map (lambda (repo)
+         (restic-backup-job
+          (restic restic-bin)
+          (repository repo)
+          (user (user-account-name paul-user))
+          (password-file "/run/secrets/restic")
+          ;; Every day at 21.
+          (specification "* 21 * * *")
+          (included (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
+                         '(".age"
+                           ".cert"
+                           ".config/aerc/accounts.conf"
+                           ".config/libvirt/qemu"
+                           ".config/rclone"
+                           ".gnupg"
+                           ".icedove"
+                           ".local/bin"
+                           ".local/share/gnome-boxes/images"
+                           ".local/share/JetBrains/Toolbox/.storage.json"
+                           ".local/share/JetBrains/Toolbox/.securestorage"
+                           ".mozilla"
+                           ".thunderbird"
+                           ".ssh"
+                           "Biblioteca di calibre"
+                           "Calibre Library"
+                           "code"
+                           "dotfiles"
+                           "guix-home"
+                           "Android"
+                           "AndroidStudioProjects"
+                           "Documents"
+                           "Downloads"
+                           "Games"
+                           "IdeaProjects"
+                           "Music"
+                           "nix-manifest.txt"
+                           "Pictures"
+                           "PycharmProjects"
+                           "Sync"
+                           "Uni")))
+          (verbose? #t)))
+       restic-repositories))
 
 (define-public restic-prune-job
   ;; Run 'restic prune' at 21:02 every Sunday.
   #~(job "2 21 * * 7"
          (lambda ()
-           (let ((repos '("rclone:onedrive:backup/restic"
-                          "rclone:nasa-ftp:backup/restic")))
-             (for-each
-              (lambda (repo)
-                (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
-                                                  #$restic "/bin/restic"
-                                                  " -r " repo " --verbose prune")))
-              repos)))
+           (for-each
+            (lambda (repo)
+              (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
+                                                #$restic "/bin/restic"
+                                                " -r " repo " --verbose prune")))
+            restic-repositories))
          "restic-prune"))
 
 (define prematurata-system
@@ -103,6 +155,13 @@
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
 
+                   (service restic-backup-service-type
+                            (restic-backup-configuration
+                             (jobs
+                              (append backup-system-jobs
+                                      (list 1)
+                                      backup-home-jobs))))
+
                    (service sops-secrets-service-type
                             (sops-service-configuration
                              (config sops.yaml)
@@ -132,25 +191,26 @@
                    (service tor-service-type)
                    (simple-service 'prematurata-cron-jobs
                                    mcron-service-type
-                                   (list backup-system-job
-                                         restic-prune-job))
+                                   (list restic-prune-job))
 
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
                                                                    "arm"
                                                                    "aarch64"))))
 
-                   (service wireguard-service-type
-                            (wireguard-configuration
-                             (private-key "/run/secrets/wireguard/private")
-                             (addresses '("192.168.27.67/32"))
-                             (peers
-                              (list
-                               (wireguard-peer
-                                (name "iliadbox")
-                                (endpoint "81.56.8.195:10455")
-                                (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
-                                (allowed-ips '("192.168.27.64/27")))))))
+                   ;(service tailscaled-service-type)
+
+                   ;; (service wireguard-service-type
+                   ;;          (wireguard-configuration
+                   ;;           (private-key "/run/secrets/wireguard/private")
+                   ;;           (addresses '("192.168.27.67/32"))
+                   ;;           (peers
+                   ;;            (list
+                   ;;             (wireguard-peer
+                   ;;              (name "iliadbox")
+                   ;;              (endpoint "81.56.8.195:10455")
+                   ;;              (public-key "rLewDD+/AlsVsAMq7ik5WjrBdbJHBMLyM7EZJAr4N1U=")
+                   ;;              (allowed-ips '("192.168.27.64/27")))))))
 
                    (service bluetooth-service-type
                             (bluetooth-configuration
