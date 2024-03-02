@@ -159,7 +159,6 @@
                             (restic-backup-configuration
                              (jobs
                               (append backup-system-jobs
-                                      (list 1)
                                       backup-home-jobs))))
 
                    (service sops-secrets-service-type
