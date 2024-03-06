@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+[[ "$(id -u)" -eq 0 ]] && echo "ERROR: This script can not run as root!" && exit 1
+
+myself="$USER"
+
+sudo bash -c "
+set -u
+
+[[ \"$#\" -eq 1 ]] && su ${myself} -l -c 'cleanup'
+
+su ${myself} -l -c 'guix pull && hash guix'
+su ${myself} -l -c 'home-reconfigure'
+
+~${myself}/.guix-home/profile/bin/reconfigure
+
+su ${myself} -l -c 'guix gc'
+
+~${myself}/.guix-home/profile/bin/unload
+
+shutdown
+"

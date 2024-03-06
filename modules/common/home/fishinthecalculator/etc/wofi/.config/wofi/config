@@ -1,0 +1,8 @@
+stylesheet=style.css
+mode=drun
+allow_images=true
+allow_markup=true
+term=foot
+matching=true
+insensitive=true
+hide_scroll=true

@@ -1,0 +1,5 @@
+# Guix extra profiles
+while read -r name;
+do
+  activate "$name"
+done < ~/.guix-active-profiles

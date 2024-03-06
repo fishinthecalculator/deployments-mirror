@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+find "$GUIX_EXTRA_PROFILES" -type l | grep -E -v '(link|lock)' | while read -r profile;
+do
+    guix package -p "$profile" --delete-generations
+done

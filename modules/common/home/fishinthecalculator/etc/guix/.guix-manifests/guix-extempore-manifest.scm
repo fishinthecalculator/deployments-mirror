@@ -1,0 +1,12 @@
+(specifications->manifest '("audacity"
+                            "python-wrapper"
+                            "extempore-wrapped"
+                            "supercollider"
+                            "fluidplug-lv2"
+                            "yoshimi"
+                            "vmpk"
+                            "qpwgraph"
+                            "zrythm"
+                            "alsa-utils"
+                            "qsynth"
+                            "supercollider:ide"))

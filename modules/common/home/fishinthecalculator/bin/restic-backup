@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd "$HOME"
+
+nix-env -q > nix-manifest.txt
+
+declare -a repos=("rclone:onedrive:backup/restic"
+                  "rclone:nasa-ftp:backup/restic")
+
+RESTIC_PASSWORD="$(cat /run/secrets/restic)"
+export RESTIC_PASSWORD
+
+for repo in "${repos[@]}"; do
+  echo "================ Backing up to ${repo}... ================"
+  restic -r "$repo" --verbose backup --files-from "${HOME}/.local/share/restic/include.txt"
+  echo "=========================================================="
+done
+
+exit 0

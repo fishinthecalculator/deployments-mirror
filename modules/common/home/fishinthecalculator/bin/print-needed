@@ -1,0 +1,27 @@
+#!/usr/bin/env -S guix shell --pure grep file findutils coreutils sed bash gcc-toolchain patchelf -- bash
+
+set -euo pipefail
+
+[[ "$#" -lt 1 ]] && echo "Usage print-needed DIRECTORY." && exit 1
+
+out="$(mktemp -d)"
+
+find "$1" -exec file {} \; | \
+    grep ELF | \
+    sed -E "s/:.*$//" | \
+    while read -r f; do
+        # if out=$(patchelf --print-rpath --print-interpreter --print-needed "$f" 2>&1); then
+            file_out="${out}/$(basename "${f}").txt"
+            echo -e "${f}\n\n" >> "${file_out}"
+            echo -e "\n==================== PATCHELF ====================\n" >> "${file_out}"
+            set +e
+            patchelf --print-rpath --print-interpreter --print-needed "$f" 2>&1 >>"${file_out}"
+            echo -e "\n==================== LDD ====================\n" >> "${file_out}"
+            ldd "$f" >> "${file_out}"
+            set -e
+        # fi
+    done
+
+echo "Output saved to ${out}"
+
+exit 0

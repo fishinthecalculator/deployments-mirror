@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+for profile in $(find "$GUIX_EXTRA_PROFILES" -name '*-*-link' | xargs -n 1 basename | sed -E "s/-[[:digit:]]+-link$//" | sort -u);
+do
+    update-profile "$profile"
+done

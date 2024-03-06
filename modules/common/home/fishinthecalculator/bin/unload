@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+
+[[ "$(id -u)" -ne 0 ]] && echo "ERROR: This script must be run as root!" && exit 1
+
+status=$(herd status)
+
+test_and_stop () {
+    if printf '%s' "$status" | grep -q "+ $1"; then
+        printf '%s' "Stopping ${1}... "
+        herd stop "$1"
+        echo "Done!"
+    else
+        echo "$1 is already stopped."
+    fi
+}
+
+declare -a services=("dockerd"
+                     "containerd"
+                     "guix-publish"
+                     "libvirtd"
+                     "cups"
+                     "spice-vdagentd"
+                     "thermald"
+                     "tor")
+
+for s in "${services[@]}"; do
+    test_and_stop "$s"
+done

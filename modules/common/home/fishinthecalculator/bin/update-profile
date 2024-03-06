@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [[ "$#" -lt 1 ]]; then
+	echo "Usage: $0 profile-name..."
+	exit 1
+fi
+
+update () {
+    local profile="$1"
+    local MANIFEST="${GUIX_MANIFESTS}/guix-${profile}-manifest.scm"
+    local P_PATH="${GUIX_EXTRA_PROFILES}/${profile}"
+
+    if [[ ! -f "${MANIFEST}" ]]; then
+	echo "Manifest ${MANIFEST} not found, ${profile} may not exist!"
+	exit 1
+    elif [[ ! -L "$P_PATH" ]]; then
+	echo "${P_PATH} is not a profile."
+	exit 1
+    fi
+    echo "Updating ${P_PATH}"
+    guix package --profile="$P_PATH" --manifest="$MANIFEST"
+}
+
+for p in "$@"; do
+    update "$p"
+done

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -eu
+
+rclone serve webdav onedrive: --addr :9018

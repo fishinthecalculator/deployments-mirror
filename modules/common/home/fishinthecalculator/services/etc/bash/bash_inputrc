@@ -1,0 +1,12 @@
+# Include system-wide inputrc, which is ignored by default when
+# a user has their own .inputrc file.
+$include /etc/inputrc
+
+# mappings for Home and End
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+
+# mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word

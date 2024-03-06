@@ -1,0 +1,49 @@
+{
+    "default_source": false,
+    "sources": {
+         "remarkable": {
+             "name": "reMarkable (WiFi)",
+             "type": "ssh",
+             "host": "192.168.1.60",
+             "key": "~/.ssh/id_remarkable",
+             "username": "root",
+             "timeout": 3
+         }
+    },
+    "log_verbosity": "info",
+    "export": {
+        "default_dir": "",
+        "eraser_mode": "ignore",
+        "open_exported": true,
+        "include_base_layer": true,
+        "orientation": "auto",
+        "smoothen": false,
+        "simplify": 0,
+        "pencil_resolution": 0.4
+    },
+    "preview": {
+        "eraser_mode": "ignore",
+        "pencil_resolution": 0.4
+    },
+    "upload": {
+        "default_options": {}
+    },
+    "palettes": {
+        "default": {}
+    },
+    "mathpix": {
+        "include_base_layer": false,
+        "pencil_resolution": -1,
+        "scale": 1,
+        "simplify": 0,
+        "smoothen": false,
+        "eraser_mode": "ignore",
+        "exclude_tools": [
+            "brush",
+            "pencil",
+            "highlighter",
+            "eraser",
+            "erase_area"
+        ]
+    }
+}

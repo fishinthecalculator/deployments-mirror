@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+declare -a commands=('delete-extra-profiles-generations'
+                     'rm -vrf ~/.config/guix/gcroots ~/code/mobilizon-reshare/.guix-root'
+                     'guix home delete-generations 7d || true'
+                     'guix package --delete-generations || true'
+                     'guix gc -d 7d'
+                     'command -v nix-collect-garbage && nix-collect-garbage -d')
+
+for c in "${commands[@]}"; do
+    bash -l -c "set -x; $c"
+done
+
+exit 0

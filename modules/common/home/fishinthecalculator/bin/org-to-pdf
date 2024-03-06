@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+
+[[ "$#" -ne 1 ]] && echo "Usage: $(basename "$0") ORG-FILE" >&2 && exit 1
+
+doomscript ~/.config/doom/bin/org-export "$1"
+
+tex_file="$(echo "$1" | sed -E 's/\.org$/.tex/')"
+guix shell --pure -C texlive-bin texlive-base texlive -- pdflatex "${tex_file}"

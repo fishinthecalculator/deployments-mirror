@@ -1,0 +1,4 @@
+# If this is a foreign distribution
+if ! test -f /run/current-system/profile/bin/guix; then
+    source_profile "${HOME}/.config/guix/current"
+fi

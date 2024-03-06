@@ -1,0 +1,47 @@
+;;; SPDX-License-Identifier: GPL-3.0-or-later
+;;; Copyright © 2022-2024 Giacomo Leidi <goodoldpaul@autistici.org>
+
+(define-module (common home fishinthecalculator services bash)
+  #:use-module (guix gexp)
+  #:use-module (guix utils)
+  #:use-module (gnu home services)
+  #:use-module (gnu home services shells))
+
+(define %dotfiles-dir
+  (local-file (string-append (current-source-directory)
+                             "/etc")
+              #:recursive? #t))
+
+(define-public fishinthecalculator-bash-configuration
+  (home-bash-configuration
+   (guix-defaults? #t)
+   (aliases '(("la" . "ls -la") ("lr" . "ls -ltr")
+              ("g" . "cd ~/code/guix") ("gg" . "cd ~/code/guile")
+              ("nix-update" . "nix-channel --update && nix-env -u")))
+   (bash-profile
+    (list
+     (file-append %dotfiles-dir "/bash/bash_profile_git_branch")))
+   (bashrc (list (file-append %dotfiles-dir "/bash/bashrc_tmux")
+                 (file-append %dotfiles-dir "/bash/bashrc_direnv")))))
+
+(define-public fishinthecalculator-shell-profile-extensions
+  ;; Order DOES matter
+  (list (file-append %dotfiles-dir "/bash/bash_functions")
+        (file-append %dotfiles-dir "/bash/profile_guix_foreign_distros")
+        (file-append %dotfiles-dir "/bash/profile_guix_extra")
+        (file-append %dotfiles-dir "/bash/profile_nix")))
+
+(define-public fishinthecalculator-environment
+  `(("EDITOR" . "emacs")
+    ("VISUAL" . "emacs")
+    ("XDG_DATA_DIRS" . "${XDG_DATA_DIRS}:${HOME}/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share")
+    ("HISTTIMEFORMAT" . "%d/%m/%y %T ")
+    ("PATH" . "$HOME/.local/bin:$PATH")
+    ("LESSHISTFILE" . "$XDG_CACHE_HOME/.lesshst")
+    ("GUIX_EXTRA_PROFILES" . "$HOME/.guix-extra-profiles")
+    ("GUIX_MANIFESTS" . "$HOME/.guix-manifests")
+    ("_JAVA_AWT_WM_NONREPARENTING" . "1")
+    ("RED" . "\\033[0;31m")
+    ("GREEN" . "\\033[1;32m")
+    ("BLUE" . "\\033[1;34m")
+    ("NC" . "\\033[0m")))

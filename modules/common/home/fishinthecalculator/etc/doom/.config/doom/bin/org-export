@@ -1,0 +1,9 @@
+#!/usr/bin/env doomscript
+
+(defcli! org-export (&args files)
+  (require 'doom-start)          ; load your user config
+  (dolist (file files)           ; supports multiple files, if you want
+    (find-file file)             ; open an org file
+    (org-latex-export-to-latex)))  ; and export it
+
+(run! "org-export" (cdr (member "--" argv)))

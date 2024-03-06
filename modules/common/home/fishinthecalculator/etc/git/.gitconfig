@@ -1,0 +1,27 @@
+[user]
+	email = goodoldpaul@autistici.org
+	name = Giacomo Leidi
+	signingkey = 8D1060B96BB8292E829B7249AED41CC193B701E2
+[core]
+	editor = emacs
+[sendemail]
+	smtpServer = smtp.autistici.org
+	smtpuser = goodoldpaul@autistici.org
+	smtpencryption = tls
+	smtpserverport = 587
+[pull]
+	rebase = true
+[merge]
+	tool = meld
+[mergetool "meld"]
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[diff]
+	tool = meld
+[difftool]
+	prompt = false
+[difftool "meld"]
+	cmd = meld "$LOCAL" "$REMOTE"
+[color]
+	ui = auto
+[commit]
+	gpgsign = true

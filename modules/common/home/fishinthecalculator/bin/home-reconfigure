@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -eux
+
+guix home reconfigure -e "(@ (common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)" "$@"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Dbus env
+dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+
+# GNOME Keyring
+eval "$(gnome-keyring-daemon --daemonize --start --components=pkcs11,secrets,ssh)"
+export SSH_AUTH_SOCK
+
+sway
+
+exit 0

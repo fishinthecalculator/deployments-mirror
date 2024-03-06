@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# This was taken from https://github.com/swaywm/sway/wiki#clamshell-mode
+
+laptop='eDP-1'
+
+if grep -q open /proc/acpi/button/lid/LID/state; then
+    swaymsg output "$laptop" enable
+else
+    swaymsg output "$laptop" disable
+fi
