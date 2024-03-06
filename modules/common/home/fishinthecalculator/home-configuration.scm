@@ -1,5 +1,6 @@
 (define-module (common home fishinthecalculator home-configuration)
   #:use-module (guix gexp)
+  #:use-module (guix utils)
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services desktop)
@@ -30,7 +31,7 @@
 
 (define fishinthecalculator-stow-dir
   (string-append %here
-                 "/fishinthecalculator/etc"))
+                 "/etc"))
 
 (define upall-job
   ;; Run 'upall' at 23:10 every day.
