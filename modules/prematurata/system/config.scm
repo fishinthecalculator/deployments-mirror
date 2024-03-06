@@ -85,8 +85,6 @@
                            "Biblioteca di calibre"
                            "Calibre Library"
                            "code"
-                           "dotfiles"
-                           "guix-home"
                            "Android"
                            "AndroidStudioProjects"
                            "Documents"
