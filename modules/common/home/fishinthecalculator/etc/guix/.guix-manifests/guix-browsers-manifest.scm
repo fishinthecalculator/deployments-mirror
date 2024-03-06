@@ -1,3 +1,0 @@
-(specifications->manifest
-     '("firefox"
-       "icedove"))

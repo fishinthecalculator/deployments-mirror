@@ -6,9 +6,15 @@
   #:use-module (gnu packages bash)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages python)
-  #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 popen)
+  #:use-module (nongnu packages chrome)
+  #:use-module (nongnu packages compression)
+  #:use-module (nongnu packages editors)
+  #:use-module (nongnu packages messaging)
+  #:use-module (nongnu packages productivity)
+  #:use-module (small-guix packages hall)
+  #:use-module (small-guix packages moar)
   #:use-module (small-guix packages scripts)
+  #:use-module (small-guix packages scheme-lsp)
   #:use-module (small-guix utils)
   #:use-module (common scripts)
   #:use-module (common home fishinthecalculator const))
@@ -22,31 +28,37 @@
                         "https://gitlab.com/orang3/guix-home"
                         license:gpl3+
                         #:propagated-inputs (list common-deploy-scripts)
-                        #:commit (read-line (open-input-pipe
-                                             "git show HEAD | head -1 | cut -d ' ' -f 2"))))
+                        #:version "0.1.0"))
 
 (define-public fishinthecalculator-packages
-  (append (list guile-3.0 fishinthecalculator-scripts guix-dev-tools)
+  (append (list anytype
+                moar
+                google-chrome-stable
+                element-desktop
+                common-deploy-scripts
+                unrar
+                guile-lsp-server.git
+                zoom
+                guile-hall.git
+                vscodium
+                guile-3.0
+                fishinthecalculator-scripts
+                guix-dev-tools)
           (map specification->package+output
-               (list "anytype"
-                     "common-deploy-scripts"
-                     "calibre"
+               (list "calibre"
                      "dino"
                      "aerc"
                      "w3m"
                      "dante"
-                     "moar"
                      "lolcat"
                      "bat"
                      "catimg"
                      "libnotify"
                      "vlc"
                      "telegram-desktop"
-                     "element-desktop"
                      "foot"
                      "imagemagick"
                      "hexchat"
-                     "google-chrome-stable"
                      "gparted"
                      "git:credential-libsecret"
                      "git"
@@ -72,7 +84,6 @@
                      "papirus-icon-theme"
                      "font-gnu-unifont"
                      "curl"
-                     "guile-hall.git"
                      "tmux"
                      "font-gnu-freefont"
                      "unzip"
@@ -86,8 +97,4 @@
                      "guile-colorized"
                      "guile-readline"
                      "sl"
-                     "unrar"
-                     "vscodium"
-                     "guile-lsp-server.git"
-                     "zip"
-                     "zoom"))))
+                     "zip"))))

@@ -73,6 +73,7 @@
                            ".config/aerc/accounts.conf"
                            ".config/libvirt/qemu"
                            ".config/rclone"
+                           ".config/guix/channels.scm"
                            ".gnupg"
                            ".icedove"
                            ".local/bin"
