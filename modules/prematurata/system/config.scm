@@ -74,6 +74,7 @@
                            ".config/libvirt/qemu"
                            ".config/rclone"
                            ".config/guix/channels.scm"
+                           ".guix-manifests"
                            ".gnupg"
                            ".icedove"
                            ".local/bin"
