@@ -2,7 +2,7 @@
 
 set -eu
 
-declare -a commands=("guix pull" "cd ~/guix-home && guix home reconfigure -L . fishinthecalculator/home-configuration.scm" "nix-channel --update")
+declare -a commands=("guix pull" "home-reconfigure" "nix-channel --update")
 
 for command in "${commands[@]}"; do
     bash -l -c "$command"
