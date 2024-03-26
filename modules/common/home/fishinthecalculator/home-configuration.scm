@@ -96,12 +96,7 @@
           (service home-openssh-service-type
                    (home-openssh-configuration
                     (hosts
-                     (list (openssh-host (name "virtual-nellone")
-                                         (user "paul")
-                                         (host-name "2001:19f0:6c01:2073:5400:04ff:fe81:0ce1")
-                                         (identity-file
-                                          (string-append %home "/.ssh/id_rsa.pub")))
-                           (openssh-host (name "nasa")
+                     (list (openssh-host (name "nasa")
                                          (user "root")
                                          (identity-file
                                           (string-append %home "/.ssh/id_rsa.pub"))
@@ -114,11 +109,10 @@
                                          (host-name "192.168.1.80")
                                          (user "paul"))
                            (openssh-host (host-name "municipiozero.it")
-                                         (name "emmezero")
+                                         (name "municipiozero.it")
                                          (user "paul")
                                          (extra-content
-                                          "  LocalForward 8080 localhost:8080
-  LocalForward 8086 localhost:8086"))
+                                          "  LocalForward 3000 localhost:3000"))
                            (openssh-host (name "remarkable")
                                          (user "root")
                                          (identity-file
