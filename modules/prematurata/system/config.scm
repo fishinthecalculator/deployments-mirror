@@ -66,7 +66,7 @@
           (user (user-account-name paul-user))
           (password-file "/run/secrets/restic")
           ;; Every day at 21.
-          (specification "* 21 * * *")
+          (specification "0 21 * * *")
           (included (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
                          '(".age"
                            ".cert"
