@@ -24,6 +24,7 @@
   #:use-module (gnu services virtualization)
   #:use-module (gnu services xorg)
   #:use-module (small-guix packages brillo)
+  #:use-module (common channels)
   #:use-module (common services mcron)
   #:use-module (common services substitute)
   #:use-module (common system input)
@@ -39,6 +40,7 @@
     ;; Enable additional substitute servers.
     (guix-service-type config =>
                        (guix-configuration (inherit config)
+                                           (channels %deployments-channels)
                                            (substitute-urls
                                             %common-substitute-urls)
                                            (authorized-keys

@@ -5,6 +5,7 @@
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu services base)
+  #:use-module (common channels)
   #:use-module (common services substitute)
   #:export (%common-base-services))
 
@@ -12,6 +13,7 @@
   (modify-services %base-services
     (guix-service-type config =>
                        (guix-configuration (inherit config)
+                                           (channels %deployments-channels)
                                            (substitute-urls
                                             %common-substitute-urls)
                                            (authorized-keys
