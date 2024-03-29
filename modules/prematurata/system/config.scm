@@ -114,6 +114,7 @@
             restic-repositories))
          "restic-prune"))
 
+(use-modules (oci services prometheus))
 (define prematurata-system
   (operating-system
     (inherit common-desktop-system)
@@ -154,6 +155,46 @@
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
 
+                   (service oci-blackbox-exporter-service-type
+                            (oci-blackbox-exporter-configuration
+                             (network "host")
+                             (file
+                              (plain-file "be.yml"
+                                          "
+scrape_configs:
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - http://prometheus.io    # Target to probe with http.
+        - https://prometheus.io   # Target to probe with https.
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9115  # The blackbox exporter's real hostname:port.\n"))))
+
+                   (service oci-prometheus-service-type
+                            (oci-prometheus-configuration
+                             (network "host")
+                             (prometheus-configuration
+                              (global
+                               (prometheus-global-configuration
+                                (scrape-interval "30s")
+                                (scrape-timeout "12s")))
+                              (scrape-configs
+                               (list
+                                (prometheus-scrape-configuration
+                                 (job-name "prometheus")
+                                 (metrics-path "/metrics")
+                                 (static-configs
+                                  (list (prometheus-static-config
+                                         (targets '("localhost:9090" "localhost:9115")))))))))))
+
                    (service restic-backup-service-type
                             (restic-backup-configuration
                              (jobs
@@ -193,7 +234,7 @@
                                                                    "arm"
                                                                    "aarch64"))))
 
-                   ;(service tailscaled-service-type)
+                                        ;(service tailscaled-service-type)
 
                    ;; (service wireguard-service-type
                    ;;          (wireguard-configuration
