@@ -113,7 +113,7 @@
                                          (user "paul")
                                          (extra-content
                                           "  LocalForward 3000 localhost:3000
-  LocalForward 9000 localhost:9000"))
+  LocalForward 9090 localhost:9090"))
                            (openssh-host (name "remarkable")
                                          (user "root")
                                          (identity-file
