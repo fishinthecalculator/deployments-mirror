@@ -112,7 +112,8 @@
                                          (name "municipiozero.it")
                                          (user "paul")
                                          (extra-content
-                                          "  LocalForward 3000 localhost:3000"))
+                                          "  LocalForward 3000 localhost:3000
+  LocalForward 9000 localhost:9000"))
                            (openssh-host (name "remarkable")
                                          (user "root")
                                          (identity-file
