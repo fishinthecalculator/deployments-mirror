@@ -42,7 +42,7 @@
      (commit "cdb78996334c4f63304ecce224e95bb96bfd4c7d")
      (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
   (channel
-   (name 'pot)
+   (name pot)
    (url "https://github.com/fishinthecalculator/pot.git")
    (branch "main")
    ;; Enable signature verification:
