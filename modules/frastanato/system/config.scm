@@ -45,13 +45,13 @@
           (repository repo)
           (password-file "/run/secrets/restic")
           ;; Every day at 23.
-          (specification "0 23 * * *")
-          (included '("/root/.gnupg"
-                      "/root/.config/rclone"
-                      "/etc/ssh/ssh_host_rsa_key"
-                      "/etc/ssh/ssh_host_rsa_key.pub"
-                      "/etc/guix/signing-key.pub"
-                      "/etc/guix/signing-key.sec"))
+          (schedule "0 23 * * *")
+          (files '("/root/.gnupg"
+                   "/root/.config/rclone"
+                   "/etc/ssh/ssh_host_rsa_key"
+                   "/etc/ssh/ssh_host_rsa_key.pub"
+                   "/etc/guix/signing-key.pub"
+                   "/etc/guix/signing-key.sec"))
           (verbose? #t)))
        restic-repositories))
 

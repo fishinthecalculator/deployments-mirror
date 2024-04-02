@@ -48,13 +48,13 @@
           (repository repo)
           (password-file "/run/secrets/restic")
           ;; Every day at 23.
-          (specification "0 23 * * *")
-          (included '("/root/.gnupg"
-                      "/root/.config/rclone"
-                      "/etc/ssh/ssh_host_rsa_key"
-                      "/etc/ssh/ssh_host_rsa_key.pub"
-                      "/etc/guix/signing-key.pub"
-                      "/etc/guix/signing-key.sec"))
+          (schedule "0 23 * * *")
+          (files '("/root/.gnupg"
+                   "/root/.config/rclone"
+                   "/etc/ssh/ssh_host_rsa_key"
+                   "/etc/ssh/ssh_host_rsa_key.pub"
+                   "/etc/guix/signing-key.pub"
+                   "/etc/guix/signing-key.sec"))
           (verbose? #t)))
        restic-repositories))
 
@@ -66,39 +66,39 @@
           (user (user-account-name paul-user))
           (password-file "/run/secrets/restic")
           ;; Every day at 21.
-          (specification "0 21 * * *")
-          (included (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
-                         '(".age"
-                           ".cert"
-                           ".config/aerc/accounts.conf"
-                           ".config/libvirt/qemu"
-                           ".config/rclone"
-                           ".config/guix/channels.scm"
-                           ".guix-manifests"
-                           ".gnupg"
-                           ".icedove"
-                           ".local/bin"
-                           ".local/share/gnome-boxes/images"
-                           ".local/share/JetBrains/Toolbox/.storage.json"
-                           ".local/share/JetBrains/Toolbox/.securestorage"
-                           ".mozilla"
-                           ".thunderbird"
-                           ".ssh"
-                           "Biblioteca di calibre"
-                           "Calibre Library"
-                           "code"
-                           "Android"
-                           "AndroidStudioProjects"
-                           "Documents"
-                           "Downloads"
-                           "Games"
-                           "IdeaProjects"
-                           "Music"
-                           "nix-manifest.txt"
-                           "Pictures"
-                           "PycharmProjects"
-                           "Sync"
-                           "Uni")))
+          (schedule "0 21 * * *")
+          (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
+                      '(".age"
+                        ".cert"
+                        ".config/aerc/accounts.conf"
+                        ".config/libvirt/qemu"
+                        ".config/rclone"
+                        ".config/guix/channels.scm"
+                        ".guix-manifests"
+                        ".gnupg"
+                        ".icedove"
+                        ".local/bin"
+                        ".local/share/gnome-boxes/images"
+                        ".local/share/JetBrains/Toolbox/.storage.json"
+                        ".local/share/JetBrains/Toolbox/.securestorage"
+                        ".mozilla"
+                        ".thunderbird"
+                        ".ssh"
+                        "Biblioteca di calibre"
+                        "Calibre Library"
+                        "code"
+                        "Android"
+                        "AndroidStudioProjects"
+                        "Documents"
+                        "Downloads"
+                        "Games"
+                        "IdeaProjects"
+                        "Music"
+                        "nix-manifest.txt"
+                        "Pictures"
+                        "PycharmProjects"
+                        "Sync"
+                        "Uni")))
           (verbose? #t)))
        restic-repositories))
 
