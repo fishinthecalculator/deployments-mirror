@@ -49,7 +49,9 @@
           (password-file "/run/secrets/restic")
           ;; Every day at 23.
           (schedule "0 23 * * *")
-          (files '("/root/.gnupg"
+          (files '("/crypto.cpio"
+                   "/crypto.key"
+                   "/root/.gnupg"
                    "/root/.config/rclone"
                    "/etc/ssh/ssh_host_rsa_key"
                    "/etc/ssh/ssh_host_rsa_key.pub"
@@ -139,10 +141,16 @@
 
     (users (cons* paul-user %base-user-accounts))
 
+    ;; Operating system with encrypted boot partition
+    ;; see https://guix.gnu.org/en/manual/devel/en/guix.html#index-bootloader_002dconfiguration
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
-                 (keyboard-layout common-kl)))
+                 (keyboard-layout common-kl)
+                 ;; echo /crypto.key | cpio -oH newc > /crypto.cpio
+                 ;; chmod 0000 /crypto.cpio
+                 ;; Load the initrd with a key file
+                 (extra-initrd "/crypto.cpio")))
 
     (packages (append (list bluez bluez-alsa blueman)
                       (operating-system-packages common-desktop-system)))
