@@ -15,7 +15,7 @@
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
+;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
@@ -41,6 +41,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -119,21 +120,6 @@
     (let ((inhibit-message t))
       (recentf-save-list)
       (savehist-save))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Modeline ;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Display time and set the format to 24h.
-(after! doom-modeline
-  (setq display-time-string-forms
-        '((propertize (concat " 🕘 " 24-hours ":" minutes))))
-  (display-time-mode 1) ; Enable time in the mode-line
-
-  ;; Add padding to the right
-  (doom-modeline-def-modeline 'main
-   '(bar workspace-name window-number modals matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
-   '(objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker "   ")))
 
 ;; Assuming the Guix checkout is in ~/code/guix.
 ;; Yasnippet configuration
