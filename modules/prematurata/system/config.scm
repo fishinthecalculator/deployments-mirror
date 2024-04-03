@@ -160,6 +160,8 @@
                             (openssh-configuration (x11-forwarding? #f)))
 
                    (deployments-unattended-upgrades host-name
+                                                    #:hours 0
+                                                    #:minutes 45
                                                     #:expiration-days 14)
 
                    (service restic-backup-service-type

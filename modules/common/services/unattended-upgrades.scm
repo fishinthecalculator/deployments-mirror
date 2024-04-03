@@ -6,7 +6,7 @@
   #:use-module (ice-9 format)
   #:export (deployments-unattended-upgrades))
 
-(define* (deployments-unattended-upgrades host-name #:key (expiration-days 7) (channels #~%deployments-channels) (hours 23) (minutes 10))
+(define* (deployments-unattended-upgrades host-name #:key (expiration-days 7) (channels %unattended-upgrades-channels) (hours 23) (minutes 10))
   (let ((host-name-symbol
          (string->symbol host-name)))
     (service unattended-upgrade-service-type
