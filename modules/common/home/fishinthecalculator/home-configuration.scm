@@ -66,6 +66,8 @@
                      (pot-oci-configuration
                       (runtime "docker")))))
 
+          (service home-doom-emacs-service-type)
+
           (service home-docker-cli-service-type
                    (docker-cli-configuration
                     (creds-store "secretservice")
@@ -96,8 +98,7 @@
                                   '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
                                     ("BONFIRE_DEV_GUIX" . "true")
                                     ("COLORTERM" . "truecolor")
-                                    ("MOAR" . "--statusbar=bold --no-linenumbers")
-                                    ("PATH" . "${HOME}/.doom.d/bin:${HOME}/.config/emacs/bin:${HOME}/.emacs.d/bin:${HOME}/.local/bin:${PATH}"))))
+                                    ("MOAR" . "--statusbar=bold --no-linenumbers"))))
 
           (service home-openssh-service-type
                    (home-openssh-configuration

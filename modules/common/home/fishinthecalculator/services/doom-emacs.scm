@@ -6,13 +6,24 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shepherd)
   #:use-module (gnu services)
+  #:use-module (gnu services configuration)
   #:use-module (guix gexp)
   #:export (home-doom-emacs-service-type
             home-doom-emacs-activation
-            home-doom-emacs-shepherd-service))
+            home-doom-emacs-shepherd-service
+
+            home-doom-emacs-configuration
+            home-doom-emacs-configuration?
+            home-doom-emacs-configuration-fields
+            home-doom-emacs-configuration-daemon?))
 
 ;; Strongly inspired from
 ;; https://github.com/hlissner/dotfiles/blob/master/modules/editors/emacs.nix
+
+(define-configuration/no-serialization home-doom-emacs-configuration
+  (daemon?
+   (boolean #f)
+   "Whether to enable a Shepherd backed Emacs daemon"))
 
 (define (home-doom-emacs-shepherd-service config)
   (let ((entrypoint (string-append (getenv "HOME") "/.guix-extra-profiles/emacs/bin/emacs")))
@@ -50,8 +61,14 @@
                                    home-activation-service-type
                                    home-doom-emacs-activation)
                                   (service-extension
+                                   home-environment-variables-service-type
+                                   (const '(("PATH" . "${HOME}/.doom.d/bin:${HOME}/.config/emacs/bin:${PATH}"))))
+                                  (service-extension
                                    home-shepherd-service-type
-                                   (compose list home-doom-emacs-shepherd-service))))
-                (default-value #f)
+                                   (lambda (config)
+                                     (if (home-doom-emacs-configuration-daemon? config)
+                                         (list home-doom-emacs-shepherd-service)
+                                         '())))))
+                (default-value (home-doom-emacs-configuration))
                 (description
                  "Provides @code{doom-emacs} Shepherd service.")))
