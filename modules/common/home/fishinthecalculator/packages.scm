@@ -71,7 +71,6 @@
                      "rhythmbox"
                      "xset"
                      "rsync"
-                     "moolticute"
                      "xlsfonts"
                      "wget"
                      "nmap"
