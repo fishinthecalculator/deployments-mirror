@@ -21,7 +21,7 @@
   #:use-module (common home fishinthecalculator services bash)
   #:use-module (common home fishinthecalculator services doom-emacs)
   #:use-module (common home fishinthecalculator services seedvault-serve)
-  #:use-module (pot-service)
+  #:use-module (ocui-service)
   #:use-module (ice-9 format))
 
 (define %home
@@ -60,10 +60,10 @@
 
           (service home-dbus-service-type)
           (service home-pipewire-service-type)
-          (service home-pot-service-type
-                   (pot-configuration
+          (service home-ocui-service-type
+                   (ocui-configuration
                     (oci
-                     (pot-oci-configuration
+                     (ocui-oci-configuration
                       (runtime "docker")))))
 
           (service home-doom-emacs-service-type)

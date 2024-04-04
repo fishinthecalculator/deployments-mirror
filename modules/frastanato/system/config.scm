@@ -13,7 +13,7 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (sops secrets)
-  #:use-module (sops services databases)
+  #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
@@ -89,13 +89,13 @@
               (branch "main"))
              %default-channels)))
      (specification
-      (name "pot")
+      (name "ocui")
       (period #$%cuirass-period)
-      (build '(packages "pot.git"))
+      (build '(packages "ocui.git"))
       (channels
        (cons (channel
-              (name 'pot)
-              (url "https://github.com/fishinthecalculator/pot.git")
+              (name 'ocui)
+              (url "https://github.com/fishinthecalculator/ocui.git")
               (branch "main")
               ;; Enable signature verification:
               (introduction
@@ -196,12 +196,12 @@
     (services
      (append (list
               ;; Cuirass
-              (service cuirass-service-type
-                       (cuirass-configuration
-                        (host "0.0.0.0")
-                        (port 8081)
-                        (use-substitutes? #t)
-                        (specifications %cuirass-specs)))
+              ;; (service cuirass-service-type
+              ;;          (cuirass-configuration
+              ;;           (host "0.0.0.0")
+              ;;           (port 8081)
+              ;;           (use-substitutes? #t)
+              ;;           (specifications %cuirass-specs)))
 
               ;; Backups
               (service restic-backup-service-type
@@ -288,16 +288,14 @@
               ;;           (master-key
               ;;            meilisearch-key-secret)))
 
-              ;; (simple-service 'bonfire-postgresql-role
-              ;;                 sops-secrets-postgresql-role-service-type
-              ;;                 (list
-              ;;                  (sops-secrets-postgresql-role
-              ;;                   (password
-              ;;                    postgres-password-secret)
-              ;;                   (value
-              ;;                    (postgresql-role
-              ;;                     (name "bonfire")
-              ;;                     (create-database? #t))))))
+              (service sops:postgresql-role-service-type
+                       (sops:postgresql-role-configuration
+                        (requirement '(sops-secrets))
+                        (roles
+                         (list (sops:postgresql-role
+                                (name "bonfire")
+                                (password-file "/run/secrets/postgres/bonfire")
+                                (create-database? #t))))))
 
               (service postgresql-service-type
                        (postgresql-configuration
