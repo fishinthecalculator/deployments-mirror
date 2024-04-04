@@ -102,11 +102,10 @@
           (if (any (lambda (s)
                      (eq? gdm-service-type (service-kind s)))
                    %upstream-desktop-services)
-            (modify-services %upstream-desktop-services
-             ;; Enable Wayland
-             (gdm-service-type config =>
-                               (gdm-configuration (inherit config)
-                                                  (xorg-configuration
-                                                   %common-xorg-configuration)
-                                                  (wayland? #t))))
-            %upstream-desktop-services)))
+              (modify-services %upstream-desktop-services
+                ;; Enable Wayland
+                (gdm-service-type config =>
+                                  (gdm-configuration (inherit config)
+                                                     (xorg-configuration
+                                                      %common-xorg-configuration))))
+              %upstream-desktop-services)))
