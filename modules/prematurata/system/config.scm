@@ -17,7 +17,7 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
-  #:use-module (small-guix packages my-moolticute) ;for my-moolticute
+  #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module (small-guix services backup)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
