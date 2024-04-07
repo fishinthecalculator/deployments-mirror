@@ -17,6 +17,7 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
+  #:use-module (small-guix packages my-moolticute) ;for my-moolticute
   #:use-module (small-guix services backup)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
@@ -152,7 +153,8 @@
                  ;; Load the initrd with a key file
                  (extra-initrd "/crypto.cpio")))
 
-    (packages (append (list bluez bluez-alsa blueman)
+    (packages (append (list bluez bluez-alsa blueman
+                            my-moolticute-0.44.19)
                       (operating-system-packages common-desktop-system)))
 
     (services

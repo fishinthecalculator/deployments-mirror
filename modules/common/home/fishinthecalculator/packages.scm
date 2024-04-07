@@ -13,7 +13,6 @@
   #:use-module (nongnu packages productivity)
   #:use-module (small-guix packages hall)
   #:use-module (small-guix packages moar)
-  #:use-module (small-guix packages moolticute)
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix packages scheme-lsp)
   #:use-module (small-guix utils)
@@ -34,7 +33,6 @@
 (define-public fishinthecalculator-packages
   (append (list anytype
                 moar
-                moolticute
                 google-chrome-stable
                 element-desktop
                 common-deploy-scripts
