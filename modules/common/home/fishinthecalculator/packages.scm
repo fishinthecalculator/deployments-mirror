@@ -11,7 +11,6 @@
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages productivity)
-  #:use-module (small-guix packages hall)
   #:use-module (small-guix packages moar)
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix packages scheme-lsp)
