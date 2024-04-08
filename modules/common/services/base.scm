@@ -3,6 +3,7 @@
 
 (define-module (common services base)
   #:use-module (gnu)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu system)
   #:use-module (gnu services base)
   #:use-module (common channels)
@@ -13,6 +14,7 @@
   (modify-services %base-services
     (guix-service-type config =>
                        (guix-configuration (inherit config)
+                                           (guix (guix-for-channels %deployments-channels))
                                            (channels %deployments-channels)
                                            (substitute-urls
                                             %common-substitute-urls)

@@ -9,6 +9,7 @@
   #:use-module (gnu packages gnome) ;for network-manager-openvpn
   #:use-module (gnu packages hardware) ;for ddcutil
   #:use-module (gnu packages libusb) ;for libmtp
+  #:use-module (gnu packages package-management) ;for guix-for-channels
   #:use-module (gnu packages printers) ;for brlaser
   #:use-module (gnu packages vpn) ;for wireguard
   #:use-module (gnu system)
@@ -41,6 +42,7 @@
     ;; Enable additional substitute servers.
     (guix-service-type config =>
                        (guix-configuration (inherit config)
+                                           (guix (guix-for-channels %deployments-channels))
                                            (channels %deployments-channels)
                                            (substitute-urls
                                             %common-substitute-urls)
