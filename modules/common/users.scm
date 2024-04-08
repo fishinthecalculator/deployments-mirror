@@ -1,13 +1,13 @@
 (define-module (common users)
   #:use-module (gnu))
 
-(define-public paul-user
+(define-public fishinthecalculator-user
   (user-account
-    (name "paul")
+    (name "fishinthecalculator")
     (uid 1000)
     (comment "Giacomo Leidi")
     (group "users")
-    (home-directory "/home/paul")
+    (home-directory "/home/fishinthecalculator")
     (supplementary-groups '("adbusers" ;for adb
                             "docker"
                             "lp" ;for accessing D-Bus for bluetooth

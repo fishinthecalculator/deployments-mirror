@@ -43,7 +43,7 @@
 ;; SSH Keys
 ;;;;;;;;;;;;;;;;;;;;
 
-(define-public paul-ssh-key
+(define-public fishinthecalculator-ssh-key
   (ssh-key "id_rsa.pub"))
 
 (define-public termux-ssh-key

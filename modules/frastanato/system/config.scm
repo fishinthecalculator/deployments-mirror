@@ -56,12 +56,12 @@
        restic-repositories))
 
 (define authorized-ssh-keys
-  (let ((paul (user-account-name paul-user)))
+  (let ((fishinthecalculator (user-account-name fishinthecalculator-user)))
     ;; List of authorized SSH keys.
-    `((,paul ,paul-ssh-key)
-      (,paul ,termux-ssh-key)
-      ("deploy" ,paul-ssh-key)
-      (,paul ,gleidi-suse-ssh-key))))
+    `((,fishinthecalculator ,fishinthecalculator-ssh-key)
+      (,fishinthecalculator ,termux-ssh-key)
+      ("deploy" ,fishinthecalculator-ssh-key)
+      (,fishinthecalculator ,gleidi-suse-ssh-key))))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -125,7 +125,7 @@
 
     ;; The list of user accounts ('root' is implicit).
     (users (cons* (user-account
-                   (inherit paul-user)
+                   (inherit fishinthecalculator-user)
                    (comment "Tino il Cotechino")
                    (supplementary-groups '("wheel" "netdev" "audio" "video" "docker" "transmission")))
                   (user-account
@@ -213,7 +213,7 @@
               (service transmission-daemon-service-type
                        (transmission-daemon-configuration
                         ;; mkdir -pv /torrents-watchdir
-                        ;; chown -Rv paul:users /torrents-watchdir
+                        ;; chown -Rv fishinthecalculator:users /torrents-watchdir
                         ;; chmod -v o+r /torrents-watchdir
                         (watch-dir-enabled? #t)
                         (watch-dir "/torrents-watchdir")
