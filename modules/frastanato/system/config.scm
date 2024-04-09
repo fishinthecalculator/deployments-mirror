@@ -305,14 +305,14 @@
               ;;           (master-key
               ;;            meilisearch-key-secret)))
 
-              (service sops:postgresql-role-service-type
-                       (sops:postgresql-role-configuration
-                        (requirement '(sops-secrets))
-                        (roles
-                         (list (sops:postgresql-role
-                                (name "bonfire")
-                                (password-file "/run/secrets/postgres/bonfire")
-                                (create-database? #t))))))
+              ;; (service sops:postgresql-role-service-type
+              ;;          (sops:postgresql-role-configuration
+              ;;           (requirement '(sops-secrets))
+              ;;           (roles
+              ;;            (list (sops:postgresql-role
+              ;;                   (name "bonfire")
+              ;;                   (password-file "/run/secrets/postgres/bonfire")
+              ;;                   (create-database? #t))))))
 
               (service postgresql-service-type
                        (postgresql-configuration
