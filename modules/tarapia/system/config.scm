@@ -112,7 +112,7 @@
     (kernel-arguments %verbose-boot-kernel-arguments)
     (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
 
-    (users (cons* (user-account (name "fishinthecalculator")
+    (users (cons* (user-account (name "paul")
                                 (group "users")
                                 (password (crypt "testino" "$6$abc"))
                                 (supplementary-groups '("wheel" "audio" "video" "netdev"))) ;; "plugdev"

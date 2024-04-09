@@ -32,5 +32,5 @@
 (define-public restic-secret
   (sops-secret
    (key '("restic"))
-   (user (user-account-name fishinthecalculator-user))
+   (user (user-account-name paul-user))
    (file common.yaml)))

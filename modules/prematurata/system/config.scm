@@ -1,6 +1,3 @@
-;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
-
 (define-module (prematurata system config)
   #:use-module (gnu)
   #:use-module (gnu packages audio)          ;for bluez-alsa
@@ -69,11 +66,11 @@
          (restic-backup-job
           (restic restic-bin)
           (repository repo)
-          (user (user-account-name fishinthecalculator-user))
+          (user (user-account-name paul-user))
           (password-file "/run/secrets/restic")
           ;; Every day at 21.
           (schedule "0 21 * * *")
-          (files (map (lambda (p) (string-append (user-account-home-directory fishinthecalculator-user) "/" p))
+          (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
                       '(".age"
                         ".cert"
                         ".config/aerc/accounts.conf"
@@ -143,7 +140,7 @@
 
     (host-name "prematurata")
 
-    (users (cons* fishinthecalculator-user %base-user-accounts))
+    (users (cons* paul-user %base-user-accounts))
 
     ;; Operating system with encrypted boot partition
     ;; see https://guix.gnu.org/en/manual/devel/en/guix.html#index-bootloader_002dconfiguration
