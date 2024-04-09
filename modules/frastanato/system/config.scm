@@ -171,8 +171,6 @@
                              "tmux"
                              "vim"
 
-                             ;"kodi"
-
                              ;; Network administration
                              "bind"
                              "bind:utils"
@@ -196,12 +194,12 @@
     (services
      (append (list
               ;; Cuirass
-              ;; (service cuirass-service-type
-              ;;          (cuirass-configuration
-              ;;           (host "0.0.0.0")
-              ;;           (port 8081)
-              ;;           (use-substitutes? #t)
-              ;;           (specifications %cuirass-specs)))
+              (service cuirass-service-type
+                       (cuirass-configuration
+                        (host "0.0.0.0")
+                        (port 8081)
+                        (use-substitutes? #t)
+                        (specifications %cuirass-specs)))
 
               ;; Backups
               (service restic-backup-service-type
@@ -240,7 +238,26 @@
 
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
-                        (network "host")))
+                        (image "prom/prometheus:v2.45.0")
+                        (network "host")
+                        (record
+                         (prometheus-configuration
+                          (global
+                           (prometheus-global-configuration
+                            (scrape-interval "30s")
+                            (scrape-timeout "12s")))
+                          (scrape-configs
+                           (list
+                            (prometheus-scrape-configuration
+                             (job-name "prometheus")
+                             (static-configs
+                              (list (prometheus-static-configuration
+                                     (targets '("localhost:9090"))))))
+                            (prometheus-scrape-configuration
+                             (job-name "node")
+                             (static-configs
+                              (list (prometheus-static-configuration
+                                     (targets '("localhost:9100"))))))))))))
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
