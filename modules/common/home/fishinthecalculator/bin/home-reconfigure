@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
-set -eux
+set -ex
 
-guix home reconfigure -e "(@ (common home ${USER} home-configuration) ${USER}-home-environment)" "$@"
+if [ -z "${HOME_RECONFIGURE_EXPRESSION}" ]; then
+    HOME_RECONFIGURE_EXPRESSION="(@ (common home ${USER} home-configuration) ${USER}-home-environment)"
+fi
+
+set -u
+
+guix home reconfigure -e "${HOME_RECONFIGURE_EXPRESSION}" "$@"

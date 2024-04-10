@@ -96,6 +96,7 @@
                                      (not (equal? (car pair) "PATH")))
                                    fishinthecalculator-environment)
                                   '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
+                                    ("HOME_RECONFIGURE_EXPRESSION" . "(@ (common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")
                                     ("BONFIRE_DEV_GUIX" . "true")
                                     ("COLORTERM" . "truecolor")
                                     ("MOAR" . "--statusbar=bold --no-linenumbers"))))
