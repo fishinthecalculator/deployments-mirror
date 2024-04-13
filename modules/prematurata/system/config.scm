@@ -19,9 +19,11 @@
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module (small-guix services backup)
+  #:use-module (small-guix services guix-home)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
+  #:use-module (common home fishinthecalculator home-configuration)
   #:use-module (common secrets)
   #:use-module (common self)
   #:use-module (common services desktop)
@@ -41,6 +43,10 @@
 (define restic-repositories
   '("rclone:onedrive:backup/restic"
     "rclone:nasa-ftp:backup/restic"))
+
+(define guix-home-environments
+  (list
+   `(,(user-account-name paul-user) ,fishinthecalculator-home-environment)))
 
 (define-public backup-system-jobs
   (map (lambda (repo)
@@ -160,6 +166,9 @@
     (services
      (append (list (service openssh-service-type
                             (openssh-configuration (x11-forwarding? #f)))
+
+                   (service guix-home-service-type
+                            guix-home-environments)
 
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
