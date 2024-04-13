@@ -45,6 +45,16 @@ Otherwise, if you already have a `.config/guix/channels.scm` you can simply prep
        %default-channels)
 ```
 
+## Installation image
+
+To build an installation image preconfigured with this channel you can use:
+
+``` shell
+guix system image -L `pwd`/modules --image-type=iso9660 modules/common/system/install.scm
+```
+
+Please note that this command must be run from the root of the repository.
+
 ## License
 
 Unless otherwise stated all the files in this repository are to be considered under the GPL 3.0 terms. You are more than welcome to open issues or send patches.
