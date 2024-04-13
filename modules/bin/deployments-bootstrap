@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+cd /tmp && guix shell git -- git clone https://gitlab.com/orang3/guix-deployments
+export PATH="/tmp/guix-deployments/bin:${PATH}"
+
+sudo "/tmp/guix-deployments/bin/start-nonguix-daemon"
+
+sudo "/tmp/guix-deployments/bin/reconfigure"
+
+exit 0
