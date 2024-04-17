@@ -7,6 +7,7 @@
   #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
+  #:use-module (gnu services guix)        ;for guix-home-service-type
   #:use-module (gnu services mcron)          ;for mcron-service-type
   #:use-module (gnu services networking)     ;for tor-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -19,7 +20,6 @@
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module (small-guix services backup)
-  #:use-module (small-guix services guix-home)
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
