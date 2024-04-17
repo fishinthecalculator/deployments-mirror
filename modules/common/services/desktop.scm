@@ -7,7 +7,7 @@
   #:use-module (gnu packages android) ;for android-udev-rules
   #:use-module (gnu packages cups) ;for cups-filters
   #:use-module (gnu packages gnome) ;for network-manager-openvpn
-  #:use-module (gnu packages hardware) ;for ddcutil
+  #:use-module (gnu packages hardware) ;for ddcutil, brillo
   #:use-module (gnu packages libusb) ;for libmtp
   #:use-module (gnu packages printers) ;for brlaser
   #:use-module (gnu packages vpn) ;for wireguard
@@ -23,7 +23,6 @@
   #:use-module (gnu services spice) ;for spice-vdagent-service
   #:use-module (gnu services virtualization)
   #:use-module (gnu services xorg)
-  #:use-module (small-guix packages brillo)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (common channels)
   #:use-module (common services mcron)

@@ -7,7 +7,6 @@
   #:use-module (gnu packages vpn)
   #:use-module (gnu system)
   #:use-module (gnu system nss)
-  #:use-module (small-guix packages brillo)
   #:use-module (small-guix packages gnome)
   #:use-module (common locales)
   #:use-module (common services desktop)
@@ -46,9 +45,10 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list gnome-browser-connector brillo common-glibc-locales)
+    (packages (append (list gnome-browser-connector common-glibc-locales)
                       (map specification->package+output
                            (list "wireguard-tools"
+                                 "brillo"
 
                                  "ncurses" ;for the search path
 
