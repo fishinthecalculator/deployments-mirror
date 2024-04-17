@@ -110,7 +110,7 @@
                           "rtc_rk808"))
     (kernel linux-arm64-generic)
     (kernel-arguments %verbose-boot-kernel-arguments)
-    (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware))
+    (firmware (cons* ap6256-firmware linux-firmware %base-firmware))
 
     (users (cons* (user-account (name "paul")
                                 (group "users")
@@ -168,7 +168,7 @@
                             "gpio_charger"
                             "rtc_rk808"))
       (kernel linux-arm64-generic)
-      (firmware (list ath9k-htc-firmware ap6256-firmware linux-firmware)))))
+      (firmware (cons* ap6256-firmware linux-firmware %base-firmware)))))
 
 (define-public tarapia-pinebook-pro-corrupted-efi
   (make-efi-system tarapia-pinebook-pro-corrupted))
