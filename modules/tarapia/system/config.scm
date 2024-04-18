@@ -119,7 +119,7 @@
 
                   %base-user-accounts))
     (name-service-switch %mdns-host-lookup-nss)
-    (packages (cons* nss-certs openssh wpa-supplicant-minimal %base-packages))
+    (packages (cons* openssh wpa-supplicant-minimal %base-packages))
     (services (cons* (service openssh-service-type
                               (openssh-configuration
                                (port-number 2222)))

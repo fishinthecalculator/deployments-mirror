@@ -151,8 +151,6 @@
                              ;; Standard FreeDesktop directory paths
                              "xdg-user-dirs"
                              "xdg-utils"
-                             ;; HTTPS
-                             "nss-certs"
                              ;; User mounts
                              "gvfs"
 

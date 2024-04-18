@@ -71,8 +71,6 @@
                                  "xdg-utils"
                                  ;; Nix package manager
                                  "nix"
-                                 ;; HTTPS
-                                 "nss-certs"
                                  ;; User mounts
                                  "gvfs"
                                  ;; Fonts
