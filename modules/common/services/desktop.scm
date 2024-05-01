@@ -19,6 +19,7 @@
   #:use-module (gnu services mcron)
   #:use-module (gnu services nix)
   #:use-module (gnu services networking)
+  #:use-module (gnu services security-token) ;for pcsd-service-type
   #:use-module (gnu services sddm)
   #:use-module (gnu services spice) ;for spice-vdagent-service
   #:use-module (gnu services virtualization)
@@ -72,6 +73,9 @@
                          (cups-configuration (web-interface? #t)
                                              (extensions (list cups-filters
                                                                brlaser))))
+
+                ;; Smart Card daemon
+                (service pcscd-service-type)
 
                 ;; HDMI displays brightness control rules
                 (udev-rules-service 'ddcutil ddcutil)
