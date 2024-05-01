@@ -31,6 +31,7 @@
   #:use-module (common system desktop)
   #:use-module (common system input)
   #:use-module (common users)
+  #:use-module (srfi srfi-1)
   #:export (prematurata-system))
 
 (define authorized-guix-keys
@@ -51,6 +52,7 @@
 (define-public backup-system-jobs
   (map (lambda (repo)
          (restic-backup-job
+          (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
           (password-file "/run/secrets/restic")
@@ -70,6 +72,7 @@
 (define-public backup-home-jobs
   (map (lambda (repo)
          (restic-backup-job
+          (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
           (restic restic-bin)
           (repository repo)
           (user (user-account-name paul-user))

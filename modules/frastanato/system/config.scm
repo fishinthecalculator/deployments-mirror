@@ -32,6 +32,7 @@
   #:use-module (common services unattended-upgrades)
   #:use-module (common users)
   #:use-module (frastanato system secrets)
+  #:use-module (srfi srfi-1)
   #:export (frastanato-system))
 
 (define restic-repositories
@@ -41,6 +42,7 @@
 (define-public backup-system-jobs
   (map (lambda (repo)
          (restic-backup-job
+          (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
           (password-file "/run/secrets/restic")
