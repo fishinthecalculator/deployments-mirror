@@ -24,6 +24,7 @@
   #:use-module (gnu services virtualization)
   #:use-module (gnu services xorg)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
+  #:use-module (small-guix packages solo) ;for solo2
   #:use-module (common channels)
   #:use-module (common services mcron)
   #:use-module (common services substitute)
@@ -75,6 +76,9 @@
                 ;; HDMI displays brightness control rules
                 (udev-rules-service 'ddcutil ddcutil)
                 (udev-rules-service 'brillo brillo)
+
+                ;; Solo keys rules
+                (udev-rules-service 'solo-keys solo2)
 
                 ;; Mooltipass devices rules
                 (udev-rules-service 'mooltipass mooltipass-udev-rules)
