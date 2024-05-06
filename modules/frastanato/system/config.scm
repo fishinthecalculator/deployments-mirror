@@ -198,7 +198,6 @@
                        (cuirass-configuration
                         (host "0.0.0.0")
                         (port 8081)
-                        (use-substitutes? #t)
                         (specifications %cuirass-specs)))
 
               ;; Backups
