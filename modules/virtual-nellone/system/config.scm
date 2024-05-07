@@ -18,7 +18,7 @@
   ;; #:use-module (small-guix services backup)
   #:use-module (common keys)
   #:use-module (common scripts)
-  ;; #:use-module (common secrets)
+  #:use-module (common secrets)
   ;; #:use-module (common self)
   #:use-module (common services server)
   #:use-module (common services unattended-upgrades)
