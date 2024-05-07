@@ -15,9 +15,7 @@
   #:use-module (sops secrets)
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
-  #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
-  #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
@@ -31,7 +29,6 @@
   #:use-module (common services server)
   #:use-module (common services unattended-upgrades)
   #:use-module (common users)
-  #:use-module (frastanato system secrets)
   #:use-module (srfi srfi-1)
   #:export (frastanato-system))
 
@@ -262,57 +259,6 @@
                        (oci-grafana-configuration
                         (network "host")))
 
-              ;; Bonfire
-              ;; (service oci-bonfire-service-type
-              ;;          (oci-bonfire-configuration
-              ;;           (configuration
-              ;;            (bonfire-configuration
-              ;;             (hostname "192.168.1.80")
-              ;;             (postgres-user "bonfire")
-              ;;             (postgres-db "bonfire")
-              ;;             (mail-server "smtp.gmail.com")
-              ;;             (mail-domain "gmail.com")
-              ;;             (mail-from "lalloni@gmail.com")
-              ;;             (mail-user "leidigiacomo")))
-              ;;           (network "host")
-              ;;           (requirement
-              ;;            '(sops-secrets-postgres-roles docker-meilisearch))
-              ;;           (extra-variables
-              ;;            '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")))
-              ;;           (postgres-password
-              ;;            postgres-password-secret)
-              ;;           (mail-password
-              ;;            (sops-secret
-              ;;             (key '("smtp" "password"))
-              ;;             (file frastanato.yaml)))
-              ;;           (secret-key-base
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "secret_key_base"))
-              ;;             (file frastanato.yaml)))
-              ;;           (signing-salt
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "signing_salt"))
-              ;;             (file frastanato.yaml)))
-              ;;           (encryption-salt
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "encryption_salt"))
-              ;;             (file frastanato.yaml)))))
-
-              ;; (service oci-meilisearch-service-type
-              ;;          (oci-meilisearch-configuration
-              ;;           (network "host")
-              ;;           (master-key
-              ;;            meilisearch-key-secret)))
-
-              ;; (service sops:postgresql-role-service-type
-              ;;          (sops:postgresql-role-configuration
-              ;;           (requirement '(sops-secrets))
-              ;;           (roles
-              ;;            (list (sops:postgresql-role
-              ;;                   (name "bonfire")
-              ;;                   (password-file "/run/secrets/postgres/bonfire")
-              ;;                   (create-database? #t))))))
-
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)))
@@ -326,12 +272,7 @@
                        (sops-service-configuration
                         (config sops.yaml)
                         (secrets
-                         (list restic-secret
-                               postgres-password-secret
-                               mail-password-secret
-                               secret-key-base-secret
-                               signing-salt-secret
-                               encryption-salt-secret))))
+                         (list restic-secret))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30)
