@@ -28,7 +28,7 @@
                 (service ntp-service-type)
                 (service openssh-service-type
                          (openssh-configuration
-                          (root-login? #f)
+                          (permit-root-login #f)
                           (password-authentication? #f)
                           (x11-forwarding? #f)))
 
