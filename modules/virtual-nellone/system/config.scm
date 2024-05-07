@@ -146,12 +146,15 @@
                              (job-name "prometheus")
                              (static-configs
                               (list (prometheus-static-configuration
-                                     (targets '("localhost:9090"))))))
+                                     (targets
+                                      (list
+                                       (string-append "localhost:" %prometheus-metrics-port)))))))
                             (prometheus-scrape-configuration
                              (job-name "node")
                              (static-configs
                               (list (prometheus-static-configuration
-                                     (targets '("localhost:9100"))))))))))))
+                                     (targets
+                                      (list (string-append "localhost:" %node-exporter-port)))))))))))))
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
