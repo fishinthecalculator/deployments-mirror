@@ -7,24 +7,19 @@
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
-  ;; #:use-module (sops secrets)
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
-  ;; #:use-module (small-guix packages scripts) ;for restic-bin
-  ;; #:use-module (small-guix services backup)
   #:use-module (common keys)
   #:use-module (common scripts)
   #:use-module (common secrets)
-  ;; #:use-module (common self)
   #:use-module (common services server)
   #:use-module (common services unattended-upgrades)
   #:use-module (common users)
   #:use-module (virtual-nellone system secrets)
-  ;; #:use-module (srfi srfi-1)
   #:export (virtual-nellone-system))
 
 (define authorized-ssh-keys
