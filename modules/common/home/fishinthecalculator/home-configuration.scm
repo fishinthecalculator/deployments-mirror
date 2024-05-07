@@ -113,6 +113,9 @@
                                           '("+ssh-rsa"))
                                          (extra-content
                                           "  KexAlgorithms +diffie-hellman-group1-sha1"))
+                           (openssh-host (name "virtual-nellone")
+                                         (host-name "2001:19f0:6c00:1e5b:5400:04ff:fee6:4e4e")
+                                         (user "paul"))
                            (openssh-host (name "frastanato")
                                          (host-name "192.168.1.80")
                                          (user "paul"))
