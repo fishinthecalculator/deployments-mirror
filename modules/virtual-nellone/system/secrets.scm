@@ -5,8 +5,8 @@
   #:use-module (sops secrets)
   #:use-module (common secrets))
 
-(define-public nellone.yaml
-  (secrets-file "nellone.yaml"))
+(define-public virtual_nellone.yaml
+  (secrets-file "virtual_nellone.yaml"))
 
 ;; PostgreSQL
 
@@ -15,33 +15,33 @@
    (key '("postgres" "bonfire"))
    (user "postgres")
    (group "postgres")
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
 
 ;; Meilisearch
 
 (define-public meilisearch-key-secret
   (sops-secret
    (key '("meilisearch" "master"))
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
 
 ;; Bonfire
 
 (define-public mail-password-secret
   (sops-secret
    (key '("smtp" "password"))
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
 
 (define-public secret-key-base-secret
   (sops-secret
    (key '("bonfire" "secret_key_base"))
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
 
 (define-public signing-salt-secret
   (sops-secret
    (key '("bonfire" "signing_salt"))
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
 
 (define-public encryption-salt-secret
   (sops-secret
    (key '("bonfire" "encryption_salt"))
-   (file nellone.yaml)))
+   (file virtual_nellone.yaml)))
