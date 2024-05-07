@@ -1,8 +1,8 @@
-(define-module (nellone machine deploy)
+(define-module (virtual-nellone machine deploy)
   #:use-module (gnu)
   #:use-module (gnu machine)
   #:use-module (gnu machine ssh)
-  #:use-module (nellone system config))
+  #:use-module (virtual-nellone system config))
 
 (define %user
   "deploy")

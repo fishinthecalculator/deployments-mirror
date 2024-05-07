@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (nellone system secrets)
+(define-module (virtual-nellone system secrets)
   #:use-module (sops secrets)
   #:use-module (common secrets))
 

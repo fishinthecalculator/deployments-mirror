@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (nellone system config)
+(define-module (virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu packages databases)      ;for postgresql-13
   #:use-module (gnu services databases)      ;for postgresql-service-type
@@ -23,7 +23,7 @@
   #:use-module (common services server)
   #:use-module (common services unattended-upgrades)
   #:use-module (common users)
-  #:use-module (nellone system secrets)
+  #:use-module (virtual-nellone system secrets)
   ;; #:use-module (srfi srfi-1)
   #:export (virtual-nellone-system))
 
