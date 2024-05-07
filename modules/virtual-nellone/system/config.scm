@@ -120,7 +120,7 @@
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains '("bonfire.fishinthecalculator.me")))))))
+                           (domains (list %bonfire-domain)))))))
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type
