@@ -2,11 +2,13 @@
 
 set -eu
 
+DEPLOYMENTS_PATH="/tmp/guix-deployments/modules/bin"
+
 cd /tmp && guix shell git -- git clone https://gitlab.com/orang3/guix-deployments
-export PATH="/tmp/guix-deployments/bin:${PATH}"
+export PATH="${DEPLOYMENTS_PATH}:${PATH}"
 
-sudo "/tmp/guix-deployments/bin/start-nonguix-daemon"
+sudo "${DEPLOYMENTS_PATH}/start-nonguix-daemon"
 
-sudo "/tmp/guix-deployments/bin/reconfigure"
+sudo "${DEPLOYMENTS_PATH}/reconfigure"
 
 exit 0
