@@ -25,7 +25,7 @@
   #:use-module (common users)
   #:use-module (nellone system secrets)
   ;; #:use-module (srfi srfi-1)
-  #:export (nellone-system))
+  #:export (virtual-nellone-system))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
@@ -37,7 +37,7 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
-(define nellone-system
+(define virtual-nellone-system
   (operating-system
     (locale "en_US.utf8")
     (timezone "Europe/Rome")

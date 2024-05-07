@@ -14,7 +14,7 @@
 
 (define nellone-local
   (machine (operating-system
-             nellone-system)
+             virtual-nellone-system)
            (environment managed-host-environment-type)
            (configuration (machine-ssh-configuration (host-name %host)
                                                      (host-key
