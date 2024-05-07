@@ -4,6 +4,7 @@
 (define-module (virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu packages databases)      ;for postgresql-13
+  #:use-module (gnu services certbot)      ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -107,6 +108,13 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
+              (service certbot-service-type
+                       (certbot-configuration
+                        (email "goodoldpaul@autistici.org")
+                        (certificates
+                         (list
+                          (certificate-configuration
+                           (domains '("bonfire.fishinthecalculator.me")))))))
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
@@ -193,7 +201,6 @@
                        (postgresql-configuration
                         (postgresql postgresql-13)))
 
-
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)
@@ -212,14 +219,16 @@
              (modify-services %common-server-services
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)
-                                                            (authorized-keys (append
-                                                                              (openssh-configuration-authorized-keys ssh-config)
-                                                                              authorized-ssh-keys))))
+                                                            (authorized-keys
+                                                             (append
+                                                              (openssh-configuration-authorized-keys ssh-config)
+                                                              authorized-ssh-keys))))
                (guix-service-type guix-config =>
                                   (guix-configuration (inherit guix-config)
-                                                      (authorized-keys (append
-                                                                        (guix-configuration-authorized-keys guix-config)
-                                                                        authorized-guix-keys)))))))
+                                                      (authorized-keys
+                                                       (append
+                                                        (guix-configuration-authorized-keys guix-config)
+                                                        authorized-guix-keys)))))))
 
     (bootloader (bootloader-configuration
                  (bootloader grub-bootloader)
