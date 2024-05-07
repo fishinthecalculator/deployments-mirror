@@ -4,11 +4,10 @@
 (define-module (virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu packages databases)      ;for postgresql-13
-  #:use-module (gnu services certbot)      ;for certbot-service-type
+  #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
-  #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
@@ -90,10 +89,8 @@
                              "bind"
                              "bind:utils"
                              "tcpdump"
+                             "net-tools"
 
-                             ;; Btrfs
-                             "btrfs-progs"
-                             "compsize"
                              "restic"
 
                              "efibootmgr"
@@ -188,13 +185,11 @@
                         (master-key
                          meilisearch-key-secret)))
 
-              (service sops:postgresql-role-service-type
-                       (sops:postgresql-role-configuration
-                        (requirement '(sops-secrets))
+              (service postgresql-role-service-type
+                       (postgresql-role-configuration
                         (roles
-                         (list (sops:postgresql-role
+                         (list (postgresql-role
                                 (name "bonfire")
-                                (password-file "/run/secrets/postgres/bonfire")
                                 (create-database? #t))))))
 
               (service postgresql-service-type
