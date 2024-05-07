@@ -32,6 +32,15 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
+(define %bonfire-port "4000")
+(define %bonfire-domain "bonfire.fishinthecalculator.me")
+(define %grafana-port "3000")
+(define %meilisearch-port "7700")
+(define %postgresql-port 5432)
+(define %prometheus-port "9000")
+(define %prometheus-metrics-port "9090")
+(define %node-exporter-port "9100")
+
 (define virtual-nellone-system
   (operating-system
     (locale "en_US.utf8")
@@ -114,12 +123,17 @@
                            (domains '("bonfire.fishinthecalculator.me")))))))
 
               ;; Monitoring
-              (service prometheus-node-exporter-service-type)
+              (service prometheus-node-exporter-service-type
+                       (prometheus-node-exporter-configuration
+                        (web-listen-address
+                         (string-append ":" %node-exporter-port))))
 
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
                         (image "prom/prometheus:v2.45.0")
                         (network "host")
+                        (port %prometheus-port)
+                        (metrics-port %prometheus-metrics-port)
                         (record
                          (prometheus-configuration
                           (global
@@ -141,7 +155,8 @@
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
-                        (network "host")))
+                        (network "host")
+                        (port %grafana-port)))
 
               ;; Bonfire
               ;; (service oci-bonfire-service-type
@@ -182,6 +197,7 @@
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
                         (network "host")
+                        (port %meilisearch-port)
                         (master-key
                          meilisearch-key-secret)))
 
@@ -194,7 +210,8 @@
 
               (service postgresql-service-type
                        (postgresql-configuration
-                        (postgresql postgresql-13)))
+                        (postgresql postgresql-13)
+                        (port %postgresql-port)))
 
               (service sops-secrets-service-type
                        (sops-service-configuration
