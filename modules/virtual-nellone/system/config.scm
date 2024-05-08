@@ -195,7 +195,6 @@
                           (postgres-user "bonfire")
                           (postgres-db "bonfire")
                           (mail-domain %bonfire-domain)
-                          (mail-password mail-password-secret)
                           (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
                         (network "host")
                         (auto-start? #f)
