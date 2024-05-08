@@ -197,7 +197,7 @@
                           (mail-domain %bonfire-domain)
                           (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
                         (network "host")
-                        (auto-start? #f)
+                        (auto-start? #t)
                         (requirement
                          '(sops-secrets postgres-roles docker-meilisearch))
                         (extra-variables
