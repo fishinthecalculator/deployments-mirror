@@ -194,16 +194,16 @@
                           (public-port "443")
                           (postgres-user "bonfire")
                           (postgres-db "bonfire")
-                          (mail-server "smtp.gmail.com")
-                          (mail-domain "gmail.com")
-                          (mail-from "lalloni@gmail.com")
-                          (mail-user "leidigiacomo")))
+                          (mail-domain %bonfire-domain)
+                          (mail-password mail-password-secret)
+                          (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
                         (network "host")
                         (auto-start? #f)
                         (requirement
                          '(sops-secrets postgres-roles docker-meilisearch))
                         (extra-variables
-                         `(("SERVER_PORT" . ,%bonfire-port)
+                         `(("MAIL_BACKEND" . "sendgrid")
+                           ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
                          meilisearch-key-secret)
