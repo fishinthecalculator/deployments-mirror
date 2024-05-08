@@ -96,7 +96,7 @@
                              "vim"
 
                              ;; DB Administration
-                             "postgres@13" ;for psql
+                             "postgresql@13" ;for psql
 
                              ;; Network administration
                              "bind"
