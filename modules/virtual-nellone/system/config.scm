@@ -4,6 +4,7 @@
 (define-module (virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu packages databases)      ;for postgresql-13
+  #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
