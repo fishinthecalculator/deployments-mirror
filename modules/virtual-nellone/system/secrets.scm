@@ -28,7 +28,7 @@
 
 (define-public mail-password-secret
   (sops-secret
-   (key '("smtp" "password"))
+   (key '("mail" "password"))
    (file virtual_nellone.yaml)))
 
 (define-public secret-key-base-secret
