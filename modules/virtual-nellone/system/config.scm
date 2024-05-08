@@ -95,6 +95,9 @@
                              "tmux"
                              "vim"
 
+                             ;; DB Administration
+                             "postgres@13" ;for psql
+
                              ;; Network administration
                              "bind"
                              "bind:utils"
@@ -182,6 +185,7 @@
               (service oci-bonfire-service-type
                        (oci-bonfire-configuration
                         (image "bonfirenetworks/bonfire:0.9.10-beta.62-classic-amd64")
+                        (log-file "/var/log/bonfire.log")
                         (configuration
                          (bonfire-configuration
                           (hostname %bonfire-domain)
@@ -194,6 +198,7 @@
                           (mail-from "lalloni@gmail.com")
                           (mail-user "leidigiacomo")))
                         (network "host")
+                        (auto-start? #f)
                         (requirement
                          '(sops-secrets postgres-roles docker-meilisearch))
                         (extra-variables
@@ -229,6 +234,7 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)
+                        (extension-packages (list postgis))
                         (port %postgresql-port)))
 
               (service sops-secrets-service-type
