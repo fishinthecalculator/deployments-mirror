@@ -8,6 +8,7 @@
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
+  #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
@@ -122,6 +123,22 @@
                           (certificate-configuration
                            (domains (list %bonfire-domain)))))))
 
+              (service nginx-service-type
+                       (nginx-configuration
+                        (shepherd-requirement
+                         '(docker-bonfire))
+                        (server-blocks
+                         (list (nginx-server-configuration
+                                (server-name (list %bonfire-domain))
+                                (listen '("443 ssl"))
+                                (ssl-certificate (string-append "/etc/certs/" %bonfire-domain "/fullchain.pem"))
+                                (ssl-certificate-key (string-append "/etc/certs/" %bonfire-domain "/privkey.pem"))
+                                (locations
+                                 (list
+                                  (nginx-location-configuration
+                                   (uri "/")
+                                   (body (list (string-append "proxy_pass http://localhost:" %bonfire-port ";")))))))))))
+
               ;; Monitoring
               (service prometheus-node-exporter-service-type
                        (prometheus-node-exporter-configuration
@@ -162,40 +179,38 @@
                         (port %grafana-port)))
 
               ;; Bonfire
-              ;; (service oci-bonfire-service-type
-              ;;          (oci-bonfire-configuration
-              ;;           (configuration
-              ;;            (bonfire-configuration
-              ;;             (hostname "192.168.1.80")
-              ;;             (postgres-user "bonfire")
-              ;;             (postgres-db "bonfire")
-              ;;             (mail-server "smtp.gmail.com")
-              ;;             (mail-domain "gmail.com")
-              ;;             (mail-from "lalloni@gmail.com")
-              ;;             (mail-user "leidigiacomo")))
-              ;;           (network "host")
-              ;;           (requirement
-              ;;            '(sops-secrets-postgres-roles docker-meilisearch))
-              ;;           (extra-variables
-              ;;            '(("SEARCH_MEILI_INSTANCE" . "http://localhost:7700")))
-              ;;           (postgres-password
-              ;;            postgres-password-secret)
-              ;;           (mail-password
-              ;;            (sops-secret
-              ;;             (key '("smtp" "password"))
-              ;;             (file nellone.yaml)))
-              ;;           (secret-key-base
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "secret_key_base"))
-              ;;             (file nellone.yaml)))
-              ;;           (signing-salt
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "signing_salt"))
-              ;;             (file nellone.yaml)))
-              ;;           (encryption-salt
-              ;;            (sops-secret
-              ;;             (key '("bonfire" "encryption_salt"))
-              ;;             (file nellone.yaml)))))
+              (service oci-bonfire-service-type
+                       (oci-bonfire-configuration
+                        (image "bonfirenetworks/bonfire:0.9.10-beta.62-classic-amd64")
+                        (configuration
+                         (bonfire-configuration
+                          (hostname %bonfire-domain)
+                          (port %bonfire-port)
+                          (public-port "443")
+                          (postgres-user "bonfire")
+                          (postgres-db "bonfire")
+                          (mail-server "smtp.gmail.com")
+                          (mail-domain "gmail.com")
+                          (mail-from "lalloni@gmail.com")
+                          (mail-user "leidigiacomo")))
+                        (network "host")
+                        (requirement
+                         '(sops-secrets postgres-roles docker-meilisearch))
+                        (extra-variables
+                         `(("SERVER_PORT" . ,%bonfire-port)
+                           ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
+                        (meili-master-key
+                         meilisearch-key-secret)
+                        (postgres-password
+                         postgres-password-secret)
+                        (mail-password
+                         mail-password-secret)
+                        (secret-key-base
+                         secret-key-base-secret)
+                        (signing-salt
+                         signing-salt-secret)
+                        (encryption-salt
+                         encryption-salt-secret)))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
