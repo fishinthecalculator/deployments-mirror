@@ -97,7 +97,7 @@
                              "vim"
 
                              ;; DB Administration
-                             "postgresql@13" ;for psql
+                             "postgresql@14" ;for psql
 
                              ;; Network administration
                              "bind"
@@ -234,7 +234,7 @@
 
               (service postgresql-service-type
                        (postgresql-configuration
-                        (postgresql postgresql-13)
+                        (postgresql postgresql-14)
                         (extension-packages (list postgis))
                         (port %postgresql-port)))
 
