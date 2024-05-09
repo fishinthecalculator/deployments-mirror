@@ -269,12 +269,23 @@
     (bootloader (bootloader-configuration
                  (bootloader grub-bootloader)
                  (targets (list "/dev/vda"))
-                 (keyboard-layout keyboard-layout)))
+                 (keyboard-layout keyboard-layout)
+                 ;; guix shell cpio -- sh -c 'echo /crypto.key | cpio -oH newc > /crypto.cpio'
+                 ;; chmod 0000 /crypto.cpio
+                 ;; Load the initrd with a key file
+                 (extra-initrd "/crypto.cpio")))
     (mapped-devices (list (mapped-device
                            (source (uuid
                                     "b8482f5a-d64a-4501-a52d-f2439f9f786a"))
                            (target "cryptroot")
-                           (type luks-device-mapping))))
+                           (type (luks-device-mapping-with-options
+                                  ;; All the following must be run as root
+                                  ;; DEST="/crypto.key"
+                                  ;; dd bs=512 count=4 if=/dev/random of=$DEST iflag=fullblock
+                                  ;; guix shell openssl -- openssl genrsa -out $DEST 4096
+                                  ;; chmod -v 0400 $DEST
+                                  ;; chown root:root $DEST
+                                  #:key-file "/crypto.key")))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
