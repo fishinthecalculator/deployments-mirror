@@ -157,7 +157,7 @@
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
                  (keyboard-layout common-kl)
-                 ;; echo /crypto.key | cpio -oH newc > /crypto.cpio
+                 ;; guix shell cpio -- sh -c 'echo /crypto.key | cpio -oH newc > /crypto.cpio'
                  ;; chmod 0000 /crypto.cpio
                  ;; Load the initrd with a key file
                  (extra-initrd "/crypto.cpio")))
@@ -248,6 +248,12 @@
                            (source "/dev/nvme0n1p2")
                            (target "cryptroot")
                            (type (luks-device-mapping-with-options
+                                  ;; All the following must be run as root
+                                  ;; DEST="/crypto.key"
+                                  ;; dd bs=512 count=4 if=/dev/random of=$DEST iflag=fullblock
+                                  ;; guix shell openssl -- openssl genrsa -out $DEST 4096
+                                  ;; chmod -v 0400 $DEST
+                                  ;; chown root:root $DEST
                                   #:key-file "/crypto.key")))))
 
     (file-systems (cons* (file-system
