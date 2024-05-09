@@ -201,7 +201,8 @@
                         (requirement
                          '(sops-secrets postgres-roles docker-meilisearch))
                         (extra-variables
-                         `(("MAIL_BACKEND" . "sendgrid")
+                         `("INVITE_ONLY=true"
+                           ("MAIL_BACKEND" . "sendgrid")
                            ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
