@@ -185,7 +185,7 @@
               ;; Bonfire
               (service oci-bonfire-service-type
                        (oci-bonfire-configuration
-                        (image "bonfirenetworks/bonfire:0.9.10-beta.62-classic-amd64")
+                        (image "bonfirenetworks/bonfire:0.9.10-beta.70-classic-amd64")
                         (log-file "/var/log/bonfire.log")
                         (configuration
                          (bonfire-configuration
