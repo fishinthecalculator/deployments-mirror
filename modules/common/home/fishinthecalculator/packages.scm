@@ -35,6 +35,7 @@
                 moar
                 google-chrome-stable
                 element-desktop
+                signal-desktop
                 common-deploy-scripts
                 unrar
                 guile-lsp-server.git
