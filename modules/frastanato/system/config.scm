@@ -45,8 +45,7 @@
           (password-file "/run/secrets/restic")
           ;; Every day at 23.
           (schedule "0 23 * * *")
-          (files '("/root/.gnupg"
-                   "/root/.config/rclone"
+          (files '("/root/.config/rclone"
                    "/root/.config/sops/age/keys.txt"
                    "/etc/ssh/ssh_host_rsa_key"
                    "/etc/ssh/ssh_host_rsa_key.pub"
@@ -271,6 +270,7 @@
 
               (service sops-secrets-service-type
                        (sops-service-configuration
+                        (key-type 'age)
                         (config sops.yaml)
                         (secrets
                          (list restic-secret))))
