@@ -47,6 +47,7 @@
           (schedule "0 23 * * *")
           (files '("/root/.gnupg"
                    "/root/.config/rclone"
+                   "/root/.config/sops/age/keys.txt"
                    "/etc/ssh/ssh_host_rsa_key"
                    "/etc/ssh/ssh_host_rsa_key.pub"
                    "/etc/guix/signing-key.pub"
