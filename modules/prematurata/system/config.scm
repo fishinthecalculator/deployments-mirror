@@ -80,12 +80,12 @@
           ;; Every day at 21.
           (schedule "0 21 * * *")
           (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
-                      '(".age"
-                        ".cert"
+                      '(".cert"
                         ".config/aerc/accounts.conf"
                         ".config/libvirt/qemu"
                         ".config/rclone"
                         ".config/guix/channels.scm"
+                        ".config/sops/age/keys.txt"
                         ".guix-manifests"
                         ".gnupg"
                         ".icedove"
