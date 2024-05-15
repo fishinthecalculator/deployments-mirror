@@ -7,6 +7,7 @@
   #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu services linux)          ;for kernel-module-loader-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
@@ -119,6 +120,9 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
+              (service kernel-module-loader-service-type
+                       ;; Required for Traefik.
+                       '("br_netfilter"))
               (service certbot-service-type
                        (certbot-configuration
                         (email "goodoldpaul@autistici.org")
