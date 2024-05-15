@@ -270,7 +270,7 @@
 
               (service sops-secrets-service-type
                        (sops-service-configuration
-                        (key-type 'age)
+                        ;TODO(key-type 'age)
                         (config sops.yaml)
                         (secrets
                          (list restic-secret))))
