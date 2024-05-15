@@ -127,33 +127,33 @@
                           (certificate-configuration
                            (domains (list %bonfire-domain)))))))
 
-              (service nginx-service-type
-                       (nginx-configuration
-                        (shepherd-requirement
-                         '(docker-bonfire))
-                        (server-blocks
-                         (list (nginx-server-configuration
-                                (server-name (list %bonfire-domain))
-                                (listen '("443 ssl"))
-                                (ssl-certificate (string-append "/etc/certs/" %bonfire-domain "/fullchain.pem"))
-                                (ssl-certificate-key (string-append "/etc/certs/" %bonfire-domain "/privkey.pem"))
-                                (locations
-                                 (list
-                                  (nginx-location-configuration
-                                   (uri "/")
-                                   (body (list (string-append "proxy_pass http://localhost:" %bonfire-port ";")
-                                               ;; Taken from https://www.nginx.com/resources/wiki/start/topics/examples/full/
-                                               ;; Those settings are used when proxies are involved
-                                               "proxy_redirect          off;"
-                                               "proxy_set_header        Host $host;"
-                                               "proxy_set_header        X-Real-IP $remote_addr;"
-                                               "proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;"
-                                               "proxy_http_version      1.1;"
-                                               "proxy_cache_bypass      $http_upgrade;"
-                                               "proxy_set_header        Upgrade $http_upgrade;"
-                                               "proxy_set_header        Connection \"upgrade\";"
-                                               "proxy_set_header        X-Forwarded-Proto $scheme;"
-                                               "proxy_set_header        X-Forwarded-Host  $host;"))))))))))
+              ;; (service nginx-service-type
+              ;;          (nginx-configuration
+              ;;           (shepherd-requirement
+              ;;            '(docker-bonfire))
+              ;;           (server-blocks
+              ;;            (list (nginx-server-configuration
+              ;;                   (server-name (list %bonfire-domain))
+              ;;                   (listen '("443 ssl"))
+              ;;                   (ssl-certificate (string-append "/etc/certs/" %bonfire-domain "/fullchain.pem"))
+              ;;                   (ssl-certificate-key (string-append "/etc/certs/" %bonfire-domain "/privkey.pem"))
+              ;;                   (locations
+              ;;                    (list
+              ;;                     (nginx-location-configuration
+              ;;                      (uri "/")
+              ;;                      (body (list (string-append "proxy_pass http://localhost:" %bonfire-port ";")
+              ;;                                  ;; Taken from https://www.nginx.com/resources/wiki/start/topics/examples/full/
+              ;;                                  ;; Those settings are used when proxies are involved
+              ;;                                  "proxy_redirect          off;"
+              ;;                                  "proxy_set_header        Host $host;"
+              ;;                                  "proxy_set_header        X-Real-IP $remote_addr;"
+              ;;                                  "proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;"
+              ;;                                  "proxy_http_version      1.1;"
+              ;;                                  "proxy_cache_bypass      $http_upgrade;"
+              ;;                                  "proxy_set_header        Upgrade $http_upgrade;"
+              ;;                                  "proxy_set_header        Connection \"upgrade\";"
+              ;;                                  "proxy_set_header        X-Forwarded-Proto $scheme;"
+              ;;                                  "proxy_set_header        X-Forwarded-Host  $host;"))))))))))
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type
@@ -195,60 +195,60 @@
                         (port %grafana-port)))
 
               ;; Bonfire
-              (service oci-bonfire-service-type
-                       (oci-bonfire-configuration
-                        (image "bonfirenetworks/bonfire:0.9.10-beta.70-classic-amd64")
-                        (log-file "/var/log/bonfire.log")
-                        (configuration
-                         (bonfire-configuration
-                          (hostname %bonfire-domain)
-                          (port %bonfire-port)
-                          (public-port "443")
-                          (postgres-user "bonfire")
-                          (postgres-db "bonfire")
-                          (mail-domain %bonfire-domain)
-                          (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
-                        (network "host")
-                        (auto-start? #t)
-                        (requirement
-                         '(sops-secrets postgres-roles docker-meilisearch))
-                        (extra-variables
-                         `("INVITE_ONLY=true"
-                           ("MAIL_BACKEND" . "sendgrid")
-                           ("SERVER_PORT" . ,%bonfire-port)
-                           ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
-                        (meili-master-key
-                         meilisearch-key-secret)
-                        (postgres-password
-                         postgres-password-secret)
-                        (mail-password
-                         mail-password-secret)
-                        (secret-key-base
-                         secret-key-base-secret)
-                        (signing-salt
-                         signing-salt-secret)
-                        (encryption-salt
-                         encryption-salt-secret)))
+              ;; (service oci-bonfire-service-type
+              ;;          (oci-bonfire-configuration
+              ;;           (image "bonfirenetworks/bonfire:0.9.10-beta.70-classic-amd64")
+              ;;           (log-file "/var/log/bonfire.log")
+              ;;           (configuration
+              ;;            (bonfire-configuration
+              ;;             (hostname %bonfire-domain)
+              ;;             (port %bonfire-port)
+              ;;             (public-port "443")
+              ;;             (postgres-user "bonfire")
+              ;;             (postgres-db "bonfire")
+              ;;             (mail-domain %bonfire-domain)
+              ;;             (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
+              ;;           (network "host")
+              ;;           (auto-start? #t)
+              ;;           (requirement
+              ;;            '(sops-secrets postgres-roles docker-meilisearch))
+              ;;           (extra-variables
+              ;;            `("INVITE_ONLY=true"
+              ;;              ("MAIL_BACKEND" . "sendgrid")
+              ;;              ("SERVER_PORT" . ,%bonfire-port)
+              ;;              ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
+              ;;           (meili-master-key
+              ;;            meilisearch-key-secret)
+              ;;           (postgres-password
+              ;;            postgres-password-secret)
+              ;;           (mail-password
+              ;;            mail-password-secret)
+              ;;           (secret-key-base
+              ;;            secret-key-base-secret)
+              ;;           (signing-salt
+              ;;            signing-salt-secret)
+              ;;           (encryption-salt
+              ;;            encryption-salt-secret)))
 
-              (service oci-meilisearch-service-type
-                       (oci-meilisearch-configuration
-                        (network "host")
-                        (port %meilisearch-port)
-                        (master-key
-                         meilisearch-key-secret)))
+              ;; (service oci-meilisearch-service-type
+              ;;          (oci-meilisearch-configuration
+              ;;           (network "host")
+              ;;           (port %meilisearch-port)
+              ;;           (master-key
+              ;;            meilisearch-key-secret)))
 
-              (service postgresql-role-service-type
-                       (postgresql-role-configuration
-                        (roles
-                         (list (postgresql-role
-                                (name "bonfire")
-                                (create-database? #t))))))
+              ;; (service postgresql-role-service-type
+              ;;          (postgresql-role-configuration
+              ;;           (roles
+              ;;            (list (postgresql-role
+              ;;                   (name "bonfire")
+              ;;                   (create-database? #t))))))
 
-              (service postgresql-service-type
-                       (postgresql-configuration
-                        (postgresql postgresql-14)
-                        (extension-packages (list postgis))
-                        (port %postgresql-port)))
+              ;; (service postgresql-service-type
+              ;;          (postgresql-configuration
+              ;;           (postgresql postgresql-14)
+              ;;           (extension-packages (list postgis))
+              ;;           (port %postgresql-port)))
 
               (service sops-secrets-service-type
                        (sops-service-configuration
