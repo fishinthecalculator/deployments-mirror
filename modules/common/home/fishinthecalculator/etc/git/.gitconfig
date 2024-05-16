@@ -25,3 +25,17 @@
 	ui = auto
 [commit]
 	gpgsign = true
+
+[alias]
+	staash = "stash --all"
+	bblame = "blame -w -C -C -C"
+
+# REuse REcorded REsolution
+[rerere]
+	enabled = true
+
+[column]
+	ui = auto
+
+[branch]
+	sort = -committerdate
