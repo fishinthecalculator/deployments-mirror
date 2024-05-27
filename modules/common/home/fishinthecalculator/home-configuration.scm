@@ -25,7 +25,7 @@
   #:use-module (ice-9 format))
 
 (define %home
-  (getenv "HOME"))
+  "/")
 
 (define %here
   (current-source-directory))
