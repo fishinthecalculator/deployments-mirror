@@ -2,7 +2,7 @@
 
 set -eu
 
-declare -a commands=("guix pull" "home-reconfigure" "nix-channel --update")
+declare -a commands=("guix pull" "sudo reconfigure" "nix-channel --update")
 
 for command in "${commands[@]}"; do
     bash -l -c "$command"

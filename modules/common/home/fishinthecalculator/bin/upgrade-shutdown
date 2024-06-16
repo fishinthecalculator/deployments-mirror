@@ -9,8 +9,7 @@ set -u
 
 [[ \"$#\" -eq 1 ]] && su ${myself} -l -c 'cleanup'
 
-su ${myself} -l -c 'guix pull && hash guix'
-su ${myself} -l -c 'home-reconfigure'
+su ${myself} -l -c 'upall'
 
 ~${myself}/.guix-home/profile/bin/reconfigure
 
