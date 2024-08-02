@@ -99,19 +99,11 @@ git push github master"))
                    (ocui-configuration
                     (oci
                      (ocui-oci-configuration
-                      (runtime "docker")))))
+                      (runtime "podman")))))
 
           (service home-doom-emacs-service-type)
 
-          (service home-docker-cli-service-type
-                   (docker-cli-configuration
-                    (creds-store "secretservice")
-                    (cli-plugins
-                     (list docker-compose-plugin
-                           docker-credential-secretservice))
-                    (extra-content ", \"auths\": {\"https://index.docker.io/v1/\": {}}")))
-
-          (simple-service 'fishinthecalculator-mcon
+          (simple-service 'fishinthecalculator-mcron
                           home-mcron-service-type
                           (list (cleanup-job)
                                 guix-fork-sync-job

@@ -20,6 +20,7 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
+  #:use-module ((small-guix services pam) #:prefix small-guix:) ;for pam-limits-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
@@ -33,6 +34,14 @@
   #:use-module (common users)
   #:use-module (srfi srfi-1)
   #:export (prematurata-system))
+
+(define paul-user
+  (user-account (inherit paul-user)
+                (supplementary-groups
+                 (cons "cgroup"
+                       (delete "docker"
+                               (user-account-supplementary-groups
+                                paul-user))))))
 
 (define authorized-guix-keys
   (list
@@ -200,10 +209,11 @@
 
                    ;; Realtime features. Needed for supercollider.
                    ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
-                   (service pam-limits-service-type
-                            (list
-                             (pam-limits-entry "@realtime" 'both 'rtprio 99)
-                             (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
+                   (simple-service 'supercollider-rules
+                                   small-guix:pam-limits-service-type
+                                   (list
+                                    (pam-limits-entry "@realtime" 'both 'rtprio 99)
+                                    (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                    (service tor-service-type)
                    (simple-service 'prematurata-cron-jobs

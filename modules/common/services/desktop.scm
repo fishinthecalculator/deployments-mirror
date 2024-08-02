@@ -14,7 +14,6 @@
   #:use-module (gnu system)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
-  #:use-module (gnu services docker)
   #:use-module (gnu services linux)
   #:use-module (gnu services mcron)
   #:use-module (gnu services nix)
@@ -26,6 +25,8 @@
   #:use-module (gnu services xorg)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
+  #:use-module (small-guix system accounts)
+  #:use-module (small-guix services containers)     ;for rootless-podman-service-type
   #:use-module (common channels)
   #:use-module (common services mcron)
   #:use-module (common services substitute)
@@ -60,9 +61,15 @@
 
                 (service nix-service-type)
 
-                ;; Docker
-                (service containerd-service-type)
-                (service docker-service-type)
+                ;; rootless podman
+                (service iptables-service-type
+                         (iptables-configuration))
+                (service rootless-podman-service-type
+                         (rootless-podman-configuration
+                          (subgids
+                           (list (subid-range (name "paul"))))
+                          (subuids
+                           (list (subid-range (name "paul"))))))
 
                 ;; Apple keyboards
                 (simple-service 'hid-apple-config etc-service-type

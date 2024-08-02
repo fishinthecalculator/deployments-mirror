@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -eux
+
+guix_host="$(hostname)"
+
+exec "$(guix system vm -e "(@@ (${guix_host} system config) ${guix_host}-system)" "$@")"
