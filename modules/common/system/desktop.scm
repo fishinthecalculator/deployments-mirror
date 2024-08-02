@@ -25,10 +25,7 @@
                   (targets '("/boot/efi"))
                   (keyboard-layout common-kl)))
 
-    (file-systems (list (file-system
-                          (mount-point "/")
-                          (device "/dev/fake")
-                          (type "ext4"))))
+    (file-systems %base-file-systems)
 
     (host-name "common-host")
 
