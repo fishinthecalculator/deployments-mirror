@@ -20,7 +20,6 @@
   #:use-module (common home fishinthecalculator packages)
   #:use-module (common home fishinthecalculator services bash)
   #:use-module (common home fishinthecalculator services doom-emacs)
-  #:use-module (common home fishinthecalculator services seedvault-serve)
   #:use-module (ocui-service)
   #:use-module (ice-9 format))
 
@@ -52,7 +51,6 @@
 
    (services
     (list (service home-bash-service-type fishinthecalculator-bash-configuration)
-          (service home-seedvault-serve-service-type)
           (service home-dotfiles-service-type
                    (home-dotfiles-configuration
                     (layout 'stow)
