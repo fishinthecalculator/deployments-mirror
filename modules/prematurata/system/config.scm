@@ -132,8 +132,8 @@
 
     (kernel linux)
     (kernel-arguments
-     (cons* "resume=/dev/nvme0n1p2"        ;device that holds /swapfile
-            "resume_offset=76988225"       ;offset of /swapfile on device
+     (cons* "resume=/dev/nvme0n1p2"     ;device that holds /swapfile
+            "resume_offset=76988225"    ;offset of /swapfile on device
             %default-kernel-arguments))
     (initrd (lambda (file-systems . rest)
               (apply microcode-initrd
@@ -270,8 +270,8 @@
     (swap-devices
      (list
       (swap-space
-       ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
-       ;; for swapfile on Btrfs
-       (target "/swap/swapfile")
-       (dependencies (filter (file-system-mount-point-predicate "/")
-                             file-systems)))))))
+        ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+        ;; for swapfile on Btrfs
+        (target "/swap/swapfile")
+        (dependencies (filter (file-system-mount-point-predicate "/")
+                              file-systems)))))))
