@@ -33,7 +33,7 @@
      (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
   (channel
    (name gocix)
-   (url "https://git.sr.ht/~fishinthecalculator/gocix")
+   (url "https://github.com/fishinthecalculator/gocix")
    (branch "main")
    ;; Enable signature verification:
    (introduction
