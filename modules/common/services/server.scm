@@ -43,7 +43,8 @@
                              (name "sshd")
                              (enabled? #t))))))
 
-                ;; Dockerd
+                ;; Docker
+                (service containerd-service-type)
                 (service docker-service-type)
 
                 ;; The D-Bus clique.

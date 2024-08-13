@@ -60,7 +60,8 @@
 
                 (service nix-service-type)
 
-                ;; Containerd
+                ;; Docker
+                (service containerd-service-type)
                 (service docker-service-type)
 
                 ;; Apple keyboards
