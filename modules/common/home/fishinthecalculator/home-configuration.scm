@@ -78,7 +78,7 @@ git push github master"))
 
 (define guix-fork-sync-job
   ;; Run 'cleanup' at a given hour every day.
-  #~(job "* */6 * * *"
+  #~(job "0 */6 * * *"
          (string-append #$bash-minimal "/bin/bash -l "
                         #$guix-fork-sync-script)))
 
