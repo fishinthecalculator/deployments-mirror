@@ -11,6 +11,7 @@
   #:use-module (gnu home services shells)
   #:use-module (gnu home services sound)
   #:use-module (gnu home services ssh)
+  #:use-module (gnu packages bash)
   #:use-module (gnu services)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
@@ -45,6 +46,42 @@
         (string-append #$fishinthecalculator-scripts "/bin/cleanup")
         "cleanup"))
 
+(define guix-fork-sync-script
+  (plain-file
+   "guix-fork-sync-script"
+   "set -e
+
+if [ -z \"${XDG_CACHE_HOME}\" ]; then
+   CACHE=\"${HOME}/.cache\"
+else
+   CACHE=\"${XDG_CACHE_HOME}\"
+fi
+
+REPO_HOME=\"${CACHE}/guix-mirror-sync\"
+
+set -u
+
+export SSH_AUTH_SOCK=\"/run/user/${UID}/keyring/ssh\"
+
+if ! [ -d \"${REPO_HOME}/.git\" ]; then
+    rm -rfv \"${REPO_HOME}\"
+    git clone https://git.savannah.gnu.org/git/guix.git --branch master --single-branch \"${REPO_HOME}\"
+    cd \"${REPO_HOME}\"
+    git remote add github git@github.com:fishinthecalculator/guix-fork.git
+fi
+
+cd \"${REPO_HOME}\"
+git checkout -- .
+git checkout master
+git pull
+git push github master"))
+
+(define guix-fork-sync-job
+  ;; Run 'cleanup' at a given hour every day.
+  #~(job "* */6 * * *"
+         (string-append #$bash-minimal "/bin/bash -l "
+                        #$guix-fork-sync-script)))
+
 (define-public fishinthecalculator-home-environment
   (home-environment
    (packages fishinthecalculator-packages)
@@ -74,9 +111,10 @@
                            docker-credential-secretservice))
                     (extra-content ", \"auths\": {\"https://index.docker.io/v1/\": {}}")))
 
-          (simple-service 'fishinthecalculator-mcron
+          (simple-service 'fishinthecalculator-mcon
                           home-mcron-service-type
                           (list (cleanup-job)
+                                guix-fork-sync-job
                                 upall-job))
 
           (simple-service 'fishinthecalculator-fonts
