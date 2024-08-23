@@ -4,6 +4,7 @@
   #:use-module (gnu packages backup)         ;for restic
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
+  #:use-module (gnu services admin)          ;for rottlog-service-type
   #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
@@ -254,8 +255,25 @@
                              (auto-enable? #t)))
 
                    (simple-service 'blueman dbus-root-service-type
-                                   (list blueman)))
+                                   (list blueman))
+
+                   (simple-service 'shepherd-log-management
+                                   shepherd-root-service-type
+                                   (list
+                                    (shepherd-service
+                                     (documentation "Shepherd's built-in system log (syslogd).")
+                                     (provision '(system-log syslogd))
+                                     (modules '((shepherd service system-log)))
+                                     (free-form #~(system-log-service)))
+                                    (shepherd-service
+                                     (documentation "Shepherd's built-in log rotator (rottlog).")
+                                     (provision '(log-rotation))
+                                     (modules '((shepherd service log-rotation)))
+                                     (free-form #~(log-rotation-service))))))
              (modify-services %common-desktop-services
+               (delete rottlog-service-type) ;replaced by the Shepherd's
+               (delete syslog-service-type)  ;replaced by the Shepherd's
+
                (guix-service-type config =>
                                   (guix-configuration (inherit config)
                                                       (authorized-keys
@@ -290,8 +308,8 @@
     (swap-devices
      (list
       (swap-space
-        ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
-        ;; for swapfile on Btrfs
-        (target "/swap/swapfile")
-        (dependencies (filter (file-system-mount-point-predicate "/")
-                              file-systems)))))))
+       ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+       ;; for swapfile on Btrfs
+       (target "/swap/swapfile")
+       (dependencies (filter (file-system-mount-point-predicate "/")
+                             file-systems)))))))
