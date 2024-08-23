@@ -11,6 +11,7 @@
   #:use-module (gnu services guix)           ;for guix-home-service-type
   #:use-module (gnu services mcron)          ;for mcron-service-type
   #:use-module (gnu services networking)     ;for tor-service-type
+  #:use-module (gnu services shepherd)       ;for shepherd-root-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services vpn)            ;for wireguard-service-type
@@ -174,6 +175,15 @@
     (packages (append (list bluez bluez-alsa blueman
                             my-moolticute-0.44.19)
                       (operating-system-packages common-desktop-system)))
+
+    ;; Use own Shepherd package.
+    (essential-services
+     (modify-services (operating-system-default-essential-services
+                       this-operating-system)
+       (shepherd-root-service-type config => (shepherd-configuration
+                                              (inherit config)
+                                              (shepherd
+                                               (@ (shepherd-package) shepherd))))))
 
     (services
      (append (list (service openssh-service-type
