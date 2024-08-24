@@ -22,7 +22,8 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
-  #:use-module ((small-guix services pam) #:prefix small-guix:) ;for pam-limits-service-type
+  #:use-module ((small-guix services pam) #:prefix small-guix-pam:) ;for pam-limits-service-type
+  #:use-module ((small-guix services backup) #:prefix small-guix-backup:) ;for restic-backup-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
@@ -196,7 +197,7 @@
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
 
-                   (service restic-backup-service-type
+                   (service small-guix-backup:restic-backup-service-type
                             (restic-backup-configuration
                              (jobs
                               (append backup-system-jobs
@@ -221,7 +222,7 @@
                    ;; Realtime features. Needed for supercollider.
                    ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
                    (simple-service 'supercollider-rules
-                                   small-guix:pam-limits-service-type
+                                   small-guix-pam:pam-limits-service-type
                                    (list
                                     (pam-limits-entry "@realtime" 'both 'rtprio 99)
                                     (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
