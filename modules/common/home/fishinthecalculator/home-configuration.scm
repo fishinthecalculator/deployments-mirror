@@ -35,11 +35,11 @@
   (string-append %here
                  "/etc"))
 
-(define upall-job
+(define nix-update-job
   ;; Run 'upall' at 23:10 every day.
   #~(job "10 23 * * *"
-         (string-append #$fishinthecalculator-scripts "/bin/upall")
-         "upall"))
+         (string-append #$bash-minimal "/bin/bash -l -c 'nix-update'")
+         "nix-update"))
 
 (define* (cleanup-job #:key (hours 23) (minutes 0))
  ;; Run 'cleanup' at a given hour every day.
@@ -109,7 +109,7 @@ git push github master"))
                           home-mcron-service-type
                           (list (cleanup-job)
                                 guix-fork-sync-job
-                                upall-job))
+                                nix-update-job))
 
           (simple-service 'fishinthecalculator-fonts
                           home-fontconfig-service-type
