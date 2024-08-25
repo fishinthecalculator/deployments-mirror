@@ -221,7 +221,7 @@
 
                    ;; Realtime features. Needed for supercollider.
                    ;; See https://guix.gnu.org/manual/devel/en/guix.html#index-realtime
-                   (simple-service 'supercollider-rules
+                   (simple-service 'supercollider-pam-limits
                                    small-guix-pam:pam-limits-service-type
                                    (list
                                     (pam-limits-entry "@realtime" 'both 'rtprio 99)
@@ -255,7 +255,7 @@
                             (bluetooth-configuration
                              (auto-enable? #t)))
 
-                   (simple-service 'blueman dbus-root-service-type
+                   (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
 
                    (simple-service 'shepherd-log-management
