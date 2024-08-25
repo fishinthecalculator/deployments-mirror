@@ -16,6 +16,7 @@
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix home services docker-cli)
+  #:use-module (small-guix home services shells)
   #:use-module (gnu home services dotfiles)
   #:use-module (common keys)
   #:use-module (common home fishinthecalculator packages)
@@ -88,6 +89,7 @@ git push github master"))
 
    (services
     (list (service home-bash-service-type fishinthecalculator-bash-configuration)
+          (service home-osh-service-type fishinthecalculator-osh-configuration)
           (service home-dotfiles-service-type
                    (home-dotfiles-configuration
                     (layout 'stow)
