@@ -22,7 +22,6 @@
   #:use-module (gnu services sddm)
   #:use-module (gnu services spice) ;for spice-vdagent-service
   #:use-module (gnu services virtualization)
-  #:use-module (gnu services xorg)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (small-guix system accounts)
@@ -32,28 +31,11 @@
   #:use-module (common services substitute)
   #:use-module (common system input)
   #:use-module (srfi srfi-1)
-  #:export (%common-desktop-services
-            %common-xorg-configuration))
-
-(define %common-xorg-configuration
-  (xorg-configuration (keyboard-layout common-kl)))
-
-(define %upstream-desktop-services
-  (modify-services %desktop-services
-    ;; Enable additional substitute servers.
-    (guix-service-type config =>
-                       (guix-configuration (inherit config)
-                                           (channels %deployments-channels)
-                                           (substitute-urls
-                                            %common-substitute-urls)
-                                           (authorized-keys
-                                            %common-authorized-keys)))))
+  #:export (%common-desktop-services))
 
 (define %common-desktop-services
   (append (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
-                (set-xorg-configuration
-                 %common-xorg-configuration)
 
                 (simple-service 'common-cron-jobs
                                 mcron-service-type
@@ -114,13 +96,12 @@
                 (extra-special-file "/usr/bin/env"
                                     (file-append coreutils "/bin/env")))
 
-          (if (any (lambda (s)
-                     (eq? gdm-service-type (service-kind s)))
-                   %upstream-desktop-services)
-              (modify-services %upstream-desktop-services
-                ;; Enable Wayland
-                (gdm-service-type config =>
-                                  (gdm-configuration (inherit config)
-                                                     (xorg-configuration
-                                                      %common-xorg-configuration))))
-              %upstream-desktop-services)))
+          (modify-services %desktop-services
+            ;; Enable additional substitute servers.
+            (guix-service-type config =>
+                               (guix-configuration (inherit config)
+                                                   (channels %deployments-channels)
+                                                   (substitute-urls
+                                                    %common-substitute-urls)
+                                                   (authorized-keys
+                                                    %common-authorized-keys))))))
