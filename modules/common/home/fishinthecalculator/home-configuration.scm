@@ -41,7 +41,7 @@
          (string-append #$bash-minimal "/bin/bash -l -c 'nix-update'")
          "nix-update"))
 
-(define* (cleanup-job #:key (hours 23) (minutes 0))
+(define* (cleanup-job #:key (hours 20) (minutes 30))
  ;; Run 'cleanup' at a given hour every day.
  #~(job #$(format #f "~a ~a * * *" minutes hours)
         (string-append #$fishinthecalculator-scripts "/bin/cleanup")
