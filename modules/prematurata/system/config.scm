@@ -30,6 +30,7 @@
   #:use-module (nongnu packages firmware)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
+  #:use-module (small-guix packages oils) ;for oils
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module ((small-guix services pam) #:prefix small-guix-pam:) ;for pam-limits-service-type
@@ -51,6 +52,9 @@
 
 (define paul-user
   (user-account (inherit paul-user)
+                ;; Use OSH shell by default
+                (shell
+                 (file-append oils "/bin/osh"))
                 (supplementary-groups
                  (cons "cgroup"
                        (delete "docker"
