@@ -27,7 +27,6 @@
   #:use-module (gnu system shadow)           ;for %base-user-accounts
   #:use-module (guix gexp)                   ;for #~ and #$
   #:use-module (guix utils)                  ;for current-source-directory
-  #:use-module (nongnu packages firmware)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
@@ -47,17 +46,6 @@
   #:use-module (common users)
   #:use-module (srfi srfi-1)
   #:export (prematurata-system))
-
-(use-modules (guix packages))
-(define fwupd-nonfree
-  (package
-    (inherit fwupd-nonfree)
-    (arguments
-     (substitute-keyword-arguments (package-arguments fwupd-nonfree)
-       ((#:configure-flags flags
-         #~'())
-        #~(cons "-DPOLKIT_ACTIONDIR=/etc/polkit-1/actions"
-                '#$flags))))))
 
 (define paul-user
   (user-account (inherit paul-user)
@@ -195,7 +183,7 @@
                  ;; Load the initrd with a key file
                  (extra-initrd "/crypto.cpio")))
 
-    (packages (append (list bluez bluez-alsa blueman fwupd-nonfree
+    (packages (append (list bluez bluez-alsa blueman
                             my-moolticute-0.44.19)
                       (operating-system-packages common-desktop-system)))
 
@@ -278,12 +266,6 @@
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
-
-                   (simple-service 'fwupd-dbus dbus-root-service-type
-                                   (list fwupd-nonfree))
-
-                   (simple-service 'fwupd-polkit polkit-service-type
-                                   (list fwupd-nonfree))
 
                    (simple-service 'shepherd-log-management
                                    shepherd-root-service-type
