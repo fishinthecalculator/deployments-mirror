@@ -48,17 +48,6 @@
   #:use-module (srfi srfi-1)
   #:export (prematurata-system))
 
-(use-modules (guix packages))
-(define fwupd-nonfree
-  (package
-    (inherit fwupd-nonfree)
-    (arguments
-     (substitute-keyword-arguments (package-arguments fwupd-nonfree)
-       ((#:configure-flags flags
-         #~'())
-        #~(cons "-DPOLKIT_ACTIONDIR=/etc/polkit-1/actions"
-                '#$flags))))))
-
 (define paul-user
   (user-account (inherit paul-user)
                 (supplementary-groups
