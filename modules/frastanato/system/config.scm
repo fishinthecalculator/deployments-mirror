@@ -295,6 +295,7 @@
                                                                               authorized-ssh-keys))))
                (guix-service-type guix-config =>
                                   (guix-configuration (inherit guix-config)
+                                                      (discover? #t)
                                                       (authorized-keys (append
                                                                         (guix-configuration-authorized-keys guix-config)
                                                                         authorized-guix-keys)))))))

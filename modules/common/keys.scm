@@ -39,6 +39,9 @@
 (define-public prematurata-guix-key
   (guix-key "prematurata.pub"))
 
+(define-public frastanato-guix-key
+  (guix-key "frastanato.pub"))
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; SSH Keys
 ;;;;;;;;;;;;;;;;;;;;

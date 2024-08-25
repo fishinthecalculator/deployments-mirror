@@ -63,7 +63,7 @@
 
 (define authorized-guix-keys
   (list
-   pinebook-guix-key))
+   frastanato-guix-key))
 
 (define prematurata.yaml
   (secrets-file "prematurata.yaml"))
@@ -296,6 +296,7 @@
 
                (guix-service-type config =>
                                   (guix-configuration (inherit config)
+                                                      (discover? #t)
                                                       (authorized-keys
                                                        (append
                                                         authorized-guix-keys
