@@ -1,9 +1,11 @@
 (define-module (prematurata system config)
-  #:use-module (gnu)
+  #:use-module (gnu bootloader)              ;for bootloader-configuration
+  #:use-module (gnu bootloader grub)         ;for grub-efi-bootloader
   #:use-module (gnu packages audio)          ;for bluez-alsa
   #:use-module (gnu packages backup)         ;for restic
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
+  #:use-module (gnu services)                ;for modify-services
   #:use-module (gnu services admin)          ;for rottlog-service-type
   #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module (gnu services backup)         ;for restic-backup-service-type
@@ -16,7 +18,14 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services vpn)            ;for wireguard-service-type
-  #:use-module (gnu services xorg)           ;for set-xorg-configuration
+  #:use-module (gnu system)                  ;for operating-system
+  #:use-module (gnu system accounts)         ;for user-account
+  #:use-module (gnu system file-systems)     ;for file-system
+  #:use-module (gnu system linux-initrd)     ;for base-initrd
+  #:use-module (gnu system mapped-devices)   ;for mapped-device
+  #:use-module (gnu system pam)              ;for pam-limits-entry
+  #:use-module (gnu system shadow)           ;for %base-user-accounts
+  #:use-module (guix gexp)                   ;for #~ and #$
   #:use-module (guix utils)                  ;for current-source-directory
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
