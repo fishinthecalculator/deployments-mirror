@@ -27,12 +27,14 @@
   #:use-module (gnu system shadow)           ;for %base-user-accounts
   #:use-module (guix gexp)                   ;for #~ and #$
   #:use-module (guix utils)                  ;for current-source-directory
+  #:use-module (nongnu packages firmware)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module ((small-guix services pam) #:prefix small-guix-pam:) ;for pam-limits-service-type
   #:use-module ((small-guix services backup) #:prefix small-guix-backup:) ;for restic-backup-service-type
+  #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (common keys)
@@ -245,6 +247,10 @@
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
                                                                    "arm"
                                                                    "aarch64"))))
+
+                   (service fwupd-service-type
+                            (fwupd-configuration
+                             (fwupd fwupd-nonfree)))
 
                                         ;(service tailscaled-service-type)
 
