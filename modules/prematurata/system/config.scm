@@ -27,9 +27,9 @@
   #:use-module (gnu system shadow)           ;for %base-user-accounts
   #:use-module (guix gexp)                   ;for #~ and #$
   #:use-module (guix utils)                  ;for current-source-directory
-  #:use-module (nongnu packages firmware)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
+  #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
   #:use-module (small-guix packages oils) ;for oils
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
