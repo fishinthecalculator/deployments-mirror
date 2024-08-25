@@ -21,6 +21,7 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
+  #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (common keys)
   #:use-module (common scripts)
@@ -183,7 +184,7 @@
                              "rclone"
                              "emacs"
                              "ripgrep"))
-                      (list common-deploy-scripts)
+                      (list common-deploy-scripts btdu)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available

@@ -7,6 +7,7 @@
   #:use-module (gnu packages vpn)
   #:use-module (gnu system)
   #:use-module (gnu system nss)
+  #:use-module (small-guix packages btdu)
   #:use-module (small-guix packages gnome)
   #:use-module (small-guix packages solo)
   #:use-module (common locales)
@@ -43,7 +44,7 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list gnome-browser-connector solo2 common-glibc-locales)
+    (packages (append (list gnome-browser-connector solo2 btdu common-glibc-locales)
                       (map specification->package+output
                            (list "wireguard-tools"
                                  "brillo"
