@@ -1,11 +1,12 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2022-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common home fishinthecalculator services bash)
+(define-module (common home fishinthecalculator services shells)
   #:use-module (guix gexp)
   #:use-module (guix utils)
   #:use-module (gnu home services)
-  #:use-module (gnu home services shells))
+  #:use-module (gnu home services shells)
+  #:use-module (small-guix home services shells))
 
 (define %dotfiles-dir
   (local-file (string-append (current-source-directory)
@@ -23,6 +24,16 @@
      (file-append %dotfiles-dir "/bash/bash_profile_git_branch")))
    (bashrc (list (file-append %dotfiles-dir "/bash/bashrc_tmux")
                  (file-append %dotfiles-dir "/bash/bashrc_direnv")))))
+
+(define-public fishinthecalculator-osh-configuration
+  (home-osh-configuration
+   (guix-defaults? #t)
+   (functions '(("la" . "ls -la") ("lr" . "ls -ltr")
+                ("g" . "cd ~/code/guix") ("gg" . "cd ~/code/guile")
+                ("nix-update" . "nix-channel --update && nix-env -u")))
+   (oshrc (list (file-append %dotfiles-dir "/bash/bash_profile_git_branch")
+                (file-append %dotfiles-dir "/bash/bashrc_tmux")
+                (file-append %dotfiles-dir "/bash/bashrc_direnv")))))
 
 (define-public fishinthecalculator-shell-profile-extensions
   ;; Order DOES matter

@@ -19,7 +19,7 @@
   #:use-module (gnu home services dotfiles)
   #:use-module (common keys)
   #:use-module (common home fishinthecalculator packages)
-  #:use-module (common home fishinthecalculator services bash)
+  #:use-module (common home fishinthecalculator services shells)
   #:use-module (common home fishinthecalculator services doom-emacs)
   #:use-module (ocui-service)
   #:use-module (ice-9 format))
