@@ -5,7 +5,7 @@
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
-  #:use-module (gnu services backup)         ;for restic-backup-service-type
+  ;#:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services cuirass)        ;for transmission-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
@@ -23,6 +23,7 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (small-guix packages scripts) ;for restic-bin
+  #:use-module (small-guix services backup) ;for restic-backup-service-type
   #:use-module (common keys)
   #:use-module (common scripts)
   #:use-module (common secrets)
