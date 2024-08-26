@@ -52,9 +52,10 @@
 
 (define paul-user
   (user-account (inherit paul-user)
-                ;; Use OSH shell by default
-                (shell
-                 (file-append oils "/bin/osh"))
+                ;; Some things still break.
+                ;; ;; Use OSH shell by default
+                ;; (shell
+                ;;  (file-append oils "/bin/osh"))
                 (supplementary-groups
                  (cons "cgroup"
                        (delete "docker"
