@@ -5,6 +5,7 @@
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu services admin)
+  #:use-module (gnu services avahi)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop) ;for elogind-service
   #:use-module (gnu services docker)
@@ -42,6 +43,8 @@
                             (fail2ban-jail-configuration
                              (name "sshd")
                              (enabled? #t))))))
+
+                (service avahi-service-type)
 
                 ;; Docker
                 (service containerd-service-type)
