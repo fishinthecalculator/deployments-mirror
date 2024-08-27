@@ -5,7 +5,7 @@
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
-  ;#:use-module (gnu services backup)         ;for restic-backup-service-type
+  #:use-module ((gnu services backup) #:prefix mainline:)       ;for restic-backup-service-type
   #:use-module (gnu services cuirass)        ;for transmission-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
@@ -40,7 +40,7 @@
 
 (define-public backup-system-jobs
   (map (lambda (repo)
-         (restic-backup-job
+         (mainline:restic-backup-job
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
@@ -201,7 +201,7 @@
 
               ;; Backups
               (service restic-backup-service-type
-                       (restic-backup-configuration
+                       (mainline:restic-backup-configuration
                         (jobs
                          (append backup-system-jobs))))
 
