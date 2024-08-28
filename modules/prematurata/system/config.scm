@@ -26,7 +26,9 @@
   #:use-module (gnu system pam)              ;for pam-limits-entry
   #:use-module (gnu system shadow)           ;for %base-user-accounts
   #:use-module (guix gexp)                   ;for #~ and #$
+  #:use-module (guix packages)               ;for package-source
   #:use-module (guix utils)                  ;for current-source-directory
+  #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
@@ -277,6 +279,11 @@
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
+
+                   ;; cache some binary sources
+                   (simple-service 'cache-binaries
+                                   gc-root-service-type
+                                   (list (package-source zoom)))
 
                    (simple-service 'shepherd-log-management
                                    shepherd-root-service-type
