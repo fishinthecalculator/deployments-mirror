@@ -17,21 +17,6 @@ search-replace () {
     find \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s/${1}/${2}/g"
 }
 
-setup_guix_env () {
-    if [[ "$#" -ne 1 ]]; then
-        error_interactive_log "Error: missing argument!"
-        interactive_log "Usage: $0 /path/to/profile"
-        return
-    fi
-    # Use Guix locale files for Guix packages
-    export GUIX_LOCPATH="$1/lib/locale"
-    # Enable SSL support for Guix packages
-    export SSL_CERT_DIR="$1/etc/ssl/certs"
-    export SSL_CERT_FILE="$1/etc/ssl/certs/ca-certificates.crt"
-    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-    export CURL_CA_BUNDLE="$SSL_CERT_FILE"
-}
-
 source_profile () {
     # shellcheck disable=SC2039
     local GUIX_PROFILE="${HOME}/.guix-profile"
