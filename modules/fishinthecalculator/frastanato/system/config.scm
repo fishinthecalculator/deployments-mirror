@@ -75,7 +75,7 @@
   #~(list
      (specification
       (name "deployments")
-      (build '(channels deployments))
+      (build '(images))
       (channels
        (cons (channel
               (name 'deployments)
