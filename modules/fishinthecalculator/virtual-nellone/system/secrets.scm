@@ -1,9 +1,9 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (virtual-nellone system secrets)
+(define-module (fishinthecalculator virtual-nellone system secrets)
   #:use-module (sops secrets)
-  #:use-module (common secrets))
+  #:use-module (fishinthecalculator common secrets))
 
 (define-public virtual_nellone.yaml
   (secrets-file "virtual_nellone.yaml"))

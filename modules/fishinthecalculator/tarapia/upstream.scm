@@ -1,4 +1,4 @@
-(define-module (tarapia upstream)
+(define-module (fishinthecalculator tarapia upstream)
   #:use-module (guix channels))
 
 (list (channel

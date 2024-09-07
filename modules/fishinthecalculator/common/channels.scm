@@ -1,4 +1,4 @@
-(define-module (common channels)
+(define-module (fishinthecalculator common channels)
   #:use-module (guix channels)
   #:use-module (guix gexp)
   #:export (%deployments-channels

@@ -1,4 +1,4 @@
-(define-module (common services firewall)
+(define-module (fishinthecalculator common services firewall)
   #:use-module (gnu services networking)
   #:use-module (guix gexp)
   #:export (%common-iptables-configuration))

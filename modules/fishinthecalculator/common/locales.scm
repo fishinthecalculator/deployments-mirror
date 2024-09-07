@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2022, 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common locales)
+(define-module (fishinthecalculator common locales)
   #:use-module (gnu packages base))
 
 (define-public common-glibc-locales

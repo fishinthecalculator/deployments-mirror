@@ -1,12 +1,12 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common services base)
+(define-module (fishinthecalculator common services base)
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu services base)
-  #:use-module (common channels)
-  #:use-module (common services substitute)
+  #:use-module (fishinthecalculator common channels)
+  #:use-module (fishinthecalculator common services substitute)
   #:export (%common-base-services))
 
 (define %common-base-services

@@ -1,13 +1,13 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common secrets)
+(define-module (fishinthecalculator common secrets)
   #:use-module (gnu)
   #:use-module (guix gexp)
   #:use-module (guix utils)
   #:use-module (sops secrets)
-  #:use-module (common self)
-  #:use-module (common users))
+  #:use-module (fishinthecalculator common self)
+  #:use-module (fishinthecalculator common users))
 
 (define-public %common-secrets-dir
   (local-file (string-append %deployments-channel-root "/secrets")

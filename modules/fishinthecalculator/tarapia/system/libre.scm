@@ -1,4 +1,4 @@
-(define-module (tarapia system libre))
+(define-module (fishinthecalculator tarapia system libre))
 (use-modules (gnu)
              (gnu packages bootloaders)
              (gnu system images pinebook-pro))

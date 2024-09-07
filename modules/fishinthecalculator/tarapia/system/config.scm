@@ -1,4 +1,4 @@
-(define-module (tarapia system config))
+(define-module (fishinthecalculator tarapia system config))
 
 (use-modules (gnu) (nongnu packages linux) (nongnu packages firmware) (gnu bootloader u-boot)  (gnu system images pinebook-pro) (srfi srfi-1))
 

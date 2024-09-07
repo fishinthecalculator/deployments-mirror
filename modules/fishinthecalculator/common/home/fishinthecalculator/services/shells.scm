@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2022-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common home fishinthecalculator services shells)
+(define-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (guix gexp)
   #:use-module (guix utils)
   #:use-module (gnu home services)

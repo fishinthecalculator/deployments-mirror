@@ -6,4 +6,4 @@ set -eux
 
 guix_host="$(hostname)"
 
-guix system reconfigure -e "(@@ (${guix_host} system config) ${guix_host}-system)" "$@"
+guix system reconfigure -e "(@ (fishinthecalculator ${guix_host} system config) ${guix_host}-system)" "$@"

@@ -1,18 +1,18 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (frastanato system image)
+(define-module (fishinthecalculator frastanato system image)
   #:use-module (gnu image)
   #:use-module (gnu system image)
   #:use-module (guix gexp)
 ;  #:use-module (guix monads)
 ;  #:use-module (guix store)
   #:use-module (guix profiles)
-  #:use-module (common system install)
-  #:use-module (frastanato system config)
-  #:use-module (prematurata system config)
+  #:use-module (fishinthecalculator common system install)
+  #:use-module (fishinthecalculator frastanato system config)
+  #:use-module (fishinthecalculator prematurata system config)
   #:use-module (ice-9 match)
-  #:export (frastanato-tarball))
+  #:export (fishinthecalculator frastanato-tarball))
 
 
 ;; (define* (lower-operating-system os

@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2022-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common services desktop)
+(define-module (fishinthecalculator common services desktop)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for solaar-udev-rules
   #:use-module (gnu packages android) ;for android-udev-rules
@@ -26,10 +26,10 @@
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (small-guix system accounts)
   #:use-module (small-guix services containers)     ;for rootless-podman-service-type
-  #:use-module (common channels)
-  #:use-module (common services mcron)
-  #:use-module (common services substitute)
-  #:use-module (common system input)
+  #:use-module (fishinthecalculator common channels)
+  #:use-module (fishinthecalculator common services mcron)
+  #:use-module (fishinthecalculator common services substitute)
+  #:use-module (fishinthecalculator common system input)
   #:use-module (srfi srfi-1)
   #:export (%common-desktop-services))
 

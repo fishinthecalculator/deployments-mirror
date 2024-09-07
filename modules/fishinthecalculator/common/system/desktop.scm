@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2021, 2022, 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common system desktop)
+(define-module (fishinthecalculator common system desktop)
   #:use-module (gnu)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages vpn)
@@ -10,10 +10,10 @@
   #:use-module (small-guix packages btdu)
   #:use-module (small-guix packages gnome)
   #:use-module (small-guix packages solo)
-  #:use-module (common locales)
-  #:use-module (common services desktop)
-  #:use-module (common system input)
-  #:export (common-desktop-system))
+  #:use-module (fishinthecalculator common locales)
+  #:use-module (fishinthecalculator common services desktop)
+  #:use-module (fishinthecalculator common system input)
+  #:export (fishinthecalculator common-desktop-system))
 
 (define common-desktop-system
   (operating-system

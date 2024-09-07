@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common services server)
+(define-module (fishinthecalculator common services server)
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu services admin)
@@ -14,9 +14,9 @@
   #:use-module (gnu services security)
   #:use-module (gnu services ssh)
   #:use-module (guix gexp)
-  #:use-module (common services base)
-  #:use-module (common services firewall)
-  #:use-module (common services mcron)
+  #:use-module (fishinthecalculator common services base)
+  #:use-module (fishinthecalculator common services firewall)
+  #:use-module (fishinthecalculator common services mcron)
   #:export (%common-server-services))
 
 (define gc-job

@@ -1,10 +1,10 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common keys)
+(define-module (fishinthecalculator common keys)
   #:use-module (guix gexp)
   #:use-module (guix utils)
-  #:use-module (common self))
+  #:use-module (fishinthecalculator common self))
 
 (define-public %common-keys-dir
   (local-file (string-append %deployments-channel-root "/keys")

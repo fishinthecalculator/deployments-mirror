@@ -1,8 +1,8 @@
-(define-module (virtual-nellone machine deploy)
+(define-module (fishinthecalculator virtual-nellone machine deploy)
   #:use-module (gnu)
   #:use-module (gnu machine)
   #:use-module (gnu machine ssh)
-  #:use-module (virtual-nellone system config))
+  #:use-module (fishinthecalculator virtual-nellone system config))
 
 (define %user
   "deploy")

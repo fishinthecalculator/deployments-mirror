@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (frastanato system config)
+(define-module (fishinthecalculator frastanato system config)
   #:use-module (gnu)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
@@ -24,15 +24,15 @@
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup) ;for restic-backup-service-type
-  #:use-module (common keys)
-  #:use-module (common scripts)
-  #:use-module (common secrets)
-  #:use-module (common self)
-  #:use-module (common services server)
-  #:use-module (common services unattended-upgrades)
-  #:use-module (common users)
+  #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common scripts)
+  #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common self)
+  #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common users)
   #:use-module (srfi srfi-1)
-  #:export (frastanato-system))
+  #:export (fishinthecalculator frastanato-system))
 
 (define restic-repositories
   '("rclone:onedrive:backup/restic"

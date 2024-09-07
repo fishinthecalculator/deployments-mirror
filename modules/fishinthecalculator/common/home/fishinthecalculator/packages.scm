@@ -1,4 +1,4 @@
-(define-module (common home fishinthecalculator packages)
+(define-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages)
@@ -16,8 +16,8 @@
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix packages scheme-lsp)
   #:use-module (small-guix utils)
-  #:use-module (common scripts)
-  #:use-module (common home fishinthecalculator const))
+  #:use-module (fishinthecalculator common scripts)
+  #:use-module (fishinthecalculator common home fishinthecalculator const))
 
 (define-public fishinthecalculator-scripts
   (make-scripts-package "fishinthecalculator-scripts"

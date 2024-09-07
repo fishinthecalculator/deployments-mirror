@@ -1,10 +1,10 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common services substitute)
+(define-module (fishinthecalculator common services substitute)
   #:use-module (gnu)
   #:use-module (gnu system)
-  #:use-module (common keys)
+  #:use-module (fishinthecalculator common keys)
   #:export (%common-substitute-urls
             %common-authorized-keys))
 

@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common services mcron)
+(define-module (fishinthecalculator common services mcron)
   #:use-module (gnu packages base)  ;for findutils
   #:use-module (guix gexp)
   #:export (updatedb-job))

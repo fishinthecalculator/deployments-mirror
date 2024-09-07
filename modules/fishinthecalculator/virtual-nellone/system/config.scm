@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (virtual-nellone system config)
+(define-module (fishinthecalculator virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu packages databases)      ;for postgresql-13
   #:use-module (gnu packages geo)            ;for postgis
@@ -16,14 +16,14 @@
   #:use-module (oci services grafana)
   #:use-module (oci services meilisearch)
   #:use-module (oci services prometheus)
-  #:use-module (common keys)
-  #:use-module (common scripts)
-  #:use-module (common secrets)
-  #:use-module (common services server)
-  #:use-module (common services unattended-upgrades)
-  #:use-module (common users)
-  #:use-module (virtual-nellone system secrets)
-  #:export (virtual-nellone-system))
+  #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common scripts)
+  #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common users)
+  #:use-module (fishinthecalculator virtual-nellone system secrets)
+  #:export (fishinthecalculator virtual-nellone-system))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))

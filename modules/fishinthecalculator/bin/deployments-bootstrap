@@ -3,7 +3,7 @@
 set -eu
 
 DEPLOYMENTS_PATH="/tmp/guix-deployments/modules"
-DEPLOYMENTS_BIN="${DEPLOYMENTS_PATH}/bin"
+DEPLOYMENTS_BIN="${DEPLOYMENTS_PATH}/fishinthecalculator/common/bin"
 
 cd /tmp && rm -rf guix-deployments && guix shell git -- git clone https://gitlab.com/orang3/guix-deployments
 export PATH="${DEPLOYMENTS_BIN}:${PATH}"

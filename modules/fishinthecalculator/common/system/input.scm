@@ -1,10 +1,10 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common system input)
+(define-module (fishinthecalculator common system input)
   #:use-module (gnu)
   #:use-module (gnu system)
-  #:export (common-kl
+  #:export (fishinthecalculator common-kl
             common-hid-apple-config))
 
 (define common-kl

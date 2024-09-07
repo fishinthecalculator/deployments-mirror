@@ -3,7 +3,7 @@
 set -ex
 
 if [ -z "${HOME_RECONFIGURE_EXPRESSION}" ]; then
-    HOME_RECONFIGURE_EXPRESSION="(@ (common home ${USER} home-configuration) ${USER}-home-environment)"
+    HOME_RECONFIGURE_EXPRESSION="(@ (fishinthecalculator common home ${USER} home-configuration) ${USER}-home-environment)"
 fi
 
 set -u

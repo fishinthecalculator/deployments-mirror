@@ -1,4 +1,4 @@
-(define-module (common users)
+(define-module (fishinthecalculator common users)
   #:use-module (gnu))
 
 (define-public paul-user

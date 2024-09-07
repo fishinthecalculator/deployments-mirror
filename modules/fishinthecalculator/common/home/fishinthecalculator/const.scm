@@ -1,4 +1,4 @@
-(define-module (common home fishinthecalculator const)
+(define-module (fishinthecalculator common home fishinthecalculator const)
   #:use-module (guix gexp)
   #:use-module (guix utils))
 

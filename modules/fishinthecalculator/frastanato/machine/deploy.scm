@@ -1,8 +1,8 @@
-(define-module (frastanato machine deploy)
+(define-module (fishinthecalculator frastanato machine deploy)
   #:use-module (gnu)
   #:use-module (gnu machine)
   #:use-module (gnu machine ssh)
-  #:use-module (frastanato system config))
+  #:use-module (fishinthecalculator frastanato system config))
 
 (define %user
   "deploy")

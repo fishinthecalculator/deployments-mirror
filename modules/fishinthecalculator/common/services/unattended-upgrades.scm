@@ -1,8 +1,8 @@
-(define-module (common services unattended-upgrades)
+(define-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (guix gexp)
   #:use-module (gnu)
   #:use-module (gnu services admin)
-  #:use-module (common channels)
+  #:use-module (fishinthecalculator common channels)
   #:use-module (ice-9 format)
   #:export (deployments-unattended-upgrades))
 

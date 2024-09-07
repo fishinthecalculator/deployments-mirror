@@ -4,14 +4,14 @@
 ;; Generate a bootable image (e.g. for USB sticks, etc.) with:
 ;; $ guix system image -L `pwd`/modules --image-type=iso9660 modules/common/system/install.scm
 
-(define-module (common system install)
+(define-module (fishinthecalculator common system install)
   #:use-module (gnu packages package-management) ;for guix-for-channels
   #:use-module (gnu services)
   #:use-module (gnu services base)
   #:use-module (gnu system)
   #:use-module (nongnu system install)
-  #:use-module (common channels)
-  #:use-module (common services substitute)
+  #:use-module (fishinthecalculator common channels)
+  #:use-module (fishinthecalculator common services substitute)
   #:export (installation-os-deployments))
 
 (define installation-os-deployments

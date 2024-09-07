@@ -1,13 +1,13 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common scripts)
+(define-module (fishinthecalculator common scripts)
   #:use-module ((guix licenses)
                 #:prefix license:)
   #:use-module (gnu packages base)
   #:use-module (gnu packages bash)
   #:use-module (small-guix utils)
-  #:use-module (common self))
+  #:use-module (fishinthecalculator common self))
 
 (define-public common-deploy-scripts
   (make-scripts-package "common-deploy-scripts"

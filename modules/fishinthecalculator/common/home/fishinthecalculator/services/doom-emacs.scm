@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (common home fishinthecalculator services doom-emacs)
+(define-module (fishinthecalculator common home fishinthecalculator services doom-emacs)
   #:use-module (gnu packages version-control)
   #:use-module (gnu home services)
   #:use-module (gnu home services shepherd)

@@ -4,4 +4,4 @@ set -eux
 
 guix_host="$(hostname)"
 
-exec "$(guix system vm -e "(@@ (${guix_host} system config) ${guix_host}-system)" "$@")"
+exec "$(guix system vm -e "(@@ (fishinthecalculator ${guix_host} system config) ${guix_host}-system)" "$@")"

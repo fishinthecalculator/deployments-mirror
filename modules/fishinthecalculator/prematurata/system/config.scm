@@ -1,4 +1,4 @@
-(define-module (prematurata system config)
+(define-module (fishinthecalculator prematurata system config)
   #:use-module (gnu bootloader)              ;for bootloader-configuration
   #:use-module (gnu bootloader grub)         ;for grub-efi-bootloader
   #:use-module (gnu packages audio)          ;for bluez-alsa
@@ -40,17 +40,17 @@
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
-  #:use-module (common keys)
-  #:use-module (common home fishinthecalculator home-configuration)
-  #:use-module (common secrets)
-  #:use-module (common self)
-  #:use-module (common services desktop)
-  #:use-module (common services unattended-upgrades)
-  #:use-module (common system desktop)
-  #:use-module (common system input)
-  #:use-module (common users)
+  #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common home fishinthecalculator home-configuration)
+  #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common self)
+  #:use-module (fishinthecalculator common services desktop)
+  #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common system desktop)
+  #:use-module (fishinthecalculator common system input)
+  #:use-module (fishinthecalculator common users)
   #:use-module (srfi srfi-1)
-  #:export (prematurata-system))
+  #:export (fishinthecalculator prematurata-system))
 
 (define paul-user
   (user-account (inherit paul-user)
