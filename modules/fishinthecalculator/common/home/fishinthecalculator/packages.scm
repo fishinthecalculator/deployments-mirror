@@ -84,6 +84,7 @@
                      "qbittorrent"
                      "papirus-icon-theme"
                      "font-gnu-unifont"
+                     "mumi"
                      "curl"
                      "tmux"
                      "font-gnu-freefont"
