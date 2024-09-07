@@ -199,6 +199,13 @@
                         (port 8081)
                         (specifications %cuirass-specs)))
 
+              ;; Serve Guix substitutes over LAN.
+              (service guix-publish-service-type
+                       (guix-publish-configuration
+                        (port 90798)
+                        (host "0.0.0.0")
+                        (advertise? #t)))
+
               ;; Backups
               (service restic-backup-service-type
                        (mainline:restic-backup-configuration
