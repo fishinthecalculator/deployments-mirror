@@ -33,8 +33,8 @@
                           (password-authentication? #f)
                           (x11-forwarding? #f)))
 
-                ;; (service iptables-service-type
-                ;;          %common-iptables-configuration)
+                (service iptables-service-type
+                         %common-iptables-configuration)
 
                 (service fail2ban-service-type
                          (fail2ban-configuration
