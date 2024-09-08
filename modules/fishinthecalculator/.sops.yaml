@@ -11,7 +11,7 @@ creation_rules:
           - age:
                 - *user_paul_age
                 - *host_frastanato
-          - pgp:
+            pgp:
                 - *user_paul
                 - *host_prematurata
     - path_regex: .*prematurata\.yaml$
