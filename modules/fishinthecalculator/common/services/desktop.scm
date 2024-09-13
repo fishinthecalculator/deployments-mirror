@@ -14,7 +14,6 @@
   #:use-module (gnu system)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
-  #:use-module (gnu services docker)
   #:use-module (gnu services linux)
   #:use-module (gnu services mcron)
   #:use-module (gnu services nix)
@@ -43,19 +42,16 @@
                                 (list updatedb-job))
 
                 (service nix-service-type)
-                ;; docker
-                (service containerd-service-type)
-                (service docker-service-type)
 
                 ;; rootless podman
-                ;; (service iptables-service-type
-                ;;          (iptables-configuration))
-                ;; (service rootless-podman-service-type
-                ;;          (rootless-podman-configuration
-                ;;           (subgids
-                ;;            (list (subid-range (name "paul"))))
-                ;;           (subuids
-                ;;            (list (subid-range (name "paul"))))))
+                (service iptables-service-type
+                         (iptables-configuration))
+                (service rootless-podman-service-type
+                         (rootless-podman-configuration
+                          (subgids
+                           (list (subid-range (name "paul"))))
+                          (subuids
+                           (list (subid-range (name "paul"))))))
 
                 ;; Apple keyboards
                 (simple-service 'hid-apple-config etc-service-type

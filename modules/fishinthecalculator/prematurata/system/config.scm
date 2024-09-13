@@ -59,12 +59,10 @@
                 ;; (shell
                 ;;  (file-append oils "/bin/osh"))
                 (supplementary-groups
-                 ;;(cons "cgroup"
- ;;                      (delete "docker"
+                 (cons "cgroup"
+                       (delete "docker"
                                (user-account-supplementary-groups
-                                paul-user))))
-;;)
-;;)
+                                paul-user))))))
 
 (define authorized-guix-keys
   (list
