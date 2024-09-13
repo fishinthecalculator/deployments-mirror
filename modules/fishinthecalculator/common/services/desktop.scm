@@ -48,7 +48,6 @@
                          (iptables-configuration))
                 (service rootless-podman-service-type
                          (rootless-podman-configuration
-                          (docker-emulation? #t)
                           (subgids
                            (list (subid-range (name "paul"))))
                           (subuids
