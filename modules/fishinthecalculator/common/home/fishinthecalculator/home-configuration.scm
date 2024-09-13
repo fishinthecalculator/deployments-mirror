@@ -104,6 +104,13 @@ git push github master"))
                       (runtime "podman")))))
 
           (service home-doom-emacs-service-type)
+          (service home-docker-cli-service-type
+                   (docker-cli-configuration
+                    (creds-store "secretservice")
+                    (cli-plugins
+                     (list docker-compose-plugin
+                           docker-credential-secretservice))
+                    (extra-content ", \"auths\": {\"https://index.docker.io/v1/\": {}}")))
 
           (simple-service 'fishinthecalculator-mcron
                           home-mcron-service-type
