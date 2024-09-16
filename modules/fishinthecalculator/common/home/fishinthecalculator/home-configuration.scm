@@ -155,11 +155,6 @@ git push github master"))
                                          (user "paul")
                                          (extra-content
                                           "  LocalForward 5432 localhost:5432"))
-                           (openssh-host (name "ultima-generazione.com")
-                                         (host-name "195.15.215.193")
-                                         (identity-file
-                                          (string-append %home "/.ssh/id_rsa_ug"))
-                                         (user "root"))
                            (openssh-host (name "ug")
                                          (host-name "y.ultima-generazione.com")
                                          (user "amministrataru"))
