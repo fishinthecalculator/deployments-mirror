@@ -74,6 +74,21 @@
 (define %cuirass-specs
   #~(list
      (specification
+      (name "bonfire")
+      (build '(channels bonfire-guix))
+      (channels
+       (cons (channel
+              (name 'bonfire-guix)
+              (url "https://github.com/fishinthecalculator/bonfire-guix.git")
+              (branch "main")
+              ;; Enable signature verification:
+              (introduction
+               (make-channel-introduction
+                "2cc6f76adafb6333f0ec3e5fe4835fa0f0d9a0ff"
+                (openpgp-fingerprint
+                 "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
+             %default-channels)))
+     (specification
       (name "deployments")
       (build '(channels deployments))
       (channels
