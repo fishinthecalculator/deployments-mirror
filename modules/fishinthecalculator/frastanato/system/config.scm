@@ -45,8 +45,8 @@
           (restic restic-bin)
           (repository repo)
           (password-file "/run/secrets/restic")
-          ;; Every day at 23.
-          (schedule "0 23 * * *")
+          ;; Every day at 6.
+          (schedule "0 6 * * *")
           (files '("/root/.config/rclone"
                    "/root/.config/sops/age/keys.txt"
                    "/etc/ssh/ssh_host_rsa_key"
@@ -314,6 +314,8 @@
                          (list restic-secret))))
 
               (deployments-unattended-upgrades host-name
+                                               #:hour 4
+                                               #:minute 27
                                                #:expiration-days 30)
 
               (service qemu-binfmt-service-type
