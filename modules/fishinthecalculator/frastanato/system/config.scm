@@ -314,8 +314,8 @@
                          (list restic-secret))))
 
               (deployments-unattended-upgrades host-name
-                                               #:hour 4
-                                               #:minute 27
+                                               #:hours 4
+                                               #:minutes 27
                                                #:expiration-days 30)
 
               (service qemu-binfmt-service-type
