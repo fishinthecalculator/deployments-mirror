@@ -32,7 +32,6 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
-  #:use-module (small-guix packages oils) ;for oils
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module ((small-guix services pam) #:prefix small-guix-pam:) ;for pam-limits-service-type
