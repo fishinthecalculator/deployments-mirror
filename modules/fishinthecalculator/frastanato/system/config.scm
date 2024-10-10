@@ -92,17 +92,28 @@
       (name "deployments")
       (build '(custom (fishinthecalculator ci)))
       (channels
-       (cons (channel
-              (name 'deployments)
-              (url "https://gitlab.com/orang3/guix-deployments")
-              (branch "main")
-              ;; Enable signature verification:
-              (introduction
-               (make-channel-introduction
-                "9d101a2b1f38571e75e7d256bbc8d754177d11f3"
-                (openpgp-fingerprint
-                 "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
-             %default-channels)))
+       (append
+        (list
+         (channel
+          (name 'shepherd)
+          (url "https://git.savannah.gnu.org/git/shepherd.git")
+          (branch "devel")
+          (introduction
+           (make-channel-introduction
+            "788a6d6f1d5c170db68aa4bbfb77024fdc468ed3"
+            (openpgp-fingerprint
+             "3CE464558A84FDC69DB40CFB090B11993D9AEBB5"))))
+         (channel
+          (name 'deployments)
+          (url "https://gitlab.com/orang3/guix-deployments")
+          (branch "main")
+          ;; Enable signature verification:
+          (introduction
+           (make-channel-introduction
+            "9d101a2b1f38571e75e7d256bbc8d754177d11f3"
+            (openpgp-fingerprint
+             "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2")))))
+        %default-channels)))
      (specification
       (name "mobilizon-reshare")
       (period #$%cuirass-period)
