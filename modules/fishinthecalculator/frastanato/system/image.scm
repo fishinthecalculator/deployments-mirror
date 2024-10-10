@@ -7,6 +7,6 @@
   #:use-module (fishinthecalculator frastanato system config))
 
 (define-public frastanato-system-tarball
-  (os->image frastanato-system #:type docker-image-type))
+  (image-with-os docker-image frastanato-system))
 
 frastanato-system-tarball

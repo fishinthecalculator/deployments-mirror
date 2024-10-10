@@ -4,7 +4,7 @@
 (define-module (fishinthecalculator ci)
   #:use-module (gnu ci)
   #:use-module (gnu system image)
-  #:use-module (frastanato system image)
+  #:use-module (fishinthecalculator frastanato system image)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
 
@@ -16,8 +16,7 @@
    (lambda (system)
      (list
       (image->job store
-                  (image-with-os docker-image
-                                 frastanato-system)
+                  frastanato-system-tarball
                   #:name "frastanato-system-tarball"
                   #:system system)))
    systems))
