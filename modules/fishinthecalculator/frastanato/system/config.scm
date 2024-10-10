@@ -90,7 +90,7 @@
              %default-channels)))
      (specification
       (name "deployments")
-      (build '(channels deployments))
+      (build '(custom (fishinthecalculator ci)))
       (channels
        (cons (channel
               (name 'deployments)
