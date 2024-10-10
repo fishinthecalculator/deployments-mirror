@@ -107,6 +107,7 @@
       (name "mobilizon-reshare")
       (period #$%cuirass-period)
       (build '(packages
+               "mobilizon-reshare"
                "mobilizon-reshare@0.3.6"
                "mobilizon-reshare@0.3.5"
                "mobilizon-reshare@0.3.2"
