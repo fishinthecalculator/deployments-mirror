@@ -7,6 +7,6 @@
   #:use-module (fishinthecalculator prematurata system config))
 
 (define-public prematurata-system-tarball
-  (os->image prematurata-system #:type docker-image-type))
+  (image-with-os docker-image prematurata-system))
 
 prematurata-system-tarball

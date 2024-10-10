@@ -5,6 +5,7 @@
   #:use-module (gnu ci)
   #:use-module (gnu system image)
   #:use-module (fishinthecalculator frastanato system image)
+  #:use-module (fishinthecalculator prematurata system image)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
 
@@ -18,5 +19,9 @@
       (image->job store
                   frastanato-system-tarball
                   #:name "frastanato-system-tarball"
+                  #:system system)
+      (image->job store
+                  prematurata-system-tarball
+                  #:name "prematurata-system-tarball"
                   #:system system)))
    systems))
