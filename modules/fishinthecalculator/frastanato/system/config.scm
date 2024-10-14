@@ -244,7 +244,7 @@
               ;; Serve Guix substitutes over LAN.
               (service guix-publish-service-type
                        (guix-publish-configuration
-                        (port 90798)
+                        (port 65535)
                         (host "0.0.0.0")
                         (advertise? #t)))
 
