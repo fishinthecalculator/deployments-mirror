@@ -248,6 +248,13 @@
                         (host "0.0.0.0")
                         (advertise? #t)))
 
+              ;; cache some binary sources
+              (simple-service 'cache-os-definitions
+                              gc-root-service-type
+                              (list (@ (fishinthecalculator prematurata system config)
+                                       prematurata-system)
+                                    this-operating-system))
+
               ;; Backups
               (service restic-backup-service-type
                        (mainline:restic-backup-configuration
