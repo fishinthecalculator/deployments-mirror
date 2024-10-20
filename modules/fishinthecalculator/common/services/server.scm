@@ -17,6 +17,8 @@
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
   #:use-module (fishinthecalculator common services mcron)
+  #:use-module (small-guix services containers)
+  #:use-module (oci services containers)
   #:export (%common-server-services))
 
 (define gc-job
@@ -46,9 +48,11 @@
 
                 (service avahi-service-type)
 
-                ;; Docker
-                (service containerd-service-type)
-                (service docker-service-type)
+                ;; Rootless Podman
+                (service rootless-podman-service-type)
+                (service oci-service-type
+                         (oci-configuration
+                          (runtime 'podman)))
 
                 ;; The D-Bus clique.
                 (service elogind-service-type)

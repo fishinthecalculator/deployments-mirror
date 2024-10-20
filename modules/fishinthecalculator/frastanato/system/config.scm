@@ -24,6 +24,8 @@
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup) ;for restic-backup-service-type
+  #:use-module (small-guix system accounts) ;for subid-range
+  #:use-module (small-guix system shadow) ;for subids-service-type
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common secrets)
@@ -170,7 +172,7 @@
     (users (cons* (user-account
                    (inherit paul-user)
                    (comment "Tino il Cotechino")
-                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker" "transmission")))
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "cgroup" "transmission")))
                   (user-account
                    (name "deploy")
                    (comment "Guix deploy user")
@@ -234,6 +236,12 @@
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
+              ;; Subids
+              (simple-service 'rootless-podman-subids
+                              subids-service-type
+                              (subids-extension
+                               (subgids (list (subid-range (name "paul"))))
+                               (subuids (list (subid-range (name "paul"))))))
               ;; Cuirass
               (service cuirass-service-type
                        (cuirass-configuration
