@@ -144,7 +144,7 @@ git push github master"))
                      (list (openssh-host (name "nasa")
                                          (user "root")
                                          (identity-file
-                                          (string-append %home "/.ssh/id_rsa.pub"))
+                                          "~/.ssh/id_rsa.pub")
                                          (host-name "192.168.1.51")
                                          (host-key-algorithms
                                           '("+ssh-rsa"))
@@ -170,7 +170,7 @@ git push github master"))
                            (openssh-host (name "remarkable")
                                          (user "root")
                                          (identity-file
-                                          (string-append %home "/.ssh/id_remarkable.pub"))
+                                          "~/.ssh/id_rsa_remarkable.pub")
                                          (host-name "192.168.1.60")
                                          (host-key-algorithms
                                           '("+ssh-rsa"))
