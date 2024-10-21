@@ -5,7 +5,7 @@
              "name": "reMarkable (WiFi)",
              "type": "ssh",
              "host": "192.168.1.60",
-             "key": "~/.ssh/id_remarkable",
+             "key": "~/.ssh/id_rsa_remarkable",
              "username": "root",
              "timeout": 3
          }
