@@ -89,7 +89,23 @@
                  "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
              %default-channels)))
      (specification
+      (name "concierge")
+      (build '(channels concierge))
+      (channels
+       (cons (channel
+              (name 'concierge)
+              (url "https://codeberg.org/fishinthecalculator/concierge.git")
+              (branch "main")
+              ;; Enable signature verification:
+              (introduction
+               (make-channel-introduction
+                "b95d48ace0a9fe4098b2372952ecc7458655a6aa"
+                (openpgp-fingerprint
+                 "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
+             %default-channels)))
+     (specification
       (name "deployments")
+      (period #$%cuirass-period)
       (build '(custom (fishinthecalculator ci)))
       (channels
        (append
