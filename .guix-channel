@@ -2,6 +2,7 @@
 (channel
  (version 0)                            ;file format version
  (directory "modules")
+ (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
  (dependencies
   (channel
    (name nonguix)
@@ -14,7 +15,7 @@
      (signer "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
   (channel
    (name small-guix)
-   (url "https://gitlab.com/orang3/small-guix")
+   (url "https://codeberg.org/fishinthecalculator/small-guix.git")
    ;; Enable signature verification:
    (introduction
     (channel-introduction

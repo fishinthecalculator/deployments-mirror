@@ -5,6 +5,7 @@
   #:use-module (gnu packages backup)         ;for restic
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
+  #:use-module (gnu packages shells)         ;for oils
   #:use-module (gnu services)                ;for modify-services
   #:use-module (gnu services admin)          ;for rottlog-service-type
   #:use-module (gnu services base)           ;for guix-daemon-service-type
@@ -18,6 +19,7 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services vpn)            ;for wireguard-service-type
+  #:use-module (gnu services xorg)           ;for gdm-service-type
   #:use-module (gnu system)                  ;for operating-system
   #:use-module (gnu system accounts)         ;for user-account
   #:use-module (gnu system file-systems)     ;for file-system
@@ -53,10 +55,9 @@
 
 (define paul-user
   (user-account (inherit paul-user)
-                ;; Some things still break.
-                ;; ;; Use OSH shell by default
-                ;; (shell
-                ;;  (file-append oils "/bin/osh"))
+                ;; Use OSH shell by default
+                (shell
+                 (file-append oils "/bin/osh"))
                 (supplementary-groups
                  ;;(cons "cgroup"
  ;;                      (delete "docker"
@@ -305,6 +306,9 @@
                (delete rottlog-service-type) ;replaced by the Shepherd's
                (delete syslog-service-type)  ;replaced by the Shepherd's
 
+               (gdm-service-type config =>
+                                  (gdm-configuration (inherit config)
+                                                     (debug? #t)))
                (guix-service-type config =>
                                   (guix-configuration (inherit config)
                                                       (discover? #t)

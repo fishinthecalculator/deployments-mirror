@@ -5,7 +5,7 @@ set -eu
 DEPLOYMENTS_PATH="/tmp/guix-deployments/modules"
 DEPLOYMENTS_BIN="${DEPLOYMENTS_PATH}/fishinthecalculator/common/bin"
 
-cd /tmp && rm -rf guix-deployments && guix shell git -- git clone https://gitlab.com/orang3/guix-deployments
+cd /tmp && rm -rf guix-deployments && guix shell git -- git https://codeberg.org/fishinthecalculator/guix-deployments.git
 export PATH="${DEPLOYMENTS_BIN}:${PATH}"
 
 sudo "${DEPLOYMENTS_BIN}/start-nonguix-daemon"

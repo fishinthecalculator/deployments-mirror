@@ -15,6 +15,6 @@
                         (list bash-minimal coreutils)
                         "A set of deploy scripts"
                         "This package provides some utility scripts mostly for deploying Guix systems."
-                        "https://gitlab.com/orang3/guix-deployments"
+                        "https://codeberg.org/fishinthecalculator/guix-deployments"
                         license:gpl3+
-                        #:version "0.1.1"))
+                        #:version "0.1.2"))

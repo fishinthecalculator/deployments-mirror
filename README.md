@@ -1,6 +1,6 @@
 # Guix Deployments
 
-This repository hosts a Guix Channel. It mostly contains and some (opinionated) `operative-system` definitions.
+This repository hosts a Guix Channel. It contains some (opinionated) `operative-system` definitions for my systems.
 
 ## Configure
 
@@ -9,7 +9,7 @@ To configure Guix for using this channel you need to create a `.config/guix/chan
 ``` scheme
 (cons* (channel
         (name 'deployments)
-        (url "https://gitlab.com/orang3/guix-deployments")
+        (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
         (branch "main")
         ;; Enable signature verification:
         (introduction
@@ -25,7 +25,7 @@ Otherwise, if you already have a `.config/guix/channels.scm` you can simply prep
 ``` scheme
 (cons* (channel
         (name 'deployments)
-        (url "https://gitlab.com/orang3/guix-deployments")
+        (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
         (branch "main")
         ;; Enable signature verification:
         (introduction

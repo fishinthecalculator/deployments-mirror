@@ -8,7 +8,7 @@
   (cons*
    (channel
     (name 'deployments)
-    (url "https://gitlab.com/orang3/guix-deployments.git")
+    (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
     (branch "main")
     ;; Enable signature verification:
     (introduction

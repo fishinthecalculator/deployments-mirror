@@ -17,6 +17,8 @@
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services grafana)
+  #:use-module (oci services lemmy)
+  #:use-module (oci services pict-rs)
   #:use-module (oci services prometheus)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
@@ -33,6 +35,16 @@
   #:use-module (fishinthecalculator common users)
   #:use-module (srfi srfi-1)
   #:export (fishinthecalculator frastanato-system))
+
+(define frastanato.yaml
+  (secrets-file "frastanato.yaml"))
+
+(define lemmy-pict-rs-api-key
+  (sops-secret
+   (key '("lemmy" "pictrs_api_key"))
+   (file frastanato.yaml)
+   (user "pict-rs")
+   (group "pict-rs")))
 
 (define restic-repositories
   '("rclone:onedrive:backup/restic"
@@ -121,7 +133,7 @@
              "3CE464558A84FDC69DB40CFB090B11993D9AEBB5"))))
          (channel
           (name 'deployments)
-          (url "https://gitlab.com/orang3/guix-deployments")
+          (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
           (branch "main")
           ;; Enable signature verification:
           (introduction
@@ -144,7 +156,7 @@
       (channels
        (cons (channel
               (name 'mobilizon-reshare)
-              (url "https://git.sr.ht/~fishinthecalculator/mobilizon-reshare-guix")
+              (url "https://codeberg.org/fishinthecalculator/mobilizon-reshare-guix.git")
               (branch "main"))
              %default-channels)))
      (specification
@@ -295,6 +307,19 @@
                          (+ (* 60 8) 00)) ; 8:00 am
                         (alt-speed-time-end
                          (+ (* 60 (+ 12 5)) 00)))) ; 5:00 pm
+
+              ;; Lemmy & co
+              (service oci-pict-rs-service-type
+                       (oci-pict-rs-configuration
+                        (server-api-key
+                         lemmy-pict-rs-api-key)))
+
+              (simple-service 'lemmy-postgresql-role
+                              postgresql-role-service-type
+                              (list
+                               (postgresql-role
+                                (name "lemmy")
+                                (create-database? #t))))
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type)

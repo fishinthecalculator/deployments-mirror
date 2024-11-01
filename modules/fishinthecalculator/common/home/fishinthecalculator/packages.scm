@@ -25,10 +25,10 @@
                         (list bash-minimal coreutils python)
                         "A set of utility scripts"
                         "This package provides some utility scripts."
-                        "https://gitlab.com/orang3/guix-home"
+                        "https://codeberg.org/fishinthecalculator/guix-deployments.git"
                         license:gpl3+
                         #:propagated-inputs (list common-deploy-scripts)
-                        #:version "0.1.0"))
+                        #:version "0.1.1"))
 
 (define-public fishinthecalculator-packages
   (append (list anytype
