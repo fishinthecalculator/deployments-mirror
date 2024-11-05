@@ -127,6 +127,7 @@
                         ".local/share/gnome-boxes/images"
                         ".local/share/JetBrains/Toolbox/.storage.json"
                         ".local/share/JetBrains/Toolbox/.securestorage"
+                        ".local/share/keyrings"
                         ".mozilla"
                         ".thunderbird"
                         ".ssh"
