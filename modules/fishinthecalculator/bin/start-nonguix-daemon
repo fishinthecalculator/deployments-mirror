@@ -2,16 +2,16 @@
 
 set -eu
 
+sudo rm -f /tmp/substitutes.nonguix.org.pub
 guix shell curl -- curl https://substitutes.nonguix.org/signing-key.pub > /tmp/substitutes.nonguix.org.pub
 
 if command -v "herd" >/dev/null; then
-    if sudo herd status | grep -q "+ guix-daemon"; then
+    out="$(sudo herd status)"
+    if printf '%s' "$out" | grep -q "+ guix-daemon"; then
         sudo herd stop guix-daemon
+        sudo guix-daemon --build-users-group guixbuild --max-silent-time 0 --timeout 0 --log-compression gzip --discover=no --substitute-urls="https://ci.guix.gnu.org https://bordeaux.guix.gnu.org https://substitutes.nonguix.org" &
+        sudo guix archive --authorize < /tmp/substitutes.nonguix.org.pub
     else
         echo "guix-daemon is not running with shepherd."
     fi
 fi
-
-sudo guix-daemon --build-users-group guixbuild --max-silent-time 0 --timeout 0 --log-compression gzip --discover=no --substitute-urls="https://ci.guix.gnu.org https://bordeaux.guix.gnu.org https://substitutes.nonguix.org" &
-
-sudo guix archive --authorize < /tmp/substitutes.nonguix.org.pub

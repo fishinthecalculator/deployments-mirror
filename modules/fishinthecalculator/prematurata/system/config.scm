@@ -339,7 +339,7 @@
                            (dependencies mapped-devices))
                          (file-system
                            (mount-point "/boot/efi")
-                           (device (uuid "16CE-D943"
+                           (device (uuid "53D8-E48C"
                                          'fat32))
                            (type "vfat")) %base-file-systems))
 
