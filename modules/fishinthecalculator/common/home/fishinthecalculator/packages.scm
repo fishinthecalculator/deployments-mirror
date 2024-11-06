@@ -11,6 +11,7 @@
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages productivity)
+  #:use-module (small-guix packages bitwarden)
   #:use-module (small-guix packages guile-xyz)
   #:use-module (small-guix packages moar)
   #:use-module (small-guix packages scripts)
@@ -32,6 +33,7 @@
 
 (define-public fishinthecalculator-packages
   (append (list anytype
+                bitwarden-desktop
                 moar
                 google-chrome-stable
                 element-desktop
