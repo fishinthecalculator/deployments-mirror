@@ -21,11 +21,9 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup) ;for restic-backup-service-type
   #:use-module (fishinthecalculator common keys)
-  #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common self)
   #:use-module (fishinthecalculator common services server)
@@ -205,45 +203,9 @@
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
     (packages (append (map specification->package+output
-                           '("ncurses"  ;for the search path
-
-                             ;; Standard FreeDesktop directory paths
-                             "xdg-user-dirs"
-                             "xdg-utils"
-                             ;; User mounts
-                             "gvfs"
-
-                             ;;OpenGPG
-                             "gnupg"
-                             ;; Misc
-                             "lsof"
-                             "jq"
-                             "ncdu"
-                             "tree"
-                             "curl"
-                             "fd"
-                             "git"
-                             "htop"
-                             "ripgrep"
-                             "tmux"
-                             "vim"
-
-                             ;; Network administration
-                             "bind"
-                             "bind:utils"
-                             "tcpdump"
-
-                             ;; Btrfs
-                             "btrfs-progs"
+                           '("btrfs-progs"
                              "compsize"
-                             "restic"
-
-                             "efibootmgr"
-
-                             "rclone"
-                             "emacs"
-                             "ripgrep"))
-                      (list common-deploy-scripts btdu)
+                             "rclone"))
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available

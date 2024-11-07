@@ -14,6 +14,8 @@
   #:use-module (gnu services security)
   #:use-module (gnu services ssh)
   #:use-module (guix gexp)
+  #:use-module (small-guix packages btdu) ;for btdu
+  #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
   #:use-module (fishinthecalculator common services mcron)
@@ -43,6 +45,42 @@
                             (fail2ban-jail-configuration
                              (name "sshd")
                              (enabled? #t))))))
+
+                ;; Preinstalled packages
+                (simple-service 'preinstalled-server-packages
+                                profile-service-type
+                                (append (map specification->package+output
+                                             '("ncurses" ;for the search path
+
+                                               ;; Standard FreeDesktop directory paths
+                                               "xdg-user-dirs"
+                                               "xdg-utils"
+                                               ;; User mounts
+                                               "gvfs"
+
+                                               ;;OpenGPG
+                                               "gnupg"
+                                               ;; Misc
+                                               "lsof"
+                                               "jq"
+                                               "tree"
+                                               "curl"
+                                               "fd"
+                                               "git"
+                                               "htop"
+                                               "ripgrep"
+                                               "tmux"
+                                               "vim"
+
+                                               ;; Network administration
+                                               "bind"
+                                               "bind:utils"
+                                               "tcpdump"
+
+                                               "efibootmgr"
+
+                                               "emacs"))
+                                        (list common-deploy-scripts btdu)))
 
                 (service avahi-service-type)
 
