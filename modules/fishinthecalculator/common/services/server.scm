@@ -58,6 +58,8 @@
                                                ;; User mounts
                                                "gvfs"
 
+                                               "rsync"
+
                                                ;;OpenGPG
                                                "gnupg"
                                                ;; Misc
