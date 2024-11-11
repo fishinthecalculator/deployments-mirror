@@ -7,7 +7,6 @@
   #:use-module (gnu packages networking)     ;for blueman
   #:use-module (gnu packages shells)         ;for oils
   #:use-module (gnu services)                ;for modify-services
-  #:use-module (gnu services admin)          ;for rottlog-service-type
   #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
@@ -289,24 +288,8 @@
                    ;; cache some binary sources
                    (simple-service 'cache-binaries
                                    gc-root-service-type
-                                   (list (package-source zoom)))
-
-                   (simple-service 'shepherd-log-management
-                                   shepherd-root-service-type
-                                   (list
-                                    (shepherd-service
-                                     (documentation "Shepherd's built-in system log (syslogd).")
-                                     (provision '(system-log syslogd))
-                                     (modules '((shepherd service system-log)))
-                                     (free-form #~(system-log-service)))
-                                    (shepherd-service
-                                     (documentation "Shepherd's built-in log rotator (rottlog).")
-                                     (provision '(log-rotation))
-                                     (modules '((shepherd service log-rotation)))
-                                     (free-form #~(log-rotation-service))))))
+                                   (list (package-source zoom))))
              (modify-services %common-desktop-services
-               (delete rottlog-service-type) ;replaced by the Shepherd's
-               (delete syslog-service-type)  ;replaced by the Shepherd's
 
                (gdm-service-type config =>
                                   (gdm-configuration (inherit config)

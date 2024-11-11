@@ -12,6 +12,7 @@
   #:use-module (gnu packages printers) ;for brlaser
   #:use-module (gnu packages vpn) ;for wireguard
   #:use-module (gnu system)
+  #:use-module (gnu services admin)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
@@ -28,6 +29,7 @@
   #:use-module (small-guix system accounts)
   #:use-module (small-guix services containers)     ;for rootless-podman-service-type
   #:use-module (fishinthecalculator common channels)
+  #:use-module (fishinthecalculator common services log)
   #:use-module (fishinthecalculator common services mcron)
   #:use-module (fishinthecalculator common services substitute)
   #:use-module (fishinthecalculator common system input)
@@ -35,7 +37,8 @@
   #:export (%common-desktop-services))
 
 (define %common-desktop-services
-  (append (list (service gnome-desktop-service-type)
+  (append %common-log-services
+          (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
 
                 (simple-service 'common-cron-jobs
@@ -101,6 +104,10 @@
                                     (file-append coreutils "/bin/env")))
 
           (modify-services %desktop-services
+            ;; Remove the currently-used syslogd and rottlog service,
+            ;; now redundant.
+            (delete rottlog-service-type)
+            (delete syslog-service-type)
             ;; Enable additional substitute servers.
             (guix-service-type config =>
                                (guix-configuration (inherit config)
