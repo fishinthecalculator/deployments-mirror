@@ -4,7 +4,6 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services desktop)
-  #:use-module (gnu home services dotfiles)
   #:use-module (gnu home services fontutils)
   #:use-module (gnu home services guix)
   #:use-module (gnu home services mcron)
@@ -16,8 +15,8 @@
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix home services docker-cli)
+  #:use-module (small-guix home services dotfiles)
   #:use-module (small-guix home services shells)
-  #:use-module (gnu home services dotfiles)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
@@ -32,8 +31,10 @@
   (current-source-directory))
 
 (define fishinthecalculator-stow-dir
-  (string-append %here
-                 "/etc"))
+  (stow-dotfiles-directory
+   (name
+    (string-append %here
+                   "/etc"))))
 
 (define nix-update-job
   ;; Run 'upall' at 23:10 every day.
@@ -91,8 +92,7 @@ git push github master"))
     (list (service home-bash-service-type fishinthecalculator-bash-configuration)
           (service home-osh-service-type fishinthecalculator-osh-configuration)
           (service home-dotfiles-service-type
-                   (home-dotfiles-configuration
-                    (layout 'stow)
+                   (home-dotfiles-environment
                     (directories (list fishinthecalculator-stow-dir))))
 
           (service home-dbus-service-type)
