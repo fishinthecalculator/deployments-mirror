@@ -16,8 +16,10 @@
   #:use-module (sops secrets)
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
+  #:use-module (oci services containers)
   #:use-module (oci services grafana)
   #:use-module (oci services prometheus)
+  #:use-module (oci services traefik)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
@@ -291,6 +293,17 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-13)))
+
+              (service oci-service-type
+                       (oci-configuration
+                        (verbose? #t)))
+
+              (service oci-whoami-service-type
+                       (oci-whoami-configuration
+                        (name "iamfoo")
+                        (port "8099")
+                        (oci-extra-arguments
+                         '("--label" "traefik.http.routers.whoami.rule=Host(\"whoami.geekslab\")"))))
 
               ;; Misc
 
