@@ -58,7 +58,7 @@
                                  ;; Wayland
                                  "pipewire"
                                  "waypipe"
-;                                 "xdg-desktop-portal-gtk"
+                                 "xdg-desktop-portal-gtk"
 
                                  ;; Audio
                                  "alsa-utils"
