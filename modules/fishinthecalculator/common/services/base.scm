@@ -15,9 +15,9 @@
   (append
    %common-log-services
    (modify-services %base-services
-     ;; Remove the currently-used syslogd and rottlog service,
-     ;; now redundant.
-     (delete syslog-service-type)
+     ;; Remove the rottlog service,
+     ;; it's now redundant.
+     ;(delete syslog-service-type)
      (delete rottlog-service-type)
      (guix-service-type config =>
                         (guix-configuration (inherit config)
