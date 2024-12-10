@@ -13,12 +13,12 @@
 
 (define %common-base-services
   (append
-   %common-log-services
+   ;%common-log-services
    (modify-services %base-services
      ;; Remove the currently-used syslogd and rottlog service,
      ;; now redundant.
-     (delete syslog-service-type)
-     (delete rottlog-service-type)
+     ;; (delete syslog-service-type)
+     ;; (delete rottlog-service-type)
      (guix-service-type config =>
                         (guix-configuration (inherit config)
                                             (channels %deployments-channels)
