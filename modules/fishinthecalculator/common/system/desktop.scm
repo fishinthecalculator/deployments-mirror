@@ -52,11 +52,9 @@
                                  "ncurses" ;for the search path
 
                                  ;; Backup
-                                 "restic"
                                  "rclone"
                                  
                                  ;; Wayland
-                                 "pipewire"
                                  "waypipe"
                                  "xdg-desktop-portal-gtk"
 
