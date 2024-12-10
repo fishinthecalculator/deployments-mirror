@@ -18,7 +18,6 @@
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
-  #:use-module (fishinthecalculator common services log)
   #:use-module (fishinthecalculator common services mcron)
   #:export (%common-server-services))
 
@@ -27,14 +26,7 @@
   #~(job '(next-hour '(1)) "guix gc"))
 
 (define %common-server-services
-  (append %common-log-services
-
-          (modify-services %common-base-services
-           ;; Remove the currently-used syslogd and rottlog service,
-           ;; now redundant.
-           (delete syslog-service-type)
-           (delete rottlog-service-type))
-
+  (append %common-base-services
           (list (service dhcp-client-service-type)
                 (service ntp-service-type)
                 (service openssh-service-type
