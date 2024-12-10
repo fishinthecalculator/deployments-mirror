@@ -44,7 +44,7 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list gnome-browser-connector solo2 btdu common-glibc-locales)
+    (packages (append (list gnome-browser-connector solo2 btdu common-glibc-locales unbroken-xdg-desktop-portal-gtk)
                       (map specification->package+output
                            (list "wireguard-tools"
                                  "brillo"
@@ -56,7 +56,7 @@
                                  
                                  ;; Wayland
                                  "waypipe"
-                                 "xdg-desktop-portal-gtk"
+                                 ;"xdg-desktop-portal-gtk"
 
                                  ;; Audio
                                  "alsa-utils"
