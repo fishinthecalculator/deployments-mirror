@@ -201,15 +201,6 @@
                             my-moolticute-0.44.19)
                       (operating-system-packages common-desktop-system)))
 
-    ;; Use own Shepherd package.
-    (essential-services
-     (modify-services (operating-system-default-essential-services
-                       this-operating-system)
-       (shepherd-root-service-type config => (shepherd-configuration
-                                              (inherit config)
-                                              (shepherd
-                                               (@ (shepherd-package) shepherd))))))
-
     (services
      (append (list (service openssh-service-type
                             (openssh-configuration (x11-forwarding? #f)))
