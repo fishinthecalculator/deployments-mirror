@@ -8,7 +8,7 @@
   #:use-module (gnu packages shells)         ;for oils
   #:use-module (gnu services)                ;for modify-services
   #:use-module (gnu services base)           ;for guix-daemon-service-type
-  #:use-module (gnu services backup)         ;for restic-backup-service-type
+  ;#:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
   #:use-module (gnu services guix)           ;for guix-home-service-type
@@ -36,6 +36,7 @@
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module ((small-guix services backup) #:prefix small-guix-backup:) ;for restic-backup-service-type
+  #:use-module ((small-guix services backup-timers)) ;for Shepherd timers restic-backup-service-type
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
@@ -87,6 +88,7 @@
           (restic restic-bin)
           (repository repo)
           (password-file "/run/secrets/restic")
+          (requirement '(sops-secrets))
           ;; Every day at 23.
           (schedule "0 23 * * *")
           (files '("/crypto.cpio"
@@ -107,7 +109,9 @@
           (restic restic-bin)
           (repository repo)
           (user (user-account-name paul-user))
+          (group (user-account-group paul-user))
           (password-file "/run/secrets/restic")
+          (requirement '(sops-secrets))
           ;; Every day at 21.
           (schedule "0 21 * * *")
           (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
@@ -210,7 +214,7 @@
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14)
 
-                   (service small-guix-backup:restic-backup-service-type
+                   (service restic-backup-service-type
                             (restic-backup-configuration
                              (jobs
                               (append backup-system-jobs
