@@ -12,7 +12,9 @@
   #:use-module (gnu packages printers) ;for brlaser
   #:use-module (gnu packages vpn) ;for wireguard
   #:use-module (gnu system)
+  #:use-module (gnu system accounts)
   #:use-module (gnu services admin)
+  #:use-module (gnu services containers)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
@@ -26,8 +28,6 @@
   #:use-module (gnu services virtualization)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
-  #:use-module (small-guix system accounts)
-  #:use-module (small-guix services containers)     ;for rootless-podman-service-type
   #:use-module (fishinthecalculator common channels)
   #:use-module (fishinthecalculator common services log)
   #:use-module (fishinthecalculator common services mcron)
