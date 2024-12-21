@@ -59,12 +59,15 @@
                 ;; (shell
                 ;;  (file-append oils "/bin/osh"))
                 (supplementary-groups
-                 ;;(cons "cgroup"
- ;;                      (delete "docker"
+                 (cons "cgroup"
+                      (delete "docker"
                                (user-account-supplementary-groups
-                                paul-user))))
-;;)
-;;)
+                                paul-user))))))
+
+(define subgids
+  (list (subid-range (name (user-account-name paul-user)))))
+(define subuids
+  (list (subid-range (name (user-account-name paul-user)))))
 
 (define authorized-guix-keys
   (list
@@ -164,9 +167,13 @@
             restic-repositories))
          "restic-prune"))
 
+(define %common-desktop-system
+  (common-desktop-system subuids subgids))
+(define %common-desktop-services
+  (common-desktop-services subuids subgids))
 (define prematurata-system
   (operating-system
-    (inherit common-desktop-system)
+    (inherit %common-desktop-system)
 
     (kernel linux)
     (kernel-arguments
@@ -202,7 +209,7 @@
 
     (packages (append (list bluez bluez-alsa blueman
                             my-moolticute-0.44.19)
-                      (operating-system-packages common-desktop-system)))
+                      (operating-system-packages %common-desktop-system)))
 
     (services
      (append (list (service openssh-service-type

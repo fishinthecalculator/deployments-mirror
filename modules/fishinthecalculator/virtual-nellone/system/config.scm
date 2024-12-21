@@ -270,7 +270,7 @@
 
              ;; This is the default list of services we
              ;; are appending to.
-             (modify-services %common-server-services
+             (modify-services (common-server-services '() '()) ;; FIXME: set subid ranges
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)
                                                             (authorized-keys

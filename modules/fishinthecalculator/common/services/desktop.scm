@@ -17,7 +17,6 @@
   #:use-module (gnu services containers)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
-  #:use-module (gnu services docker)
   #:use-module (gnu services linux)
   #:use-module (gnu services mcron)
   #:use-module (gnu services nix)
@@ -34,9 +33,9 @@
   #:use-module (fishinthecalculator common services substitute)
   #:use-module (fishinthecalculator common system input)
   #:use-module (srfi srfi-1)
-  #:export (%common-desktop-services))
+  #:export (common-desktop-services))
 
-(define %common-desktop-services
+(define (common-desktop-services subuids subgids)
   (append %common-log-services
           (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
@@ -46,19 +45,14 @@
                                 (list updatedb-job))
 
                 (service nix-service-type)
-                ;; docker
-                (service containerd-service-type)
-                (service docker-service-type)
 
                 ;; rootless podman
-                ;; (service iptables-service-type
-                ;;          (iptables-configuration))
-                ;; (service rootless-podman-service-type
-                ;;          (rootless-podman-configuration
-                ;;           (subgids
-                ;;            (list (subid-range (name "paul"))))
-                ;;           (subuids
-                ;;            (list (subid-range (name "paul"))))))
+                (service iptables-service-type
+                         (iptables-configuration))
+                (service rootless-podman-service-type
+                         (rootless-podman-configuration
+                          (subgids subgids)
+                          (subuids subuids)))
 
                 ;; Apple keyboards
                 (simple-service 'hid-apple-config etc-service-type

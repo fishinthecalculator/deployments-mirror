@@ -3,6 +3,7 @@
 
 (define-module (fishinthecalculator frastanato system config)
   #:use-module (gnu)
+  #:use-module (gnu system accounts)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
   #:use-module ((gnu services backup) #:prefix mainline:)       ;for restic-backup-service-type
@@ -164,6 +165,12 @@
                  "97A2 CB8F B066 F894 9928  CF80 DE9B E0AC E824 6F08"))))
              %default-channels)))))
 
+(define subgids
+  (list (subid-range (name (user-account-name paul-user)))))
+(define subuids
+  (list (subid-range (name (user-account-name paul-user)))))
+(define %common-server-services
+  (common-server-services subuids subgids))
 (define frastanato-system
   (operating-system
     (locale "en_US.utf8")
@@ -186,7 +193,7 @@
     (users (cons* (user-account
                    (inherit paul-user)
                    (comment "Tino il Cotechino")
-                   (supplementary-groups '("wheel" "netdev" "audio" "video" "docker" "transmission")))
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "cgroup" "transmission")))
                   (user-account
                    (name "deploy")
                    (comment "Guix deploy user")
@@ -296,14 +303,8 @@
 
               (service oci-service-type
                        (oci-configuration
+                        (runtime 'podman)
                         (verbose? #t)))
-
-              (service oci-whoami-service-type
-                       (oci-whoami-configuration
-                        (name "iamfoo")
-                        (port "8099")
-                        (oci-extra-arguments
-                         '("--label" "traefik.http.routers.whoami.rule=Host(\"whoami.geekslab\")"))))
 
               ;; Misc
 

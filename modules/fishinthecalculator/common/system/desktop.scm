@@ -15,7 +15,7 @@
   #:use-module (fishinthecalculator common system input)
   #:export (fishinthecalculator common-desktop-system))
 
-(define common-desktop-system
+(define (common-desktop-system subuids subgids)
   (operating-system
     (locale "en_US.utf8")
     (timezone "Europe/Rome")
@@ -124,7 +124,7 @@
                       %base-packages))
 
     (services
-     %common-desktop-services)
+     (common-desktop-services subuids subgids))
 
     ;; Allow resolution of '.local' host names with mDNS.
     (name-service-switch %mdns-host-lookup-nss)))

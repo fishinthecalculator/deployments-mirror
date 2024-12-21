@@ -6,9 +6,9 @@
   #:use-module (gnu system)
   #:use-module (gnu services admin)
   #:use-module (gnu services avahi)
+  #:use-module (gnu services containers)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop) ;for elogind-service
-  #:use-module (gnu services docker)
   #:use-module (gnu services mcron)
   #:use-module (gnu services networking)
   #:use-module (gnu services security)
@@ -19,13 +19,13 @@
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
   #:use-module (fishinthecalculator common services mcron)
-  #:export (%common-server-services))
+  #:export (common-server-services))
 
 (define gc-job
   ;; Run 'guix gc' at 1AM every day.
   #~(job '(next-hour '(1)) "guix gc"))
 
-(define %common-server-services
+(define (common-server-services subuids subgids)
   (append %common-base-services
           (list (service dhcp-client-service-type)
                 (service ntp-service-type)
@@ -86,9 +86,10 @@
 
                 (service avahi-service-type)
 
-                ;; Docker
-                (service containerd-service-type)
-                (service docker-service-type)
+                (service rootless-podman-service-type
+                         (rootless-podman-configuration
+                          (subgids subgids)
+                          (subuids subuids)))
 
                 ;; The D-Bus clique.
                 (service elogind-service-type)
