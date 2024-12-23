@@ -35,7 +35,6 @@
   #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
-  #:use-module ((small-guix services backup) #:prefix small-guix-backup:) ;for restic-backup-service-type
   #:use-module ((small-guix services backup-timers)) ;for Shepherd timers restic-backup-service-type
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)

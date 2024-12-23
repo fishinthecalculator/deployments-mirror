@@ -6,7 +6,6 @@
   #:use-module (gnu system accounts)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
-  #:use-module ((gnu services backup) #:prefix mainline:)       ;for restic-backup-service-type
   #:use-module (gnu services cuirass)        ;for transmission-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
@@ -25,7 +24,7 @@
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
-  #:use-module (small-guix services backup) ;for restic-backup-service-type
+  #:use-module (small-guix services backup-timers) ;for restic-backup-service-type
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common self)
@@ -41,7 +40,7 @@
 
 (define-public backup-system-jobs
   (map (lambda (repo)
-         (mainline:restic-backup-job
+         (restic-backup-job
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
@@ -111,15 +110,6 @@
       (channels
        (append
         (list
-         (channel
-          (name 'shepherd)
-          (url "https://git.savannah.gnu.org/git/shepherd.git")
-          (branch "devel")
-          (introduction
-           (make-channel-introduction
-            "788a6d6f1d5c170db68aa4bbfb77024fdc468ed3"
-            (openpgp-fingerprint
-             "3CE464558A84FDC69DB40CFB090B11993D9AEBB5"))))
          (channel
           (name 'deployments)
           (url "https://codeberg.org/fishinthecalculator/guix-deployments.git")
@@ -237,7 +227,7 @@
 
               ;; Backups
               (service restic-backup-service-type
-                       (mainline:restic-backup-configuration
+                       (restic-backup-configuration
                         (jobs
                          (append backup-system-jobs))))
 
