@@ -6,9 +6,10 @@
   #:use-module (gnu system)
   #:use-module (gnu services admin)
   #:use-module (gnu services avahi)
-  #:use-module (gnu services containers)
+  ;#:use-module (gnu services containers)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop) ;for elogind-service
+  #:use-module (gnu services docker)
   #:use-module (gnu services mcron)
   #:use-module (gnu services networking)
   #:use-module (gnu services security)
@@ -85,11 +86,13 @@
                                         (list common-deploy-scripts btdu)))
 
                 (service avahi-service-type)
+                (service containerd-service-type)
+                (service docker-service-type)
 
-                (service rootless-podman-service-type
-                         (rootless-podman-configuration
-                          (subgids subgids)
-                          (subuids subuids)))
+                ;; (service rootless-podman-service-type
+                ;;          (rootless-podman-configuration
+                ;;           (subgids subgids)
+                ;;           (subuids subuids)))
 
                 ;; The D-Bus clique.
                 (service elogind-service-type)
