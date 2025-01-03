@@ -170,3 +170,235 @@ git push github master"))
                                          (accepted-key-types
                                           '("+ssh-rsa")))))
                     (authorized-keys (list termux-ssh-key))))))))
+
+;; (define here
+;;   (current-source-directory))
+
+;; (define-public %scripts-dir
+;;   (local-file (string-append here "/bin") "scripts-dir"
+;;               #:recursive? #t))
+
+;; (define paul-stow-dir
+;;   (string-append here
+;;                  "/etc"))
+
+;; (define paul-bash-functions
+;;   (local-file
+;;    (string-append here
+;;                   "/bash_functions")))
+
+;; (define suse-rclone-path
+;;  "rclone:suse-google:backup")
+
+;; (define suse-restic-backup-job-name
+;;   "suse")
+
+;; (define suse-restic-backup-job
+;;   (restic-backup-job
+;;    (name suse-restic-backup-job-name)
+;;    (restic restic-bin)
+;;    (repository (string-append suse-rclone-path "/restic-repo"))
+;;    (password-file "/run/user/1000/secrets/suse/restic")
+;;    ;; Every day at 15
+;;    (schedule "0 15 * * *")
+;;    (files (map (lambda (f) (string-append "/home/paul/" f))
+;;                '(".kube"
+;;                  ".thunderbird"
+;;                  ".ssh"
+;;                  ".gnupg"
+;;                  "code"
+;;                  "guix-home"
+;;                  ".guix-active-profiles"
+;;                  ".config/filezilla"
+;;                  ".config/tea/config.yml"
+;;                  ".config/gspread/authorized_user.json"
+;;                  ".config/gspread/credentials.json"
+;;                  ".config/osc"
+;;                  ".config/rclone"
+;;                  "playground"
+;;                  "suse-beta-program"
+;;                  "NOTE"
+;;                  "Documents"
+;;                  "Documenti"
+;;                  "Work.kdbx")))
+;;    (verbose? #t)))
+
+;; (define sops.yaml
+;;   (local-file (string-append here "/.sops.yaml")
+;;               ;; This is because paths on the store
+;;               ;; can not start with dots.
+;;               "sops.yaml"))
+
+;; (define paul.yaml
+;;   (local-file (string-append here "/secrets/paul.yaml")))
+
+;; ;; (define-public paul-scripts
+;; ;;   (make-scripts-package "paul-scripts"
+;; ;;                         %scripts-dir
+;; ;;                         (list bash-minimal coreutils python)
+;; ;;                         "A set of utility scripts"
+;; ;;                         "This package provides some utility scripts."
+;; ;;                         "https://gitlab.suse.de/gleidi/guix-home"
+;; ;;                         gpl3+
+;; ;;                         #:propagated-inputs (list)
+;; ;;                         #:commit (read-line (open-input-pipe
+;; ;;                                              "git show HEAD | head -1 | cut -d ' ' -f 2"))))
+
+;; (define* (cleanup-job #:key (hours 16) (minutes 30))
+;;  ;; Run 'cleanup' at a given hour every day.
+;;  #~(job #$(format #f "~a ~a * * *" minutes hours)
+;;         (string-append #$fishinthecalculator-scripts "/bin/cleanup")
+;;         "cleanup"))
+
+;; (define* (rclone-keepass-job #:key (hours 14) (minutes 55))
+;;  #~(job #$(format #f "~a ~a * * *" minutes hours)
+;;         (lambda _
+;;           (system* "rclone" "copy" "Work.kdbx" #$suse-rclone-path))
+;;         "rclone-keepass"))
+
+;; (define* (restic-prune-job #:key (hours 16) (minutes 45))
+;;  #~(job #$(format #f "~a ~a * * *" minutes hours)
+;;         (lambda _
+;;           (system* "restic-guix" "prune" #$suse-restic-backup-job-name))
+;;         "prune"))
+
+;; (home-environment
+;;  ;; Below is the list of packages that will show up in your
+;;  ;; Home profile, under ~/.guix-home/profile.
+;;  (packages (append (list anytype
+;;                          bitwarden-desktop
+;;                          common-glibc-locales
+;;                          fishinthecalculator-scripts
+;;                          ;paul-scripts
+;;                          guix-dev-tools
+;;                          abra
+;;                          ;suse-certs
+;;                          vscodium)
+;;                    (specifications->packages (list "guile-readline"
+;;                                                    "guile-colorized"
+;;                                                    "texinfo"
+;;                                                    "man-db"
+;;                                                    "guile"
+;;                                                    "nss-certs"))))
+
+;;  ;; Below is the list of Home services.  To search for available
+;;  ;; services, run 'guix home search KEYWORD' in a terminal.
+;;  (services
+;;   (list (simple-service 'paul-shell-profile
+;;                         home-shell-profile-service-type
+;;                         (cons*
+;;                          paul-bash-functions
+;;                          fishinthecalculator-shell-profile-extensions))
+
+;;         (service home-bash-service-type
+;;                  (home-bash-configuration
+;;                   (inherit fishinthecalculator-bash-configuration)
+;;                   (aliases
+;;                    '(("+" . "pushd .")
+;;                      ("-- -" . "popd")
+;;                      (".." . "cd ..")
+;;                      ("..." . "cd ../..")
+;;                      ("beep" . "echo -en \"\\007\"")
+;;                      ("cd.." . "cd ..")
+;;                      ("dir" . "ls -l")
+;;                      ("egrep" . "egrep --color=auto")
+;;                      ("fgrep" . "fgrep --color=auto")
+;;                      ("grep" . "grep --color=auto")
+;;                      ("ip" . "ip --color=auto")
+;;                      ("l" . "ls -alF")
+;;                      ("la" . "ls -la")
+;;                      ("ll" . "ls -l")
+;;                      ("ls" . "_ls")
+;;                      ("ls-l" . "ls -l")
+;;                      ("md" . "mkdir -p")
+;;                      ("o" . "less")
+;;                      ("rd" . "rmdir")
+;;                      ("rehash" . "hash -r")
+;;                      ("unmount" . "echo \"Error: Try the command: umount\" 1>&2; false")
+;;                      ("you" . "if test \"$EUID\" = 0 ; then /sbin/yast2 online_update ; else su - -c \"/sbin/yast2 online_update\" ; fi")))))
+
+;;         (service home-dotfiles-service-type
+;;                  (home-dotfiles-configuration
+;;                   (layout 'stow)
+;;                   (directories
+;;                    (list paul-stow-dir))))
+
+;;         ;; (service home-sops-secrets-service-type
+;;         ;;          (home-sops-service-configuration
+;;         ;;           (config sops.yaml)
+;;         ;;           (gnupg "/usr/bin/gpg")
+;;         ;;           (gnupg-home "/home/paul/.gnupg")
+;;         ;;           (verbose? #t)
+;;         ;;           (secrets
+;;         ;;            (list
+;;         ;;             (sops-secret
+;;         ;;              (key '("suse" "restic"))
+;;         ;;              (file paul.yaml)
+;;         ;;              (permissions #o400))
+;;         ;;             (sops-secret
+;;         ;;              (key '("personal" "restic"))
+;;         ;;              (file paul.yaml)
+;;         ;;              (permissions #o400))))))
+
+;;         ;; (service home-restic-backup-service-type
+;;         ;;          (restic-backup-configuration
+;;         ;;           (jobs
+;;         ;;            (list
+;;         ;;             suse-restic-backup-job
+;;         ;;             (restic-backup-job
+;;         ;;              (name "personal")
+;;         ;;              (restic restic-bin)
+;;         ;;              (repository "rclone:personal-onedrive:backup/restic")
+;;         ;;              (password-file "/run/user/1000/secrets/personal/restic")
+;;         ;;              ;; Every day at 10
+;;         ;;              (schedule "0 10 * * *")
+;;         ;;              (files '("/home/paul/code/personal"))
+;;         ;;              (verbose? #t))))))
+
+;;         ;; (service home-openssh-service-type
+;;         ;;          (home-openssh-configuration
+;;         ;;           (hosts
+;;         ;;            (list (openssh-host (name "xcdchk")
+;;         ;;                                (host-name "xcdchk.suse.de")
+;;         ;;                                (user "gleidi")
+;;         ;;                                (identity-file "~/.ssh/id_ed25519"))
+;;         ;;                  (openssh-host (host-name "bonfire.fishinthecalculator.me")
+;;         ;;                                (name "bonfire.fishinthecalculator.me")
+;;         ;;                                (user "paul"))
+;;         ;;                  (openssh-host (name "euklid")
+;;         ;;                                (host-name "euklid.suse.de")
+;;         ;;                                (user "gleidi"))
+;;         ;;                  (openssh-host (name "thales")
+;;         ;;                                (host-name "thales.prg2.suse.org")
+;;         ;;                                (user "gleidi")
+;;         ;;                                (identity-file "~/.ssh/id_ed25519"))))))
+
+;;         (simple-service 'additional-fonts-service
+;;                         home-fontconfig-service-type
+;;                         (list "~/.guix-extra-profiles/emacs/share/fonts"))
+
+;;         ;; (simple-service 'paul-mcron
+;;         ;;                 home-mcron-service-type
+;;         ;;                 (list (cleanup-job)
+;;         ;;                       (restic-prune-job)
+;;         ;;                       (rclone-keepass-job)))
+
+;;         ;; (service home-ocui-service-type
+;;         ;;          (ocui-configuration
+;;         ;;           (oci
+;;         ;;            (ocui-oci-configuration
+;;         ;;             (runtime "podman")))))
+
+;;         (simple-service 'paul-environment-variables
+;;                         home-environment-variables-service-type
+;;                         (append (filter
+;;                                  (lambda (pair)
+;;                                    (not (equal? (car pair) "PATH")))
+;;                                  fishinthecalculator-environment)
+;;                                 '(("SSL_CERT_DIR" . "${HOME}/.guix-home/profile/etc/ssl/certs")
+;;                                   ("SSL_CERT_FILE" . "${HOME}/.guix-home/profile/etc/ssl/certs/ca-certificates.crt")
+;;                                   ("CURL_CA_BUNDLE" . "${HOME}/.guix-home/profile/etc/ssl/certs/ca-certificates.crt")
+;;                                   ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
+;;                                   ("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
+;;                                   ("GUIX_LOCPATH" . "${HOME}/.guix-home/profile/lib/locale")
+;;                                   ("PATH" . "${HOME}/.doom.d/bin:${HOME}/.config/emacs/bin:${HOME}/.emacs.d/bin:${HOME}/.local/bin:${PATH}")))))))
