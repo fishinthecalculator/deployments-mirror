@@ -170,9 +170,9 @@
                              "/run/current-system/profile/bin/bash" "-l" "-c"
                              (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
                                             #$restic "/bin/restic"
-                                            " -r " #$repo " --verbose prune")))
-                           #:environment-variables
-                           (list "HOME=/root")))
+                                            " -r " #$repo " --verbose prune"))
+                            #:environment-variables
+                            (list "HOME=/root"))))
                        (stop
                         #~(make-timer-destructor))
                        (actions (list (shepherd-action
