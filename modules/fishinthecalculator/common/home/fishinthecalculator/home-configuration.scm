@@ -160,9 +160,7 @@ without waiting for the scheduled time."))
 
           (simple-service 'fishinthecalculator-timers
                           home-shepherd-service-type
-                          (list (cleanup-job)
-                                guix-fork-sync-job
-                                nix-update-job))
+                          (list))
 
           (simple-service 'fishinthecalculator-fonts
                           home-fontconfig-service-type
