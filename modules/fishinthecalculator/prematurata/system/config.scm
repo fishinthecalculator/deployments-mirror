@@ -170,15 +170,15 @@
                              "/run/current-system/profile/bin/bash" "-c"
                              (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
                                             #$restic "/bin/restic"
-                                            " -r " #$repo " --verbose prune")))
-                           (stop
-                            #~(make-timer-destructor))
-                           (actions (list (shepherd-action
-                                           (name 'trigger)
-                                           (documentation
-                                            (string-append "Manually trigger a @command{restic prune} on " repo " repo,
+                                            " -r " #$repo " --verbose prune")))))
+                       (stop
+                        #~(make-timer-destructor))
+                       (actions (list (shepherd-action
+                                       (name 'trigger)
+                                       (documentation
+                                        (string-append "Manually trigger a @command{restic prune} on " repo " repo,
 without waiting for the scheduled time."))
-                                           (procedure #~trigger-timer))))))))
+                                       (procedure #~trigger-timer))))))
    restic-repositories))
 
 (define %common-desktop-system

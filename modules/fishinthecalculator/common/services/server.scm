@@ -34,14 +34,14 @@
                           (cron-string->calendar-event "0 1 * * *")
                           (command
                            (list
-                            "/run/current-system/profile/bin/guix" "gc"))
-                          (stop
-                           #~(make-timer-destructor))
-                          (actions (list (shepherd-action
-                                          (name 'trigger)
-                                          (documentation "Manually trigger a guix gc run,
+                            "/run/current-system/profile/bin/guix" "gc"))))
+                      (stop
+                       #~(make-timer-destructor))
+                      (actions (list (shepherd-action
+                                      (name 'trigger)
+                                      (documentation "Manually trigger a guix gc run,
 without waiting for the scheduled time.")
-                                          (procedure #~trigger-timer))))))))
+                                      (procedure #~trigger-timer))))))
 
 (define (common-server-services subuids subgids)
   (append %common-base-services
