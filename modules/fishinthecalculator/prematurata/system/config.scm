@@ -2,6 +2,7 @@
   #:use-module (gnu bootloader)              ;for bootloader-configuration
   #:use-module (gnu bootloader grub)         ;for grub-efi-bootloader
   #:use-module (gnu packages audio)          ;for bluez-alsa
+  #:use-module (gnu packages bash)           ;for bash-minimal
   #:use-module (gnu packages backup)         ;for restic
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
@@ -167,7 +168,10 @@
                            (cron-string->calendar-event "2 21 * * 6")
                            (command
                             (list
-                             "/run/current-system/profile/bin/restic-guix" "prune" #$(list-ref (string-split repo #\:) 1))
+                             (string-append #+bash-minimal "/bin/bash")
+                             "-l" "-c"
+                             (string-append
+                              "restic-guix prune " #$(list-ref (string-split repo #\:) 1)))
                             #:environment-variables
                             (list "HOME=/root"))))
                        (stop
