@@ -13,6 +13,7 @@
   #:use-module (gnu services networking)     ;for network-manager-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
+  #:use-module (gnu services vpn)            ;for wireguard-service-type
   #:use-module (sops secrets)
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
