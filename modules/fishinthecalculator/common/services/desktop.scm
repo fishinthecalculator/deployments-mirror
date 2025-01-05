@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2022-2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2022-2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator common services desktop)
   #:use-module (gnu)
@@ -18,19 +18,19 @@
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services linux)
-  #:use-module (gnu services mcron)
   #:use-module (gnu services nix)
   #:use-module (gnu services networking)
   #:use-module (gnu services security-token) ;for pcsd-service-type
   #:use-module (gnu services sddm)
+  #:use-module (gnu services shepherd)
   #:use-module (gnu services spice) ;for spice-vdagent-service
   #:use-module (gnu services virtualization)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (fishinthecalculator common channels)
   #:use-module (fishinthecalculator common services log)
-  #:use-module (fishinthecalculator common services mcron)
   #:use-module (fishinthecalculator common services substitute)
+  #:use-module (fishinthecalculator common services timers)
   #:use-module (fishinthecalculator common system input)
   #:use-module (srfi srfi-1)
   #:export (common-desktop-services))
@@ -40,8 +40,8 @@
           (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
 
-                (simple-service 'common-cron-jobs
-                                mcron-service-type
+                (simple-service 'common-timers
+                                shepherd-root-service-type
                                 (list updatedb-job))
 
                 (service nix-service-type)

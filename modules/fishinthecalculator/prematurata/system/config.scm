@@ -12,7 +12,6 @@
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
   #:use-module (gnu services guix)           ;for guix-home-service-type
-  #:use-module (gnu services mcron)          ;for mcron-service-type
   #:use-module (gnu services networking)     ;for tor-service-type
   #:use-module (gnu services shepherd)       ;for shepherd-root-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -154,17 +153,33 @@
           (verbose? #t)))
        restic-repositories))
 
-(define-public restic-prune-job
+(define-public restic-prune-jobs
   ;; Run 'restic prune' at 21:02 every Sunday.
-  #~(job "2 21 * * 7"
-         (lambda ()
-           (for-each
-            (lambda (repo)
-              (system* "sh" "-c" (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
-                                                #$restic "/bin/restic"
-                                                " -r " repo " --verbose prune")))
-            restic-repositories))
-         "restic-prune"))
+  (map
+   (lambda (repo)
+     (shepherd-service (provision `(,(string->symbol (string-append "restic-prune-" repo))))
+                       (requirement '(user-processes file-systems))
+                       (documentation
+                        (string-append "Run @command{restic prune} on " repo " repo."))
+                       (modules '((shepherd service timer)))
+                       (start
+                        #~(make-timer-constructor
+                           (cron-string->calendar-event "2 21 * * 6")
+                           (command
+                            (list
+                             "/run/current-system/profile/bin/bash" "-c"
+                             (string-append "RESTIC_PASSWORD=\"$(cat /run/secrets/restic)\"; export RESTIC_PASSWORD; "
+                                            #$restic "/bin/restic"
+                                            " -r " #$repo " --verbose prune")))
+                           (stop
+                            #~(make-timer-destructor))
+                           (actions (list (shepherd-action
+                                           (name 'trigger)
+                                           (documentation
+                                            (string-append "Manually trigger a @command{restic prune} on " repo " repo,
+without waiting for the scheduled time."))
+                                           (procedure #~trigger-timer))))))))
+   restic-repositories))
 
 (define %common-desktop-system
   (common-desktop-system subuids subgids))
@@ -251,9 +266,9 @@
                                     (pam-limits-entry "@realtime" 'both 'memlock 'unlimited)))
 
                    (service tor-service-type)
-                   (simple-service 'prematurata-cron-jobs
-                                   mcron-service-type
-                                   (list restic-prune-job))
+                   (simple-service 'prematurata-timers
+                                   shepherd-root-service-type
+                                   restic-prune-jobs)
 
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms

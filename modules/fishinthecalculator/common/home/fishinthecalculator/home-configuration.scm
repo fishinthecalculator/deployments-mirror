@@ -1,3 +1,6 @@
+;;; SPDX-License-Identifier: GPL-3.0-or-later
+;;; Copyright © 2024-2025 Giacomo Leidi <goodoldpaul@autistici.org>
+
 (define-module (fishinthecalculator common home fishinthecalculator home-configuration)
   #:use-module (guix gexp)
   #:use-module (guix utils)
@@ -6,8 +9,8 @@
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services fontutils)
   #:use-module (gnu home services guix)
-  #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
+  #:use-module (gnu home services shepherd)
   #:use-module (gnu home services sound)
   #:use-module (gnu home services ssh)
   #:use-module (gnu packages bash)
@@ -37,16 +40,49 @@
                    "/etc"))))
 
 (define nix-update-job
-  ;; Run 'upall' at 23:10 every day.
-  #~(job "10 23 * * *"
-         (string-append #$bash-minimal "/bin/bash -l -c 'nix-update'")
-         "nix-update"))
+  ;; Run 'nix-update' at 23:10 every day.
+  (shepherd-service (provision '(nix-update))
+                    (documentation
+                     (string-append "Run @command{cleanup} regularly."))
+                    (modules '((shepherd service timer)))
+                    (start
+                     #~(make-timer-constructor
+                        (cron-string->calendar-event
+                         #$(format #f "~a ~a * * *" 10 23))
+                        (command
+                         (list
+                          (string-append #$bash-minimal "/bin/bash")
+                          "-l" "-c" "nix-update"))))
+                    (stop
+                     #~(make-timer-destructor))
+                    (actions (list (shepherd-action
+                                    (name 'trigger)
+                                    (documentation
+                                     (string-append "Manually trigger a @command{nix-update} run,
+without waiting for the scheduled time."))
+                                    (procedure #~trigger-timer))))))
 
 (define* (cleanup-job #:key (hours 20) (minutes 30))
- ;; Run 'cleanup' at a given hour every day.
- #~(job #$(format #f "~a ~a * * *" minutes hours)
-        (string-append #$fishinthecalculator-scripts "/bin/cleanup")
-        "cleanup"))
+  ;; Run 'cleanup' at a given hour every day.
+  (shepherd-service (provision '(cleanup))
+                    (documentation
+                     (string-append "Run @command{cleanup} regularly."))
+                    (modules '((shepherd service timer)))
+                    (start
+                     #~(make-timer-constructor
+                        (cron-string->calendar-event
+                         #$(format #f "~a ~a * * *" minutes hours))
+                        (command
+                         (list
+                          (string-append #$fishinthecalculator-scripts "/bin/cleanup")))))
+                    (stop
+                     #~(make-timer-destructor))
+                    (actions (list (shepherd-action
+                                    (name 'trigger)
+                                    (documentation
+                                     (string-append "Manually trigger a @command{cleanup} run,
+without waiting for the scheduled time."))
+                                    (procedure #~trigger-timer))))))
 
 (define guix-fork-sync-script
   (plain-file
@@ -79,10 +115,27 @@ git pull
 git push github master"))
 
 (define guix-fork-sync-job
-  ;; Run 'cleanup' at a given hour every day.
-  #~(job "0 */6 * * *"
-         (string-append #$bash-minimal "/bin/bash -l "
-                        #$guix-fork-sync-script)))
+  ;; Run 'guix-fork-sync' at a given hour every day.
+  (shepherd-service (provision '(guix-fork-sync))
+                    (documentation
+                     (string-append "Run @command{guix-fork-sync} regularly."))
+                    (modules '((shepherd service timer)))
+                    (start
+                     #~(make-timer-constructor
+                        (cron-string->calendar-event
+                         "0 */6 * * *")
+                        (command
+                         (list
+                          (string-append #$bash-minimal "/bin/bash")
+                          "-l" #$guix-fork-sync-script))))
+                    (stop
+                     #~(make-timer-destructor))
+                    (actions (list (shepherd-action
+                                    (name 'trigger)
+                                    (documentation
+                                     (string-append "Manually trigger a @command{guix-fork-sync} run,
+without waiting for the scheduled time."))
+                                    (procedure #~trigger-timer))))))
 
 (define-public fishinthecalculator-home-environment
   (home-environment
@@ -105,8 +158,8 @@ git push github master"))
 
           (service home-doom-emacs-service-type)
 
-          (simple-service 'fishinthecalculator-mcron
-                          home-mcron-service-type
+          (simple-service 'fishinthecalculator-timers
+                          home-shepherd-service-type
                           (list (cleanup-job)
                                 guix-fork-sync-job
                                 nix-update-job))

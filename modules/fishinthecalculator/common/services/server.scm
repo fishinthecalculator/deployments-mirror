@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2023-2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2023-2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator common services server)
   #:use-module (gnu)
@@ -10,21 +10,38 @@
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop) ;for elogind-service
   #:use-module (gnu services docker)
-  #:use-module (gnu services mcron)
   #:use-module (gnu services networking)
   #:use-module (gnu services security)
+  #:use-module (gnu services shepherd)
   #:use-module (gnu services ssh)
   #:use-module (guix gexp)
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
-  #:use-module (fishinthecalculator common services mcron)
+  #:use-module (fishinthecalculator common services timers)
   #:export (common-server-services))
 
 (define gc-job
   ;; Run 'guix gc' at 1AM every day.
-  #~(job '(next-hour '(1)) "guix gc"))
+  #~(shepherd-service (provision '(updatedb))
+                      (requirement '(user-processes file-systems guix-daemon))
+                      (documentation
+                       "Run @command{guix gc} on a regular basis.")
+                      (modules '((shepherd service timer)))
+                      (start
+                       #~(make-timer-constructor
+                          (cron-string->calendar-event "0 1 * * *")
+                          (command
+                           (list
+                            "/run/current-system/profile/bin/guix" "gc"))
+                          (stop
+                           #~(make-timer-destructor))
+                          (actions (list (shepherd-action
+                                          (name 'trigger)
+                                          (documentation "Manually trigger a guix gc run,
+without waiting for the scheduled time.")
+                                          (procedure #~trigger-timer))))))))
 
 (define (common-server-services subuids subgids)
   (append %common-base-services
@@ -98,7 +115,7 @@
                 (service elogind-service-type)
                 (service dbus-root-service-type)
 
-                (simple-service 'server-cron-job
-                                mcron-service-type
+                (simple-service 'server-timers
+                                shepherd-root-service-type
                                 (list gc-job
                                       updatedb-job)))))
