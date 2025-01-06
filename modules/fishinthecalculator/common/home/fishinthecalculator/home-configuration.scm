@@ -123,11 +123,12 @@ git push github master"))
                     (start
                      #~(make-timer-constructor
                         (cron-string->calendar-event
-                         "0 */6 * * *")
+                         "0 0,6,12,18 * * *")
                         (command
                          (list
                           (string-append #$bash-minimal "/bin/bash")
-                          "-l" #$guix-fork-sync-script))))
+                          "-l" #$guix-fork-sync-script))
+                        #:wait-for-termination? #t))
                     (stop
                      #~(make-timer-destructor))
                     (actions (list (shepherd-action
@@ -160,7 +161,9 @@ without waiting for the scheduled time."))
 
           (simple-service 'fishinthecalculator-timers
                           home-shepherd-service-type
-                          (list))
+                          (list (cleanup-job)
+                                guix-fork-sync-job
+                                nix-update-job))
 
           (simple-service 'fishinthecalculator-fonts
                           home-fontconfig-service-type
