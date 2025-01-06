@@ -35,6 +35,7 @@
   #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
+  #:use-module (small-guix home services backup) ;for home-restic-backup-service-type
   #:use-module ((small-guix services backup-timers)) ;for Shepherd timers restic-backup-service-type
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
@@ -45,6 +46,7 @@
   #:use-module (fishinthecalculator common self)
   #:use-module (fishinthecalculator common services desktop)
   #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common system desktop)
   #:use-module (fishinthecalculator common system input)
   #:use-module (fishinthecalculator common users)
@@ -300,13 +302,21 @@ without waiting for the scheduled time."))
                             (bluetooth-configuration
                              (auto-enable? #t)))
 
+                   (service common-unload-service-type
+                            '("cups"
+                              "fwupd"
+                              "guix-publish"
+                              "libvirtd"
+                              "nix-daemon"
+                              "updatedb"))
+
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
 
                    ;; cache some binary sources
                    (simple-service 'cache-binaries
                                    gc-root-service-type
-                                   (list (package-source zoom))))
+                                   (list (map package-source (list element-desktop signal-desktop zoom)))))
              (modify-services %common-desktop-services
 
                (gdm-service-type config =>

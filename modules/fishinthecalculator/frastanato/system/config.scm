@@ -30,6 +30,7 @@
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common self)
   #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator frastanato secrets)
@@ -299,6 +300,12 @@
                         (verbose? #t)))
 
               ;; Misc
+              (service common-unload-service-type
+                       '("containerd"
+                         "cuirass"
+                         "dockerd"
+                         "postgres"))
+
               (service wireguard-service-type
                        (wireguard-configuration
                         (private-key "/run/secrets/wireguard/private")

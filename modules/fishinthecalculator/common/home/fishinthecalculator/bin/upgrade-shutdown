@@ -4,7 +4,7 @@
 
 myself="$USER"
 
-sudo bash -c "
+sudo bash -l -c "
 set -u
 
 su ${myself} -l -c 'guix pull'
@@ -13,7 +13,7 @@ su ${myself} -l -c 'guix pull'
 
 [[ \"$#\" -eq 1 ]] && su ${myself} -l -c 'cleanup'
 
-~${myself}/.guix-home/profile/bin/unload
+unload
 
 shutdown
 "
