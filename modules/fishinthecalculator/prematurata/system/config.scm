@@ -316,7 +316,8 @@ without waiting for the scheduled time."))
                    ;; cache some binary sources
                    (simple-service 'cache-binaries
                                    gc-root-service-type
-                                   (list (map package-source (list element-desktop signal-desktop zoom)))))
+                                   (map package-source
+                                         (list element-desktop signal-desktop zoom))))
              (modify-services %common-desktop-services
 
                (gdm-service-type config =>
