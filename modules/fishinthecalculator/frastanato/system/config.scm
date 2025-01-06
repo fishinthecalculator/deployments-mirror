@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2024-2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator frastanato system config)
   #:use-module (gnu)
@@ -32,6 +32,7 @@
   #:use-module (fishinthecalculator common services server)
   #:use-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (fishinthecalculator common users)
+  #:use-module (fishinthecalculator frastanato secrets)
   #:use-module (srfi srfi-1)
   #:export (fishinthecalculator frastanato-system))
 
@@ -317,7 +318,8 @@
                        (sops-service-configuration
                         (config sops.yaml)
                         (secrets
-                         (list restic-secret))))
+                         (list restic-secret
+                               wireguard-secret))))
 
               (deployments-unattended-upgrades host-name
                                                #:hours 4
