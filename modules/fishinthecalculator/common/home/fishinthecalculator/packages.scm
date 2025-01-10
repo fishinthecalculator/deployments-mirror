@@ -72,6 +72,7 @@
                      "git"
                      "git:credential-libsecret"
                      "git:send-email"
+                     "gnome-authenticator"
                      "gnome-shell-extension-appindicator"
                      "gnome-shell-extension-dash-to-panel"
                      "gparted"
