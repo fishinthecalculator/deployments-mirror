@@ -263,12 +263,12 @@
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
               (simple-service 'oci-networks
-                    oci-service-type
-                    (oci-extension
-                     (networks
-                      (list
-                       (oci-network-configuration
-                        (name "monitoring"))))))
+                              oci-service-type
+                              (oci-extension
+                               (networks
+                                (list
+                                 (oci-network-configuration
+                                  (name "monitoring"))))))
 
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
@@ -312,18 +312,6 @@
                          "cuirass"
                          "dockerd"
                          "postgres"))
-
-              (service wireguard-service-type
-                       (wireguard-configuration
-                        (private-key "/run/secrets/wireguard/private")
-                        (addresses '("192.168.27.65/32"))
-                        (peers
-                         (list
-                          (wireguard-peer
-                           (name "iliadbox")
-                           (endpoint "81.56.8.195:10341")
-                           (public-key "3sYDlGNKnmeixK0pzG5KWO+WCNoeMjYqS4ejPd8IXiM=")
-                           (allowed-ips '("192.168.27.64/27")))))))
 
               (service network-manager-service-type)
               (service wpa-supplicant-service-type)
