@@ -143,87 +143,89 @@ without waiting for the scheduled time."))
    (packages fishinthecalculator-packages)
 
    (services
-    (list (service home-bash-service-type fishinthecalculator-bash-configuration)
-          (service home-osh-service-type fishinthecalculator-osh-configuration)
-          (service home-dotfiles-service-type
-                   (home-dotfiles-environment
-                    (directories (list fishinthecalculator-stow-dir))))
+    (append
+     (list (service home-bash-service-type fishinthecalculator-bash-configuration)
+           (service home-osh-service-type fishinthecalculator-osh-configuration)
+           (service home-dotfiles-service-type
+                    (home-dotfiles-environment
+                     (directories (list fishinthecalculator-stow-dir))))
 
-          (service home-dbus-service-type)
-          (service home-pipewire-service-type)
-          (service home-ocui-service-type
-                   (ocui-configuration
-                    (oci
-                     (ocui-oci-configuration
-                      (runtime "podman")))))
+           (service home-dbus-service-type)
+           (service home-pipewire-service-type)
+           (service home-ocui-service-type
+                    (ocui-configuration
+                     (oci
+                      (ocui-oci-configuration
+                       (runtime "podman")))))
 
-          (service home-doom-emacs-service-type)
+           (service home-doom-emacs-service-type)
 
-          (simple-service 'fishinthecalculator-timers
-                          home-shepherd-service-type
-                          (list (cleanup-job)
-                                guix-fork-sync-job
-                                nix-update-job))
+           (simple-service 'fishinthecalculator-timers
+                           home-shepherd-service-type
+                           (list (cleanup-job)
+                                 guix-fork-sync-job
+                                 nix-update-job))
 
-          (simple-service 'fishinthecalculator-fonts
-                          home-fontconfig-service-type
-                          (list (string-append %home "/.nix-profile/share/fonts")))
+           (simple-service 'fishinthecalculator-fonts
+                           home-fontconfig-service-type
+                           (list (string-append %home "/.nix-profile/share/fonts")))
 
-          (simple-service 'fishinthecalculator-shell-profile
-                          home-shell-profile-service-type
-                          fishinthecalculator-shell-profile-extensions)
+           (simple-service 'fishinthecalculator-shell-profile
+                           home-shell-profile-service-type
+                           fishinthecalculator-shell-profile-extensions)
 
-          (simple-service 'fishinthecalculator-env-vars
-                          home-environment-variables-service-type
-                          (append (filter
-                                   (lambda (pair)
-                                     (not (equal? (car pair) "PATH")))
-                                   fishinthecalculator-environment)
-                                  '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
-                                    ("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")
-                                    ("BONFIRE_DEV_GUIX" . "true")
-                                    ("COLORTERM" . "truecolor")
-                                    ("MOAR" . "--statusbar=bold --no-linenumbers"))))
+           (simple-service 'fishinthecalculator-env-vars
+                           home-environment-variables-service-type
+                           (append (filter
+                                    (lambda (pair)
+                                      (not (equal? (car pair) "PATH")))
+                                    fishinthecalculator-environment)
+                                   '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
+                                     ("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")
+                                     ("BONFIRE_DEV_GUIX" . "true")
+                                     ("COLORTERM" . "truecolor")
+                                     ("MOAR" . "--statusbar=bold --no-linenumbers"))))
 
-          (service home-openssh-service-type
-                   (home-openssh-configuration
-                    (hosts
-                     (list (openssh-host (name "nasa")
-                                         (user "root")
-                                         (identity-file
-                                          "~/.ssh/id_rsa.pub")
-                                         (host-name "192.168.1.51")
-                                         (host-key-algorithms
-                                          '("+ssh-rsa"))
-                                         (extra-content
-                                          "  KexAlgorithms +diffie-hellman-group1-sha1"))
-                           (openssh-host (name "virtual-nellone")
-                                         (host-name "2001:19f0:6c00:1e5b:5400:04ff:fee6:4e4e")
-                                         (user "paul")
-                                         (extra-content
-                                          "  LocalForward 5432 localhost:5432"))
-                           (openssh-host (name "ug")
-                                         (host-name "y.ultima-generazione.com")
-                                         (user "amministrataru"))
-                           (openssh-host (name "frastanato")
-                                         (host-name "192.168.1.80")
-                                         (user "paul"))
-                           (openssh-host (host-name "municipiozero.it")
-                                         (name "municipiozero.it")
-                                         (user "paul")
-                                         (extra-content
-                                          "  LocalForward 3000 localhost:3000
+           (service home-openssh-service-type
+                    (home-openssh-configuration
+                     (hosts
+                      (list (openssh-host (name "nasa")
+                                          (user "root")
+                                          (identity-file
+                                           "~/.ssh/id_rsa.pub")
+                                          (host-name "192.168.1.51")
+                                          (host-key-algorithms
+                                           '("+ssh-rsa"))
+                                          (extra-content
+                                           "  KexAlgorithms +diffie-hellman-group1-sha1"))
+                            (openssh-host (name "virtual-nellone")
+                                          (host-name "2001:19f0:6c00:1e5b:5400:04ff:fee6:4e4e")
+                                          (user "paul")
+                                          (extra-content
+                                           "  LocalForward 5432 localhost:5432"))
+                            (openssh-host (name "ug")
+                                          (host-name "y.ultima-generazione.com")
+                                          (user "amministrataru"))
+                            (openssh-host (name "frastanato")
+                                          (host-name "192.168.1.80")
+                                          (user "paul"))
+                            (openssh-host (host-name "municipiozero.it")
+                                          (name "municipiozero.it")
+                                          (user "paul")
+                                          (extra-content
+                                           "  LocalForward 3000 localhost:3000
   LocalForward 9090 localhost:9090"))
-                           (openssh-host (name "remarkable")
-                                         (user "root")
-                                         (identity-file
-                                          "~/.ssh/id_rsa_remarkable.pub")
-                                         (host-name "192.168.1.60")
-                                         (host-key-algorithms
-                                          '("+ssh-rsa"))
-                                         (accepted-key-types
-                                          '("+ssh-rsa")))))
-                    (authorized-keys (list termux-ssh-key))))))))
+                            (openssh-host (name "remarkable")
+                                          (user "root")
+                                          (identity-file
+                                           "~/.ssh/id_rsa_remarkable.pub")
+                                          (host-name "192.168.1.60")
+                                          (host-key-algorithms
+                                           '("+ssh-rsa"))
+                                          (accepted-key-types
+                                           '("+ssh-rsa")))))
+                     (authorized-keys (list termux-ssh-key)))))
+     %base-home-services))))
 
 ;; (define here
 ;;   (current-source-directory))
