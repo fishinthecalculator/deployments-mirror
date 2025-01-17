@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2024, 2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator common services base)
   #:use-module (gnu)
@@ -13,12 +13,11 @@
 
 (define %common-base-services
   (append
-   ;%common-log-services
+   %common-log-services
    (modify-services %base-services
-     ;; Remove the rottlog service,
+     ;; Remove the syslog service,
      ;; it's now redundant.
-     ;(delete syslog-service-type)
-     ;(delete rottlog-service-type)
+     (delete syslog-service-type)
      (guix-service-type config =>
                         (guix-configuration (inherit config)
                                             (channels %deployments-channels)
