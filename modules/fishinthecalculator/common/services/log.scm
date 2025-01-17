@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2024, 2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator common services log)
   #:use-module (gnu services)
@@ -19,15 +19,5 @@
    (description
     "Shepherd's built-in system log (syslogd).")))
 
-(define log-rotation-service
-  (simple-service 'shepherd-log-rotation
-                  shepherd-root-service-type
-                  (list (shepherd-service
-                         (provision '(log-rotation))
-                         (modules '((shepherd service log-rotation)))
-                         (free-form #~(log-rotation-service))))))
-
-
 (define %common-log-services
-  (list log-rotation-service
-        (service system-log-service-type)))
+  (list (service system-log-service-type)))

@@ -98,9 +98,8 @@
                                     (file-append coreutils "/bin/env")))
 
           (modify-services %desktop-services
-            ;; Remove the currently-used syslogd and rottlog service,
+            ;; Remove the currently-used syslogd service,
             ;; now redundant.
-            (delete rottlog-service-type)
             (delete syslog-service-type)
             ;; Enable additional substitute servers.
             (guix-service-type config =>
