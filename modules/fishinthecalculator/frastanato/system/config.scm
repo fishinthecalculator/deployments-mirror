@@ -186,7 +186,7 @@
     (users (cons* (user-account
                    (inherit paul-user)
                    (comment "Tino il Cotechino")
-                   (supplementary-groups '("wheel" "netdev" "audio" "video" "cgroups" "transmission")))
+                   (supplementary-groups '("wheel" "netdev" "audio" "video" "cgroup" "transmission")))
                   (user-account
                    (name "deploy")
                    (comment "Guix deploy user")
