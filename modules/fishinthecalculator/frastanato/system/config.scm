@@ -295,6 +295,7 @@
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
+                        (runtime 'podman)
                         (network "host")))
 
               (service postgresql-service-type
