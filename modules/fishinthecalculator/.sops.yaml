@@ -29,3 +29,7 @@ creation_rules:
           - pgp:
                 - *user_paul
                 - *host_virtual_nellone
+    - path_regex: .*thinkpad-paul\.yaml$
+      key_groups:
+          - pgp:
+                - *user_paul
