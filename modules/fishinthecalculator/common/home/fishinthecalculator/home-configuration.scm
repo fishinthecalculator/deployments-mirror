@@ -31,6 +31,7 @@
   #:use-module (small-guix home services shells)
   #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (fishinthecalculator common home fishinthecalculator services doom-emacs)
