@@ -15,6 +15,7 @@
   #:use-module (gnu home services ssh)
   #:use-module (gnu packages bash)
   #:use-module (gnu services)
+  #:use-module (nongnu packages productivity)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
