@@ -254,12 +254,6 @@ without waiting for the scheduled time."))
    (files '("/home/paul/code/personal"))
    (verbose? #t)))
 
-(define sops.yaml
-  (local-file (string-append %here "/.sops.yaml")
-              ;; This is because paths on the store
-              ;; can not start with dots.
-              "sops.yaml"))
-
 (define thinkpad-paul.yaml
   (secrets-file "thinkpad-paul.yaml"))
 
