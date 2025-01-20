@@ -243,13 +243,13 @@ without waiting for the scheduled time."))
    (verbose? #t)))
 
 (define sops.yaml
-  (local-file (string-append here "/.sops.yaml")
+  (local-file (string-append %here "/.sops.yaml")
               ;; This is because paths on the store
               ;; can not start with dots.
               "sops.yaml"))
 
 (define thinkpad-paul.yaml
-  (local-file (string-append here "/secrets/paul.yaml")))
+  (local-file (string-append %here "/secrets/paul.yaml")))
 
 (define* (cleanup-job #:key (hours 16) (minutes 30))
  ;; Run 'cleanup' at a given hour every day.
