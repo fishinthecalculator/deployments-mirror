@@ -17,6 +17,7 @@
   #:use-module (gnu services)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
+  #:use-module (small-guix packages scripts)  ;for restic-bin
   #:use-module (small-guix services backup-timers)
   #:use-module (small-guix home services backup)
   #:use-module (small-guix home services docker-cli)
