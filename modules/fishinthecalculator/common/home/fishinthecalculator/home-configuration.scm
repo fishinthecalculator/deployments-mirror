@@ -260,7 +260,7 @@ without waiting for the scheduled time."))
               "sops.yaml"))
 
 (define thinkpad-paul.yaml
-  (local-file (string-append %here "/secrets/paul.yaml")))
+  (secrets-file "thinkpad-paul.yaml"))
 
 (define* (restic-prune-job #:key (hours 16) (minutes 45))
   (shepherd-service (provision '(restic-prune-personal-job))
