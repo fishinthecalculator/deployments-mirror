@@ -13,9 +13,14 @@
   #:use-module (gnu home services shepherd)
   #:use-module (gnu home services sound)
   #:use-module (gnu home services ssh)
+  #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu services)
+  #:use-module (nongnu packages editors)
   #:use-module (nongnu packages productivity)
+  #:use-module (sops secrets)
+  #:use-module (sops home services sops)
+  #:use-module (small-guix packages bitwarden)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
@@ -24,6 +29,7 @@
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
   #:use-module (small-guix home services shells)
+  #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
@@ -231,11 +237,15 @@ without waiting for the scheduled time."))
                      (authorized-keys (list termux-ssh-key)))))
      %base-home-services))))
 
-;; openSUSE Tumbleweed Thinkpad environment
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; openSUSE Tumbleweed Thinkpad environment ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define personal-restic-backup-job
   (restic-backup-job
-   (name "personal")
+   (name "personal-job")
    (restic restic-bin)
+   (requirement '(home-sops-secrets))
    (repository "rclone:personal-onedrive:backup/restic")
    (password-file "/run/user/1001/secrets/personal/restic")
    ;; Every day at 10
@@ -252,17 +262,29 @@ without waiting for the scheduled time."))
 (define thinkpad-paul.yaml
   (local-file (string-append %here "/secrets/paul.yaml")))
 
-(define* (cleanup-job #:key (hours 16) (minutes 30))
- ;; Run 'cleanup' at a given hour every day.
- #~(job #$(format #f "~a ~a * * *" minutes hours)
-        (string-append #$fishinthecalculator-scripts "/bin/cleanup")
-        "cleanup"))
-
 (define* (restic-prune-job #:key (hours 16) (minutes 45))
-  #~(job #$(format #f "~a ~a * * *" minutes hours)
-         (lambda _
-           (system* "restic-guix" "prune" #$personal-restic-backup-job-name))
-         "prune"))
+  (shepherd-service (provision '(restic-prune-personal-job))
+                    (requirement '(home-sops-secrets))
+                    (documentation
+                     (string-append "Run @command{restic prune} on personal-job repo."))
+                    (modules '((shepherd service timer)))
+                    (start
+                     #~(make-timer-constructor
+                        (cron-string->calendar-event #$(format #f "~a ~a * * *" minutes hours))
+                        (command
+                         (list
+                          (string-append #+bash-minimal "/bin/bash")
+                          "-l" "-c"
+                          (string-append
+                           "restic-guix prune " #$(restic-backup-job-name personal-restic-backup-job))))))
+                    (stop
+                     #~(make-timer-destructor))
+                    (actions (list (shepherd-action
+                                    (name 'trigger)
+                                    (documentation
+                                     (string-append "Manually trigger a @command{restic prune} on personal-job repo,
+without waiting for the scheduled time."))
+                                    (procedure #~trigger-timer))))))
 
 (define-public thinkpad-paul-home-environment
   (home-environment
@@ -286,9 +308,7 @@ without waiting for the scheduled time."))
    (services
     (list (simple-service 'paul-shell-profile
                           home-shell-profile-service-type
-                          (cons*
-                           paul-bash-functions
-                           fishinthecalculator-shell-profile-extensions))
+                          fishinthecalculator-shell-profile-extensions)
 
           (service home-bash-service-type
                    (home-bash-configuration
@@ -318,15 +338,12 @@ without waiting for the scheduled time."))
                        ("you" . "if test \"$EUID\" = 0 ; then /sbin/yast2 online_update ; else su - -c \"/sbin/yast2 online_update\" ; fi")))))
 
           (service home-dotfiles-service-type
-                   (home-dotfiles-configuration
-                    (layout 'stow)
-                    (directories
-                     (list fishinthecalculator-stow-dir))))
+                   (home-dotfiles-environment
+                    (directories (list fishinthecalculator-stow-dir))))
 
           (service home-sops-secrets-service-type
                    (home-sops-service-configuration
                     (config sops.yaml)
-                    (requirement '(home-sops-secrets))
                     (gnupg "/usr/bin/gpg")
                     (gnupg-home "/home/paul/.gnupg")
                     (verbose? #t)
@@ -347,8 +364,8 @@ without waiting for the scheduled time."))
                           home-fontconfig-service-type
                           (list "~/.guix-extra-profiles/emacs/share/fonts"))
 
-          (simple-service 'paul-mcron
-                          home-mcron-service-type
+          (simple-service 'paul-timers
+                          home-shepherd-service-type
                           (list (cleanup-job)
                                 (restic-prune-job)))
 
