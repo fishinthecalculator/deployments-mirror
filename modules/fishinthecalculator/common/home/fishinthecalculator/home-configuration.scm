@@ -248,7 +248,7 @@ without waiting for the scheduled time."))
    (restic restic-bin)
    (requirement '(home-sops-secrets))
    (repository "rclone:personal-onedrive:backup/restic")
-   (password-file "/run/user/1001/secrets/personal/restic")
+   (password-file "/run/user/1001/secrets/restic")
    ;; Every day at 10
    (schedule "0 10 * * *")
    (files '("/home/paul/code/personal"))
@@ -345,7 +345,7 @@ without waiting for the scheduled time."))
                     (secrets
                      (list
                       (sops-secret
-                       (key '("personal" "restic"))
+                       (key '("restic"))
                        (file thinkpad-paul.yaml)
                        (permissions #o400))))))
 
