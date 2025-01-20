@@ -251,7 +251,9 @@ without waiting for the scheduled time."))
    (password-file "/run/user/1001/secrets/restic")
    ;; Every day at 10
    (schedule "0 10 * * *")
-   (files '("/home/paul/code/personal"))
+   (files '("/home/paul/code/personal"
+            "/home/paul/.config/guix/channels.scm"
+            "/home/paul/.guix-manifests"))
    (verbose? #t)))
 
 (define thinkpad-paul.yaml
