@@ -16,6 +16,8 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu services)
+  #:use-module ((gnu services backup)
+                #:prefix mainline:)
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
@@ -243,7 +245,7 @@ without waiting for the scheduled time."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define personal-restic-backup-job
-  (restic-backup-job
+  (mainline:restic-backup-job
    (name "personal-job")
    (restic restic-bin)
    (requirement '(home-sops-secrets))
@@ -273,7 +275,7 @@ without waiting for the scheduled time."))
                           (string-append #+bash-minimal "/bin/bash")
                           "-l" "-c"
                           (string-append
-                           "restic-guix prune " #$(restic-backup-job-name personal-restic-backup-job))))))
+                           "restic-guix prune " #$(mainline:restic-backup-job-name personal-restic-backup-job))))))
                     (stop
                      #~(make-timer-destructor))
                     (actions (list (shepherd-action
@@ -352,7 +354,7 @@ without waiting for the scheduled time."))
                        (permissions #o400))))))
 
           (service home-restic-backup-service-type
-                   (restic-backup-configuration
+                   (mainline:restic-backup-configuration
                     (jobs
                      (list
                       personal-restic-backup-job))))

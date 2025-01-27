@@ -9,7 +9,8 @@
   #:use-module (gnu packages shells)         ;for oils
   #:use-module (gnu services)                ;for modify-services
   #:use-module (gnu services base)           ;for guix-daemon-service-type
-  ;#:use-module (gnu services backup)         ;for restic-backup-service-type
+  #:use-module ((gnu services backup)        ;for restic-backup-service-type
+                #:prefix mainline:)
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
   #:use-module (gnu services guix)           ;for guix-home-service-type
@@ -87,7 +88,7 @@
 
 (define-public backup-system-jobs
   (map (lambda (repo)
-         (restic-backup-job
+         (mainline:restic-backup-job
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
@@ -108,7 +109,7 @@
 
 (define-public backup-home-jobs
   (map (lambda (repo)
-         (restic-backup-job
+         (mainline:restic-backup-job
           (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
           (restic restic-bin)
           (repository repo)
@@ -241,7 +242,7 @@ without waiting for the scheduled time."))
                                                     #:expiration-days 14)
 
                    (service restic-backup-service-type
-                            (restic-backup-configuration
+                            (mainline:restic-backup-configuration
                              (jobs
                               (append backup-system-jobs
                                       backup-home-jobs))))
