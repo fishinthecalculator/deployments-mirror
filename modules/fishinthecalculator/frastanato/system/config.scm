@@ -208,9 +208,8 @@
     ;; for packages and 'guix install PACKAGE' to install a package.
     (packages (append (map specification->package+output
                            '("btrfs-progs"
-                             "compsize"))
-                             ;"rclone"
-
+                             "compsize"
+                             "rclone"))
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
