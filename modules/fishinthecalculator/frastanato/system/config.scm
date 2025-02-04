@@ -262,7 +262,7 @@
                          (+ (* 60 (+ 12 5)) 00)))) ; 5:00 pm
 
               ;; Monitoring
-              (service prometheus-node-exporter-service-type)
+              ;; (service prometheus-node-exporter-service-type)
               (simple-service 'oci-networks
                               oci-service-type
                               (oci-extension
