@@ -297,7 +297,10 @@
               (service oci-grafana-service-type
                        (oci-grafana-configuration
                         (runtime 'podman)
-                        (network "host")))
+                        (network "host")
+                        (datadir
+                         (oci-volume-configuration
+                          (name "grafana")))))
 
               (service postgresql-service-type
                        (postgresql-configuration
