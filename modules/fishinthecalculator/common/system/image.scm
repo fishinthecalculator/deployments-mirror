@@ -5,6 +5,7 @@
 ;; $ guix system image -L `pwd`/modules modules/common/system/image.scm
 
 (define-module (fishinthecalculator common system image)
+  #:use-module (gnu)
   #:use-module (gnu image)
   #:use-module (gnu system image)
   #:use-module (fishinthecalculator common system install)
