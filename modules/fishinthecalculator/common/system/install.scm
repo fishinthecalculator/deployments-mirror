@@ -2,7 +2,7 @@
 ;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
 
 ;; Generate a bootable image (e.g. for USB sticks, etc.) with:
-;; $ guix system image -L `pwd`/modules --image-type=iso9660 modules/common/system/install.scm
+;; $ guix system image -L `pwd`/modules --image-type=iso9660 modules/fishinthecalculator/common/system/install.scm
 
 (define-module (fishinthecalculator common system install)
   #:use-module (gnu packages package-management) ;for guix-for-channels

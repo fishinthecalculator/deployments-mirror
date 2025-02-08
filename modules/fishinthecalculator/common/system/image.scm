@@ -2,7 +2,7 @@
 ;;; Copyright © 2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 ;; Generate a bootable image (e.g. for USB sticks, etc.) with:
-;; $ guix system image -L `pwd`/modules modules/common/system/image.scm
+;; $ guix system image -L `pwd`/modules modules/fishinthecalculator/common/system/image.scm
 
 (define-module (fishinthecalculator common system image)
   #:use-module (gnu)
