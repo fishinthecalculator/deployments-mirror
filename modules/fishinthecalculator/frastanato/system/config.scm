@@ -275,6 +275,9 @@
                        (oci-prometheus-configuration
                         (image "prom/prometheus:v2.45.0")
                         (network "host")
+                        (datadir
+                         (oci-volume-configuration
+                          (name "prometheus")))
                         (record
                          (prometheus-configuration
                           (global
