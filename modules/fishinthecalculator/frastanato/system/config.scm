@@ -316,7 +316,8 @@
                        '("containerd"
                          "cuirass"
                          "dockerd"
-                         "postgres"))
+                         "postgres"
+                         "podman-grafana"))
 
               (service network-manager-service-type)
               (service wpa-supplicant-service-type)
