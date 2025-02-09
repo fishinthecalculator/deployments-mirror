@@ -7,7 +7,8 @@
   #:use-module (gnu packages linux)          ;for bluez
   #:use-module (gnu packages networking)     ;for blueman
   #:use-module (gnu packages shells)         ;for oils
-  #:use-module (gnu services)                ;for modify-services
+  #:use-module ((gnu services)
+                #:hide (delete))             ;for modify-services
   #:use-module (gnu services base)           ;for guix-daemon-service-type
   #:use-module ((gnu services backup)        ;for restic-backup-service-type
                 #:prefix mainline:)
@@ -41,6 +42,7 @@
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
+  #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common home fishinthecalculator home-configuration)
   #:use-module (fishinthecalculator common secrets)
@@ -78,10 +80,6 @@
 (define prematurata.yaml
   (secrets-file "prematurata.yaml"))
 
-(define restic-repositories
-  '("rclone:onedrive:backup/restic"
-    "rclone:nasa-ftp:backup/restic"))
-
 (define guix-home-environments
   (list
    `(,(user-account-name paul-user) ,fishinthecalculator-home-environment)))
@@ -105,57 +103,7 @@
                    "/etc/guix/signing-key.pub"
                    "/etc/guix/signing-key.sec"))
           (verbose? #t)))
-       restic-repositories))
-
-(define-public backup-home-jobs
-  (map (lambda (repo)
-         (mainline:restic-backup-job
-          (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
-          (restic restic-bin)
-          (repository repo)
-          (user (user-account-name paul-user))
-          (group (user-account-group paul-user))
-          (password-file "/run/secrets/restic")
-          (requirement '(sops-secrets))
-          ;; Every day at 21.
-          (schedule "0 21 * * *")
-          (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
-                      '(".cert"
-                        ".config/aerc/accounts.conf"
-                        ".config/libvirt/qemu"
-                        ".config/rclone"
-                        ".config/guix/channels.scm"
-                        ".config/sops/age/keys.txt"
-                        ".electrum/wallets"
-                        ".guix-manifests"
-                        ".gnupg"
-                        ".icedove"
-                        ".local/bin"
-                        ".local/share/gnome-boxes/images"
-                        ".local/share/JetBrains/Toolbox/.storage.json"
-                        ".local/share/JetBrains/Toolbox/.securestorage"
-                        ".local/share/keyrings"
-                        ".mozilla"
-                        ".thunderbird"
-                        ".ssh"
-                        "Biblioteca di calibre"
-                        "Calibre Library"
-                        "code"
-                        "Android"
-                        "AndroidStudioProjects"
-                        "Documents"
-                        "Downloads"
-                        "Games"
-                        "IdeaProjects"
-                        "Music"
-                        "Monero/wallets"
-                        "nix-manifest.txt"
-                        "Pictures"
-                        "PycharmProjects"
-                        "Sync"
-                        "Uni")))
-          (verbose? #t)))
-       restic-repositories))
+       %restic-repositories))
 
 (define-public restic-prune-jobs
   ;; Run 'restic prune' at 21:02 every Sunday.
@@ -185,7 +133,7 @@
                                         (string-append "Manually trigger a @command{restic prune} on " repo " repo,
 without waiting for the scheduled time."))
                                        (procedure #~trigger-timer))))))
-   restic-repositories))
+   %restic-repositories))
 
 (define %common-desktop-system
   (common-desktop-system subuids subgids))
@@ -243,9 +191,7 @@ without waiting for the scheduled time."))
 
                    (service restic-backup-service-type
                             (mainline:restic-backup-configuration
-                             (jobs
-                              (append backup-system-jobs
-                                      backup-home-jobs))))
+                             (jobs backup-system-jobs)))
 
                    (service sops-secrets-service-type
                             (sops-service-configuration

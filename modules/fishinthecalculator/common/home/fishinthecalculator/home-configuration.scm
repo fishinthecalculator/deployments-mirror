@@ -18,6 +18,7 @@
   #:use-module (gnu services)
   #:use-module ((gnu services backup)
                 #:prefix mainline:)
+  #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
@@ -31,9 +32,11 @@
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
   #:use-module (small-guix home services shells)
+  #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (fishinthecalculator common home fishinthecalculator services doom-emacs)
@@ -51,6 +54,53 @@
    (name
     (string-append %here
                    "/etc"))))
+
+(define-public backup-home-jobs
+  (map (lambda (repo)
+         (mainline:restic-backup-job
+          (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
+          (restic restic-bin)
+          (repository repo)
+          (password-file "/run/secrets/restic")
+          ;; Every day at 21.
+          (schedule "0 21 * * *")
+          (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))
+                      '(".cert"
+                        ".config/aerc/accounts.conf"
+                        ".config/libvirt/qemu"
+                        ".config/rclone"
+                        ".config/guix/channels.scm"
+                        ".config/sops/age/keys.txt"
+                        ".electrum/wallets"
+                        ".guix-manifests"
+                        ".gnupg"
+                        ".icedove"
+                        ".local/bin"
+                        ".local/share/gnome-boxes/images"
+                        ".local/share/JetBrains/Toolbox/.storage.json"
+                        ".local/share/JetBrains/Toolbox/.securestorage"
+                        ".local/share/keyrings"
+                        ".mozilla"
+                        ".thunderbird"
+                        ".ssh"
+                        "Biblioteca di calibre"
+                        "Calibre Library"
+                        "code"
+                        "Android"
+                        "AndroidStudioProjects"
+                        "Documents"
+                        "Downloads"
+                        "Games"
+                        "IdeaProjects"
+                        "Music"
+                        "Monero/wallets"
+                        "nix-manifest.txt"
+                        "Pictures"
+                        "PycharmProjects"
+                        "Sync"
+                        "Uni")))
+          (verbose? #t)))
+       %restic-repositories))
 
 (define nix-update-job
   ;; Run 'nix-update' at 23:10 every day.
@@ -170,6 +220,10 @@ without waiting for the scheduled time."))
                      (oci
                       (ocui-oci-configuration
                        (runtime "podman")))))
+
+           (service home-restic-backup-service-type
+                   (mainline:restic-backup-configuration
+                    (jobs backup-home-jobs)))
 
            (service home-doom-emacs-service-type)
 

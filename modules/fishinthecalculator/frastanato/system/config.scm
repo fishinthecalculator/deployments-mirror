@@ -28,6 +28,7 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services backup-timers) ;for restic-backup-service-type
+  #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common self)
@@ -38,10 +39,6 @@
   #:use-module (fishinthecalculator frastanato secrets)
   #:use-module (srfi srfi-1)
   #:export (fishinthecalculator frastanato-system))
-
-(define restic-repositories
-  '("rclone:onedrive:backup/restic"
-    "rclone:nasa-ftp:backup/restic"))
 
 (define-public backup-system-jobs
   (map (lambda (repo)
@@ -59,7 +56,7 @@
                    "/etc/guix/signing-key.pub"
                    "/etc/guix/signing-key.sec"))
           (verbose? #t)))
-       restic-repositories))
+       %restic-repositories))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
