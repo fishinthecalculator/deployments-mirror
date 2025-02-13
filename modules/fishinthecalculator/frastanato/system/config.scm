@@ -229,7 +229,7 @@
 
               ;; Backups
               (service restic-backup-service-type
-                       (mainline:restic-backup-configuration
+                       (restic-backup-configuration
                         (jobs backup-system-jobs)))
 
               ;; File sharing

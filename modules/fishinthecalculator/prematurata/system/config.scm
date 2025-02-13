@@ -190,7 +190,7 @@ without waiting for the scheduled time."))
                                                     #:expiration-days 14)
 
                    (service restic-backup-service-type
-                            (mainline:restic-backup-configuration
+                            (restic-backup-configuration
                              (jobs backup-system-jobs)))
 
                    (service sops-secrets-service-type
