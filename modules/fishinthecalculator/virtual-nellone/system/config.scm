@@ -93,7 +93,7 @@
                              "curl"
                              "fd"
                              "git"
-                             "htop"
+                             "btop"
                              "ripgrep"
                              "tmux"
                              "vim"
