@@ -222,7 +222,7 @@ without waiting for the scheduled time."))
                        (runtime "podman")))))
 
            (service home-restic-backup-service-type
-                   (mainline:restic-backup-configuration
+                   (restic-backup-configuration
                     (jobs backup-home-jobs)))
 
            (service home-doom-emacs-service-type)
@@ -408,7 +408,7 @@ without waiting for the scheduled time."))
                        (permissions #o400))))))
 
           (service home-restic-backup-service-type
-                   (mainline:restic-backup-configuration
+                   (restic-backup-configuration
                     (jobs
                      (list
                       personal-restic-backup-job))))
