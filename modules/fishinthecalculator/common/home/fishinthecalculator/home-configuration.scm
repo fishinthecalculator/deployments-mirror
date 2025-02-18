@@ -23,6 +23,8 @@
   #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
   #:use-module (sops home services sops)
+  #:use-module (oci services containers)
+  #:use-module (oci home services containers)
   #:use-module (small-guix packages bitwarden)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
@@ -224,6 +226,12 @@ without waiting for the scheduled time."))
            (service home-restic-backup-service-type
                    (restic-backup-configuration
                     (jobs backup-home-jobs)))
+
+           (service home-oci-service-type
+                    (for-home
+                     (oci-configuration
+                      (runtime 'podman)
+                      (verbose? #t))))
 
            (service home-doom-emacs-service-type)
 
