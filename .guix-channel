@@ -16,6 +16,7 @@
   (channel
    (name small-guix)
    (url "https://codeberg.org/fishinthecalculator/small-guix.git")
+   (branch "main")
    ;; Enable signature verification:
    (introduction
     (channel-introduction
