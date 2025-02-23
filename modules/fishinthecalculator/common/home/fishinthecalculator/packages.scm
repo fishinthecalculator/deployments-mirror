@@ -54,6 +54,7 @@
                      "btop"
                      "calibre"
                      "catimg"
+                     "codeberg-cli"
                      "curl"
                      "dante"
                      "dino"
