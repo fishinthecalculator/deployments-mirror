@@ -51,6 +51,7 @@
                (list "aerc"
                      "arc-theme"
                      "bat"
+                     "berg"
                      "btop"
                      "calibre"
                      "catimg"
