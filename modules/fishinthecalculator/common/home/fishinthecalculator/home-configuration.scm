@@ -57,6 +57,9 @@
     (string-append %here
                    "/etc"))))
 
+(define home-paul.yaml
+  (secrets-file "home-paul.yaml"))
+
 (define-public backup-home-jobs
   (map (lambda (repo)
          (mainline:restic-backup-job
@@ -226,6 +229,17 @@ without waiting for the scheduled time."))
            (service home-restic-backup-service-type
                    (restic-backup-configuration
                     (jobs backup-home-jobs)))
+
+           (service home-sops-secrets-service-type
+                   (home-sops-service-configuration
+                    (config sops.yaml)
+                    (verbose? #t)
+                    (secrets
+                     (list
+                      (sops-secret
+                       (key '("codeberg"))
+                       (file home-paul.yaml)
+                       (permissions #o400))))))
 
            (service home-oci-service-type
                     (for-home

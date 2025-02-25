@@ -29,6 +29,12 @@ creation_rules:
           - pgp:
                 - *user_paul
                 - *host_virtual_nellone
+    - path_regex: .*home-paul\.yaml$
+      key_groups:
+          - age:
+                - *user_paul_age
+          - pgp:
+                - *user_paul
     - path_regex: .*thinkpad-paul\.yaml$
       key_groups:
           - pgp:
