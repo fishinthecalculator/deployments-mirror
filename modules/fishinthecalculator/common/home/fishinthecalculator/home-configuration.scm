@@ -170,14 +170,14 @@ if ! [ -d \"${REPO_HOME}/.git\" ]; then
     rm -rfv \"${REPO_HOME}\"
     git clone https://git.savannah.gnu.org/git/guix.git --branch master --single-branch \"${REPO_HOME}\"
     cd \"${REPO_HOME}\"
-    git remote add github git@github.com:fishinthecalculator/guix-fork.git
+    git remote add codeberg git@codeberg.org:fishinthecalculator/guix-mirror.git
 fi
 
 cd \"${REPO_HOME}\"
 git checkout -- .
 git checkout master
 git pull
-git push github master"))
+git push codeberg master"))
 
 (define guix-fork-sync-job
   ;; Run 'guix-fork-sync' at a given hour every day.
