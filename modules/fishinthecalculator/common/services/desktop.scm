@@ -28,7 +28,6 @@
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (fishinthecalculator common channels)
-  #:use-module (fishinthecalculator common services log)
   #:use-module (fishinthecalculator common services substitute)
   #:use-module (fishinthecalculator common services timers)
   #:use-module (fishinthecalculator common system input)
@@ -36,8 +35,7 @@
   #:export (common-desktop-services))
 
 (define (common-desktop-services subuids subgids)
-  (append %common-log-services
-          (list (service gnome-desktop-service-type)
+  (append (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
 
                 (simple-service 'common-timers
@@ -98,9 +96,6 @@
                                     (file-append coreutils "/bin/env")))
 
           (modify-services %desktop-services
-            ;; Remove the currently-used syslogd service,
-            ;; now redundant.
-            (delete syslog-service-type)
             ;; Enable additional substitute servers.
             (guix-service-type config =>
                                (guix-configuration (inherit config)

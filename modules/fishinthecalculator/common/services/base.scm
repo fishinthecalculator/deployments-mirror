@@ -7,21 +7,15 @@
   #:use-module (gnu services admin)
   #:use-module (gnu services base)
   #:use-module (fishinthecalculator common channels)
-  #:use-module (fishinthecalculator common services log)
   #:use-module (fishinthecalculator common services substitute)
   #:export (%common-base-services))
 
 (define %common-base-services
-  (append
-   %common-log-services
-   (modify-services %base-services
-     ;; Remove the syslog service,
-     ;; it's now redundant.
-     (delete syslog-service-type)
-     (guix-service-type config =>
-                        (guix-configuration (inherit config)
-                                            (channels %deployments-channels)
-                                            (substitute-urls
-                                             %common-substitute-urls)
-                                            (authorized-keys
-                                             %common-authorized-keys))))))
+  (modify-services %base-services
+    (guix-service-type config =>
+                       (guix-configuration (inherit config)
+                                           (channels %deployments-channels)
+                                           (substitute-urls
+                                            %common-substitute-urls)
+                                           (authorized-keys
+                                            %common-authorized-keys)))))
