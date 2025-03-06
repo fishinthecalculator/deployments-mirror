@@ -20,6 +20,7 @@
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
+  #:use-module (oci services forgejo)
   #:use-module (oci services grafana)
   #:use-module (oci services prometheus)
   #:use-module (oci services traefik)
@@ -293,6 +294,14 @@
                              (static-configs
                               (list (prometheus-static-configuration
                                      (targets '("localhost:9100"))))))))))))
+
+              (service oci-forgejo-service-type
+                       (oci-forgejo-configuration
+                        (runtime 'podman)
+                        (network "host")
+                        (datadir
+                         (oci-volume-configuration
+                          (name "forgejo")))))
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
