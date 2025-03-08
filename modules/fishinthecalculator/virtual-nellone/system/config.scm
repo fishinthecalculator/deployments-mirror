@@ -91,10 +91,10 @@
                (service ntp-service-type)
                (service openssh-service-type
                         (openssh-configuration
+                         (authorized-keys authorized-ssh-keys)
                          (permit-root-login #f)
                          (password-authentication? #f)
                          (x11-forwarding? #f)))
-
 
                (service fail2ban-service-type
                         (fail2ban-configuration
@@ -199,12 +199,6 @@ COMMIT
              ;; This is the default list of services we
              ;; are appending to.
              (modify-services %base-services
-               (openssh-service-type ssh-config =>
-                                     (openssh-configuration (inherit ssh-config)
-                                                            (authorized-keys
-                                                             (append
-                                                              (openssh-configuration-authorized-keys ssh-config)
-                                                              authorized-ssh-keys))))
                (guix-service-type guix-config =>
                                   (guix-configuration (inherit guix-config)
                                                       (authorized-keys
