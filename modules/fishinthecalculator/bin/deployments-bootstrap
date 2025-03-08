@@ -12,6 +12,7 @@ guix_host="$(hostname)"
 sudo guix system reconfigure -L "${DEPLOYMENTS_PATH}" -e "(@ (fishinthecalculator ${guix_host} system install) ${guix_host}-stage0)"
 sudo herd stop guix-daemon
 sudo herd start guix-daemon
+sleep 3
 
 sudo "${DEPLOYMENTS_BIN}/reconfigure" -L "${DEPLOYMENTS_PATH}"
 
