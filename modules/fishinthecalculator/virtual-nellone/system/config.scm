@@ -31,6 +31,7 @@
   (list prematurata-guix-key))
 
 (define %forgejo-port "3000")
+(define %forgejo-ssh-port "2202")
 (define %forgejo-domain "forgejo.fishinthecalculator.me")
 
 (define subgids
@@ -119,6 +120,7 @@
 -A INPUT -p tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp --dport 2202 -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 COMMIT
@@ -131,6 +133,7 @@ COMMIT
 -A INPUT -p tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp --dport 2202 -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp6-port-unreachable
 COMMIT
@@ -153,6 +156,7 @@ COMMIT
                        (oci-forgejo-configuration
                         (runtime 'podman)
                         (port %forgejo-port)
+                        (ssh-port %forgejo-ssh-port)
                         (datadir
                          (oci-volume-configuration
                           (name "forgejo")))))
