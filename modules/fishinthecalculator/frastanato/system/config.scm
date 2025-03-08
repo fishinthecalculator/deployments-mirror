@@ -297,6 +297,7 @@
                        (oci-forgejo-configuration
                         (runtime 'podman)
                         (network "host")
+                        (port "3001")
                         (datadir
                          (oci-volume-configuration
                           (name "forgejo")))))
@@ -305,6 +306,7 @@
                        (oci-grafana-configuration
                         (runtime 'podman)
                         (network "host")
+                        (port "3000")
                         (datadir
                          (oci-volume-configuration
                           (name "grafana")))))
