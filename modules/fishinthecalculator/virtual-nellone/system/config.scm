@@ -111,7 +111,7 @@
               (service oci-forgejo-service-type
                        (oci-forgejo-configuration
                         (runtime 'podman)
-                        (port "3001")
+                        (port %forgejo-port)
                         (datadir
                          (oci-volume-configuration
                           (name "forgejo")))))
