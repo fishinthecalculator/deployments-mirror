@@ -24,7 +24,8 @@
   #:use-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator virtual-nellone system secrets)
-  #:export (fishinthecalculator virtual-nellone-system))
+  #:export (virtual-nellone-system
+            virtual-nellone-common-server-services))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))

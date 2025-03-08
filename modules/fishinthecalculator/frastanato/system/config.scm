@@ -39,7 +39,7 @@
   #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator frastanato secrets)
   #:use-module (srfi srfi-1)
-  #:export (fishinthecalculator frastanato-system))
+  #:export (frastanato-system))
 
 (define-public backup-system-jobs
   (map (lambda (repo)

@@ -54,7 +54,7 @@
   #:use-module (fishinthecalculator common system input)
   #:use-module (fishinthecalculator common users)
   #:use-module (srfi srfi-1)
-  #:export (fishinthecalculator prematurata-system))
+  #:export (prematurata-system))
 
 (define paul-user
   (user-account (inherit paul-user)
