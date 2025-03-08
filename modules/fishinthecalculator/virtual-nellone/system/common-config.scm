@@ -1,7 +1,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;; Copyright © 2024, 2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
-(define-module (fishinthecalculator virtual-nellone system config)
+(define-module (fishinthecalculator virtual-nellone system common-config)
   #:use-module (gnu)
   #:use-module (gnu system accounts)
   #:use-module (gnu packages databases)      ;for postgresql-13
