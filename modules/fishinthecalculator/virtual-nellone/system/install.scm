@@ -6,7 +6,9 @@
   #:use-module (gnu services base)
   #:use-module (gnu services ssh)
   #:use-module (gnu system)
+  #:use-module (gnu system accounts)
   #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator virtual-nellone system config))
 
 (define authorized-ssh-keys
