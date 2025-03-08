@@ -13,15 +13,14 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
-  #:use-module (oci services bonfire)
-  #:use-module (oci services grafana)
-  #:use-module (oci services meilisearch)
-  #:use-module (oci services prometheus)
+  #:use-module (oci services containers)
+  #:use-module (oci services forgejo)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common services server)
   #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common users)
   #:use-module (fishinthecalculator virtual-nellone system secrets)
   #:export (virtual-nellone-system
@@ -128,6 +127,24 @@
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)))
+
+              (service oci-forgejo-service-type
+                       (oci-forgejo-configuration
+                        (runtime 'podman)
+                        (network "host")
+                        (port "3001")
+                        (datadir
+                         (oci-volume-configuration
+                          (name "forgejo")))))
+
+              (service oci-service-type
+                       (oci-configuration
+                        (runtime 'podman)
+                        (verbose? #t)))
+
+              ;; Misc
+              (service common-unload-service-type
+                       '("podman-forgejo"))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30))
