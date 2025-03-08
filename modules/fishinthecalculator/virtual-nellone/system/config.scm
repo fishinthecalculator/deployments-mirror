@@ -76,39 +76,18 @@
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
     (packages (append (map specification->package+output
-                           '("ncurses"  ;for the search path
-
-                             ;; Standard FreeDesktop directory paths
-                             "xdg-user-dirs"
-                             "xdg-utils"
-                             ;; User mounts
-                             "gvfs"
-
-                             ;;OpenGPG
+                           '("ncurses"
                              "gnupg"
-                             ;; Misc
                              "lsof"
                              "jq"
                              "ncdu"
                              "tree"
                              "curl"
-                             "fd"
                              "git"
-                             "btop"
-                             "ripgrep"
                              "tmux"
                              "vim"
-
-                             ;; Network administration
-                             "bind"
-                             "bind:utils"
                              "tcpdump"
                              "net-tools"
-
-                             "efibootmgr"
-
-                             "rclone"
-                             "emacs"
                              "ripgrep"))
                       (list common-deploy-scripts)
                       %base-packages))
