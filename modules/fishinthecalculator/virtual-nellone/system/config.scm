@@ -10,6 +10,7 @@
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services linux)          ;for kernel-module-loader-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
+  #:use-module (gnu services network)        ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
@@ -151,6 +152,33 @@
              ;; This is the default list of services we
              ;; are appending to.
              (modify-services virtual-nellone-common-server-services
+               (iptables-service-type iptables-config =>
+                                     (iptables-configuration
+                                      (ipv4-rules (plain-file "iptables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-port-unreachable
+COMMIT
+"))
+                                      (ipv6-rules (plain-file "ip6tables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp6-port-unreachable
+COMMIT
+"))))
+
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)
                                                             (authorized-keys
