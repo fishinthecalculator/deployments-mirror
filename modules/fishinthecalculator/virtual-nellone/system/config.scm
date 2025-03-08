@@ -10,7 +10,7 @@
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services linux)          ;for kernel-module-loader-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
-  #:use-module (gnu services network)        ;for iptables-service-type
+  #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
