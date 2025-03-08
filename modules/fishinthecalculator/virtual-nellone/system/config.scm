@@ -44,7 +44,7 @@
   (list (subid-range (name (user-account-name paul-user)))))
 (define subuids
   (list (subid-range (name (user-account-name paul-user)))))
-(define %common-server-services
+(define virtual-nellone-common-server-services
   (common-server-services subuids subgids))
 (define virtual-nellone-system
   (operating-system
@@ -134,7 +134,7 @@
 
              ;; This is the default list of services we
              ;; are appending to.
-             (modify-services %common-server-services
+             (modify-services virtual-nellone-common-server-services
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)
                                                             (authorized-keys
