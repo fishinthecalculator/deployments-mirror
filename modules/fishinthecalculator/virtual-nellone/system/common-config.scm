@@ -7,18 +7,25 @@
   #:use-module (gnu packages databases)      ;for postgresql-13
   #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services certbot)        ;for certbot-service-type
-  #:use-module (gnu services containers)     ;for rootless-podman-service-type
-  #:use-module (gnu services dbus)           ;for dbus-service-type
-  #:use-module (gnu services desktop)        ;for elogind-service-type
+  #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu services linux)          ;for kernel-module-loader-service-type
+  #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for iptables-service-type
-  #:use-module (gnu services security)       ;for fail2ban-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
+  #:use-module (sops services sops)
   #:use-module (oci services containers)
   #:use-module (oci services forgejo)
   #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common scripts)
+  #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common users)
-  #:export (virtual-nellone-system))
+  #:use-module (fishinthecalculator virtual-nellone system secrets)
+  #:export (virtual-nellone-system
+            virtual-nellone-common-server-services))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
@@ -37,7 +44,8 @@
   (list (subid-range (name (user-account-name paul-user)))))
 (define subuids
   (list (subid-range (name (user-account-name paul-user)))))
-
+(define virtual-nellone-common-server-services
+  (common-server-services subuids subgids))
 (define virtual-nellone-system
   (operating-system
     (locale "en_US.utf8")
@@ -81,83 +89,13 @@
                              "tcpdump"
                              "net-tools"
                              "ripgrep"))
+                      (list common-deploy-scripts)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
-               (service dhcp-client-service-type)
-               (service ntp-service-type)
-               (service openssh-service-type
-                        (openssh-configuration
-                         (permit-root-login #f)
-                         (password-authentication? #f)
-                         (x11-forwarding? #f)))
-
-
-               (service fail2ban-service-type
-                        (fail2ban-configuration
-                         (extra-jails
-                          (list
-                           (fail2ban-jail-configuration
-                            (name "sshd")
-                            (enabled? #t))))))
-
-              ;; The D-Bus clique.
-              (service elogind-service-type)
-              (service dbus-root-service-type)
-
-              ;; Firewall
-              (service iptables-service-type
-                       (iptables-configuration
-                        (ipv4-rules (plain-file "iptables.rules" "*filter
-:INPUT ACCEPT
-:FORWARD ACCEPT
-:OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
--A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
--A INPUT -p tcp --dport 443 -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -j REJECT --reject-with icmp-port-unreachable
-COMMIT
-"))
-                        (ipv6-rules (plain-file "ip6tables.rules" "*filter
-:INPUT ACCEPT
-:FORWARD ACCEPT
-:OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
--A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
--A INPUT -p tcp --dport 443 -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -j REJECT --reject-with icmp6-port-unreachable
-COMMIT
-"))))
-
-              ;; rootless Podman
-              (service rootless-podman-service-type
-                       (rootless-podman-configuration
-                        (subgids subgids)
-                        (subuids subuids)))
-
-              ;; OCI provisioning
-              (service oci-service-type
-                       (oci-configuration
-                        (runtime 'podman)
-                        (verbose? #t)))
-
-              ;; Forgejo
-              (service oci-forgejo-service-type
-                       (oci-forgejo-configuration
-                        (runtime 'podman)
-                        (port %forgejo-port)
-                        (datadir
-                         (oci-volume-configuration
-                          (name "forgejo")))))
-
-              ;; Certbot
               (service certbot-service-type
                        (certbot-configuration
                         (email "goodoldpaul@autistici.org")
@@ -166,7 +104,23 @@ COMMIT
                           (certificate-configuration
                            (domains (list %forgejo-domain)))))))
 
-              ;; NGINX
+              (service sops-secrets-service-type
+                       (sops-service-configuration
+                        (config sops.yaml)))
+
+              (service oci-forgejo-service-type
+                       (oci-forgejo-configuration
+                        (runtime 'podman)
+                        (port %forgejo-port)
+                        (datadir
+                         (oci-volume-configuration
+                          (name "forgejo")))))
+
+              (service oci-service-type
+                       (oci-configuration
+                        (runtime 'podman)
+                        (verbose? #t)))
+
               (service nginx-service-type
                        (nginx-configuration
                         ;; Wait for forgejo to start
@@ -194,11 +148,45 @@ COMMIT
                                                "proxy_set_header        Upgrade $http_upgrade;"
                                                "proxy_set_header        Connection \"upgrade\";"
                                                "proxy_set_header        X-Forwarded-Proto $scheme;"
-                                               "proxy_set_header        X-Forwarded-Host  $host;")))))))))))
+                                               "proxy_set_header        X-Forwarded-Host  $host;"))))))))))
+
+              ;; Misc
+              (service common-unload-service-type
+                       '("nginx" "podman-forgejo"))
+
+              (deployments-unattended-upgrades host-name
+                                               #:expiration-days 30))
 
              ;; This is the default list of services we
              ;; are appending to.
-             (modify-services %base-services
+             (modify-services virtual-nellone-common-server-services
+               (iptables-service-type iptables-config =>
+                                     (iptables-configuration
+                                      (ipv4-rules (plain-file "iptables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-port-unreachable
+COMMIT
+"))
+                                      (ipv6-rules (plain-file "ip6tables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp6-port-unreachable
+COMMIT
+"))))
+
                (openssh-service-type ssh-config =>
                                      (openssh-configuration (inherit ssh-config)
                                                             (authorized-keys
