@@ -298,7 +298,7 @@ without waiting for the scheduled time."))
                            (dependencies mapped-devices))
                          (file-system
                            (mount-point "/boot/efi")
-                           (device (uuid "8851-40D2"
+                           (device (uuid "C2D8-5F4F"
                                          'fat32))
                            (type "vfat")) %base-file-systems))
 
