@@ -58,6 +58,7 @@ Please note that this command must be run from the root of the repository.
 ## Git authentication hooks
 
 ```shell
+git fetch origin keyring:keyring
 guix git authenticate --cache-key=channels/deployments 9d101a2b1f38571e75e7d256bbc8d754177d11f3 '8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2'
 ```
 
