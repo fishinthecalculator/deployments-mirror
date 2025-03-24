@@ -7,10 +7,10 @@
 (define %user
   "deploy")
 (define %host
-  "192.248.184.140")
+  "forgejo.fishinthecalculator.me")
 (define %host-key
   (string-append
-   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHOno38xEWBPqtAg3tSV0tjo86+JAsATSwKqJbJkgciZ " %user "@" %host))
+   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqYltn2v1Ks9jrHGnOaxZaIsfB5CI1/s28eKymNwigF " %user "@" %host))
 
 (define nellone-local
   (machine (operating-system
