@@ -157,6 +157,11 @@ COMMIT
                         (runtime 'podman)
                         (port %forgejo-port)
                         (ssh-port %forgejo-ssh-port)
+                        (app.ini
+                         (mixed-text-file "app.ini"
+                                          "[oauth2_client]
+ENABLE_AUTO_REGISTRATION: true
+"))
                         (datadir
                          (oci-volume-configuration
                           (name "forgejo")))))
