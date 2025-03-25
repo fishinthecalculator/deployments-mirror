@@ -259,13 +259,6 @@
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
-              (simple-service 'oci-networks
-                              oci-service-type
-                              (oci-extension
-                               (networks
-                                (list
-                                 (oci-network-configuration
-                                  (name "monitoring"))))))
 
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
