@@ -163,8 +163,7 @@ COMMIT
 ENABLE_AUTO_REGISTRATION: true
 "))
                         (datadir
-                         (oci-volume-configuration
-                          (name "forgejo")))))
+                         "/var/lib/forgejo")))
 
               ;; Certbot
               (service certbot-service-type
