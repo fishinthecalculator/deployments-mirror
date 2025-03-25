@@ -304,6 +304,7 @@
               (service oci-grafana-service-type
                        (oci-grafana-configuration
                         (runtime 'podman)
+                        (image "docker.io/bitnami/grafana:11.5.3")
                         (network "host")
                         (port "3000")
                         (datadir
