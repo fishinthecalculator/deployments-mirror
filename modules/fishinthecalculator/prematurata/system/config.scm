@@ -267,6 +267,9 @@ without waiting for the scheduled time."))
                                          (list element-desktop signal-desktop zoom))))
              (modify-services %common-desktop-services
 
+               (gdm-service-type config =>
+                                  (gdm-configuration (inherit config)
+                                                     (debug? #t)))
                (guix-service-type config =>
                                   (guix-configuration (inherit config)
                                                       (discover? #t)
