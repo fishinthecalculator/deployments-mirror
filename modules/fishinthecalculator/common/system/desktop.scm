@@ -45,7 +45,8 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list rclone-bin gnome-browser-connector solo2 btdu common-glibc-locales unbroken-xdg-desktop-portal-gtk)
+    (packages (append (list rclone-bin gnome-browser-connector ;; solo2
+                            btdu common-glibc-locales unbroken-xdg-desktop-portal-gtk)
                       (map specification->package+output
                            (list "wireguard-tools"
                                  "brillo"
