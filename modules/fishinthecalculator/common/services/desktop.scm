@@ -13,6 +13,7 @@
   #:use-module (gnu packages vpn) ;for wireguard
   #:use-module (gnu system)
   #:use-module (gnu system accounts)
+  #:use-module (gnu services)
   #:use-module (gnu services admin)
   #:use-module (gnu services containers)
   #:use-module (gnu services cups)
@@ -25,6 +26,7 @@
   #:use-module (gnu services shepherd)
   #:use-module (gnu services spice) ;for spice-vdagent-service
   #:use-module (gnu services virtualization)
+  #:use-module (gnu services xorg)
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (fishinthecalculator common channels)
@@ -36,6 +38,7 @@
 
 (define (common-desktop-services subuids subgids)
   (append (list (service gnome-desktop-service-type)
+                (service sddm-service-type)
 
                 (simple-service 'common-timers
                                 shepherd-root-service-type
@@ -95,6 +98,8 @@
                                     (file-append coreutils "/bin/env")))
 
           (modify-services %desktop-services
+            ;; GDM is broken?
+            (delete gdm-service-type)
             ;; Enable additional substitute servers.
             (guix-service-type config =>
                                (guix-configuration (inherit config)
