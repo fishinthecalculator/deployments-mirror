@@ -73,7 +73,7 @@
                 (udev-rules-service 'brillo brillo)
 
                 ;; Solo keys rules
-                (udev-rules-service 'solo-keys solo2)
+                ;; (udev-rules-service 'solo-keys solo2)
 
                 ;; Mooltipass devices rules
                 (udev-rules-service 'mooltipass mooltipass-udev-rules)
