@@ -9,6 +9,7 @@
   #:use-module (gnu system nss)
   #:use-module (small-guix packages btdu)
   #:use-module (small-guix packages gnome)
+  #:use-module (small-guix packages rclone)
   #:use-module (small-guix packages solo)
   #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common services desktop)
@@ -44,16 +45,13 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list gnome-browser-connector solo2 btdu common-glibc-locales unbroken-xdg-desktop-portal-gtk)
+    (packages (append (list rclone-bin gnome-browser-connector solo2 btdu common-glibc-locales unbroken-xdg-desktop-portal-gtk)
                       (map specification->package+output
                            (list "wireguard-tools"
                                  "brillo"
 
                                  "ncurses" ;for the search path
 
-                                 ;; Backup
-                                 "rclone-bin"
-                                 
                                  ;; Wayland
                                  "waypipe"
                                  ;"xdg-desktop-portal-gtk"
