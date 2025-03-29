@@ -52,7 +52,7 @@
                                  "ncurses" ;for the search path
 
                                  ;; Backup
-                                 "rclone"
+                                 "rclone-bin"
                                  
                                  ;; Wayland
                                  "waypipe"

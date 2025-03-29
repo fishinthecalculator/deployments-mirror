@@ -205,7 +205,7 @@
     (packages (append (map specification->package+output
                            '("btrfs-progs"
                              "compsize"
-                             "rclone"))
+                             "rclone-bin"))
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
