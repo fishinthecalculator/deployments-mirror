@@ -13,6 +13,7 @@
   #:use-module (gnu home services shepherd)
   #:use-module (gnu home services sound)
   #:use-module (gnu home services ssh)
+  #:use-module (gnu home services sway)
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu services)
@@ -42,6 +43,7 @@
   #:use-module (fishinthecalculator common home fishinthecalculator packages)
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (fishinthecalculator common home fishinthecalculator services doom-emacs)
+  #:use-module (fishinthecalculator common home fishinthecalculator services sway)
   #:use-module (ocui-service)
   #:use-module (ice-9 format))
 
@@ -229,6 +231,9 @@ without waiting for the scheduled time."))
            (service home-restic-backup-service-type
                    (restic-backup-configuration
                     (jobs backup-home-jobs)))
+
+           (service home-sway-service-type
+                    fishinthecalculator-sway-configuration)
 
            (service home-sops-secrets-service-type
                    (home-sops-service-configuration
