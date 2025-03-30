@@ -51,6 +51,10 @@
                            (list "wireguard-tools"
                                  "brillo"
 
+                                 "sway"
+                                 "swayidle"
+                                 "swaylock"
+
                                  "ncurses" ;for the search path
 
                                  ;; Wayland
