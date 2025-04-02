@@ -20,10 +20,9 @@
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
-  #:use-module (oci services forgejo)
   #:use-module (oci services grafana)
   #:use-module (oci services prometheus)
-  #:use-module (oci services traefik)
+  #:use-module (oci services tandoor)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
@@ -287,13 +286,14 @@
                               (list (prometheus-static-configuration
                                      (targets '("localhost:9100"))))))))))))
 
-              (service oci-forgejo-service-type
-                       (oci-forgejo-configuration
+              (service oci-tandoor-service-type
+                       (oci-tandoor-configuration
                         (runtime 'podman)
-                        (port "3001")
-                        (datadir
-                         (oci-volume-configuration
-                          (name "forgejo")))))
+                        (port "8081")
+                        (postgres-password
+                         tandoor-postgres-password-secret)
+                        (secret-key
+                         tandoor-secret-key-secret)))
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration

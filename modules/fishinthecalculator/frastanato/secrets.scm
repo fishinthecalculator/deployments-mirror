@@ -21,3 +21,14 @@
   (sops-secret
    (key '("wireguard" "private"))
    (file frastanato.yaml)))
+
+;; tandoor
+(define-public tandoor-postgres-password-secret
+  (sops-secret
+   (key '("tandoor" "postgres_password"))
+   (file frastanato.yaml)))
+
+(define-public tandoor-secret-key-secret
+  (sops-secret
+   (key '("tandoor" "secret_key"))
+   (file frastanato.yaml)))

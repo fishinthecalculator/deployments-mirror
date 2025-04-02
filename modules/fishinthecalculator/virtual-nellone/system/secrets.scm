@@ -45,3 +45,14 @@
   (sops-secret
    (key '("bonfire" "encryption_salt"))
    (file virtual_nellone.yaml)))
+
+;; tandoor
+(define-public tandoor-postgres-password-secret
+  (sops-secret
+   (key '("tandoor" "postgres_password"))
+   (file virtual_nellone.yaml)))
+
+(define-public tandoor-secret-key-secret
+  (sops-secret
+   (key '("tandoor" "secret_key"))
+   (file virtual_nellone.yaml)))
