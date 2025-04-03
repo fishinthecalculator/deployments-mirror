@@ -3,7 +3,7 @@ keys:
     - &user_paul_age age1peu96695en0xrlshkd3j3zzd04payh3cx27yjw6r40z8ekemnuesmkrupn
     - &host_prematurata 8C3E4F6EB38828939029AE7BE9B6AF0CD39DD935
     - &host_frastanato age1puglnvqv3h0r456rjqwyc2ggn545gagkheqt3r34rnnp7lc3rcas5vp2rx
-    - &host_virtual_nellone 0F2BE5B4330DB4B040BCCA09993D2403D1A5C448
+    - &host_virtual_nellone age1eec3sumg78yw07cc69k577ug9uqu8dqnk9urhmvtatah27yvjqpqrqu3l2
 
 creation_rules:
     - path_regex: .*common\.yaml$
@@ -26,8 +26,8 @@ creation_rules:
                 - *host_frastanato
     - path_regex: .*virtual_nellone\.yaml$
       key_groups:
-          - pgp:
-                - *user_paul
+          - age:
+                - *user_paul_age
                 - *host_virtual_nellone
     - path_regex: .*home-paul\.yaml$
       key_groups:
