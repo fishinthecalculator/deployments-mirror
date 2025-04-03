@@ -4,21 +4,26 @@
 (define-module (fishinthecalculator virtual-nellone system config)
   #:use-module (gnu)
   #:use-module (gnu system accounts)
-  #:use-module (gnu packages databases)      ;for postgresql-13
-  #:use-module (gnu packages geo)            ;for postgis
+  #:use-module (gnu packages databases)      ;for postgresql-16
   #:use-module (gnu services certbot)        ;for certbot-service-type
-  #:use-module (gnu services containers)     ;for rootless-podman-service-type
-  #:use-module (gnu services dbus)           ;for dbus-service-type
-  #:use-module (gnu services desktop)        ;for elogind-service-type
+  #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for iptables-service-type
-  #:use-module (gnu services security)       ;for fail2ban-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
+  #:use-module (sops services sops)
   #:use-module (oci services containers)
-  #:use-module (oci services forgejo)
+  #:use-module (oci services tandoor)
   #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common scripts)
+  #:use-module (fishinthecalculator common secrets)
+  #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unattended-upgrades)
+  #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common users)
-  #:export (virtual-nellone-system))
+  #:use-module (fishinthecalculator virtual-nellone system secrets)
+  #:export (virtual-nellone-system
+            virtual-nellone-common-server-services))
 
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
@@ -30,15 +35,16 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
-(define %forgejo-port "3000")
-(define %forgejo-ssh-port "2202")
-(define %forgejo-domain "forgejo.fishinthecalculator.me")
+(define %tandoor-port "3000")
+(define %tandoor-domain "tandoor.fishinthecalculator.me")
 
 (define subgids
   (list (subid-range (name (user-account-name paul-user)))))
 (define subuids
   (list (subid-range (name (user-account-name paul-user)))))
 
+(define virtual-nellone-common-server-services
+  (common-server-services subuids subgids))
 (define virtual-nellone-system
   (operating-system
     (locale "en_US.utf8")
@@ -82,116 +88,59 @@
                              "tcpdump"
                              "net-tools"
                              "ripgrep"))
+                      (list common-deploy-scripts)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
-               (service dhcp-client-service-type)
-               (service ntp-service-type)
-               (service openssh-service-type
-                        (openssh-configuration
-                         (authorized-keys authorized-ssh-keys)
-                         (permit-root-login #f)
-                         (password-authentication? #f)
-                         (x11-forwarding? #f)))
-
-               (service fail2ban-service-type
-                        (fail2ban-configuration
-                         (extra-jails
-                          (list
-                           (fail2ban-jail-configuration
-                            (name "sshd")
-                            (enabled? #t))))))
-
-              ;; The D-Bus clique.
-              (service elogind-service-type)
-              (service dbus-root-service-type)
-
-              ;; Firewall
-              (service iptables-service-type
-                       (iptables-configuration
-                        (ipv4-rules (plain-file "iptables.rules" "*filter
-:INPUT ACCEPT
-:FORWARD ACCEPT
-:OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
--A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
--A INPUT -p tcp --dport 443 -j ACCEPT
--A INPUT -p tcp --dport 2202 -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -j REJECT --reject-with icmp-port-unreachable
-COMMIT
-"))
-                        (ipv6-rules (plain-file "ip6tables.rules" "*filter
-:INPUT ACCEPT
-:FORWARD ACCEPT
-:OUTPUT ACCEPT
--A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
--A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
--A INPUT -p tcp --dport 443 -j ACCEPT
--A INPUT -p tcp --dport 2202 -j ACCEPT
--A INPUT -i lo -j ACCEPT
--A INPUT -j REJECT --reject-with icmp6-port-unreachable
-COMMIT
-"))))
-
-              ;; rootless Podman
-              (service rootless-podman-service-type
-                       (rootless-podman-configuration
-                        (subgids subgids)
-                        (subuids subuids)))
-
-              ;; OCI provisioning
-              (service oci-service-type
-                       (oci-configuration
-                        (runtime 'podman)
-                        (verbose? #t)))
-
-              ;; Forgejo
-              (service oci-forgejo-service-type
-                       (oci-forgejo-configuration
-                        (runtime 'podman)
-                        (port %forgejo-port)
-                        (ssh-port %forgejo-ssh-port)
-                        (app.ini
-                         (mixed-text-file "app.ini"
-                                          "[oauth2_client]
-ENABLE_AUTO_REGISTRATION: true
-"))
-                        (datadir
-                         (oci-volume-configuration
-                          (name "forgejo")))))
-
-              ;; Certbot
               (service certbot-service-type
                        (certbot-configuration
                         (email "goodoldpaul@autistici.org")
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains (list %forgejo-domain)))))))
+                           (domains (list %tandoor-domain)))))))
 
-              ;; NGINX
+              (service sops-secrets-service-type
+                       (sops-service-configuration
+                        (config sops.yaml)))
+
+              (service postgresql-service-type
+                       (postgresql-configuration
+                        (postgresql postgresql-16)))
+
+              (service oci-tandoor-service-type
+                       (oci-tandoor-configuration
+                        (runtime 'podman)
+                        (port %tandoor-port)
+                        (postgres-password
+                         tandoor-postgres-password-secret)
+                        (secret-key
+                         tandoor-secret-key-secret)))
+
+              (service oci-service-type
+                       (oci-configuration
+                        (runtime 'podman)
+                        (verbose? #t)))
+
               (service nginx-service-type
                        (nginx-configuration
-                        ;; Wait for forgejo to start
+                        ;; Wait for tandoor to start
                         (shepherd-requirement
-                         '(podman-forgejo))
+                         '(podman-tandoor))
                         (server-blocks
                          (list (nginx-server-configuration
-                                (server-name (list %forgejo-domain))
+                                (server-name (list %tandoor-domain))
                                 (listen '("443 ssl"))
-                                (ssl-certificate (string-append "/etc/certs/" %forgejo-domain "/fullchain.pem"))
-                                (ssl-certificate-key (string-append "/etc/certs/" %forgejo-domain "/privkey.pem"))
+                                (ssl-certificate (string-append "/etc/certs/" %tandoor-domain "/fullchain.pem"))
+                                (ssl-certificate-key (string-append "/etc/certs/" %tandoor-domain "/privkey.pem"))
                                 (locations
                                  (list
                                   (nginx-location-configuration
                                    (uri "/")
-                                   (body (list (string-append "proxy_pass http://localhost:" %forgejo-port ";")
+                                   (body (list (string-append "proxy_pass http://localhost:" %tandoor-port ";")
                                                ;; Taken from https://www.nginx.com/resources/wiki/start/topics/examples/full/
                                                ;; Those settings are used when proxies are involved
                                                "proxy_redirect          off;"
@@ -203,11 +152,51 @@ ENABLE_AUTO_REGISTRATION: true
                                                "proxy_set_header        Upgrade $http_upgrade;"
                                                "proxy_set_header        Connection \"upgrade\";"
                                                "proxy_set_header        X-Forwarded-Proto $scheme;"
-                                               "proxy_set_header        X-Forwarded-Host  $host;")))))))))))
+                                               "proxy_set_header        X-Forwarded-Host  $host;"))))))))))
+
+              ;; Misc
+              (service common-unload-service-type
+                       '("nginx" "podman-tandoor" "postgres"))
+
+              (deployments-unattended-upgrades host-name
+                                               #:expiration-days 30))
 
              ;; This is the default list of services we
              ;; are appending to.
-             (modify-services %base-services
+             (modify-services virtual-nellone-common-server-services
+               (iptables-service-type iptables-config =>
+                                     (iptables-configuration
+                                      (ipv4-rules (plain-file "iptables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-port-unreachable
+COMMIT
+"))
+                                      (ipv6-rules (plain-file "ip6tables.rules" "*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp6-port-unreachable
+COMMIT
+"))))
+
+               (openssh-service-type ssh-config =>
+                                     (openssh-configuration (inherit ssh-config)
+                                                            (authorized-keys
+                                                             (append
+                                                              (openssh-configuration-authorized-keys ssh-config)
+                                                              authorized-ssh-keys))))
                (guix-service-type guix-config =>
                                   (guix-configuration (inherit guix-config)
                                                       (authorized-keys
@@ -217,12 +206,12 @@ ENABLE_AUTO_REGISTRATION: true
 
     (bootloader (bootloader-configuration
                  (bootloader grub-bootloader)
-                 (targets (list "/dev/vda"))
+                 (targets (list "/dev/sda"))
                  (keyboard-layout keyboard-layout)))
-
+    (initrd-modules (append '("virtio_scsi") %base-initrd-modules))
     (swap-devices (list (swap-space
                           (target (uuid
-                                   "97f21590-e3ae-43c6-b637-648a5aa3bfde")))))
+                                   "ffa36e3c-b576-43fc-a9cf-90f0dfd1d4d9")))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
@@ -230,6 +219,6 @@ ENABLE_AUTO_REGISTRATION: true
     (file-systems (cons* (file-system
                            (mount-point "/")
                            (device (uuid
-                                    "373ba527-a118-4df9-8759-50918ace4703"
+                                    "e4a319f6-6552-4d6b-afe8-9988df65173c"
                                     'ext4))
                            (type "ext4")) %base-file-systems))))
