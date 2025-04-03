@@ -203,8 +203,8 @@
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
     (packages (append (map specification->package+output
-                           '("btrfs-progs"
-                             "compsize"))
+                           '("btrfs-progs"))
+                             ;;"compsize"))
                       (list rclone-bin)
                       %base-packages))
 

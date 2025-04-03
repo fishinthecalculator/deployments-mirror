@@ -118,7 +118,7 @@
 
                                  ;; Btrfs
                                  "btrfs-progs"
-                                 "compsize"
+                                 ;;"compsize"
 
                                  ;; Hardware
                                  "solaar"
