@@ -37,7 +37,7 @@
   (list prematurata-guix-key))
 
 (define %tandoor-port "3000")
-(define %tandoor-mediadir "/var/lib/mediadir")
+(define %tandoor-mediadir "/var/lib/mediafiles")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
 
 (define subgids
