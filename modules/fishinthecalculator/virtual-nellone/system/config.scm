@@ -37,6 +37,7 @@
   (list prematurata-guix-key))
 
 (define %tandoor-port "3000")
+(define %tandoor-mediadir "/var/lib/mediadir")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
 
 (define subgids
@@ -116,6 +117,8 @@
                        (oci-tandoor-configuration
                         (runtime 'podman)
                         (port %tandoor-port)
+                        (mediadir
+                         %tandoor-mediadir)
                         (postgres-password
                          tandoor-postgres-password-secret)
                         (secret-key
@@ -132,7 +135,7 @@
                         (shepherd-requirement
                          '(podman-tandoor))
                         (server-blocks
-                         (list (tandoor-nginx-server %tandoor-domain %tandoor-port)))))
+                         (list (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir)))))
 
 
               ;; Misc

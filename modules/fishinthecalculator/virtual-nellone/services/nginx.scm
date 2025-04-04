@@ -4,7 +4,7 @@
 (define-module (fishinthecalculator virtual-nellone services nginx)
   #:use-module (gnu services web))
 
-(define-public (tandoor-nginx-server domain port)
+(define-public (tandoor-nginx-server domain port mediadir)
   (nginx-server-configuration
    (server-name (list domain))
    (listen '("443 ssl" "[::]:443"))
@@ -26,4 +26,9 @@
                   "proxy_set_header        Upgrade $http_upgrade;"
                   "proxy_set_header        Connection \"upgrade\";"
                   "proxy_set_header        X-Forwarded-Proto $scheme;"
-                  "proxy_set_header        X-Forwarded-Host  $host;")))))))
+                  "proxy_set_header        X-Forwarded-Host  $host;")))
+     (nginx-location-configuration
+      (uri "/media/")
+      (body
+       (list (string-append "root   " mediadir "/;")
+             "index  index.html index.htm;")))))))
