@@ -94,7 +94,7 @@
                      "ripgrep"
                      "rsync"
                      "sl"
-                     ;"telegram-desktop"
+                     "telegram-desktop"
                      "tmux"
                      "unzip"
                      "vim"
