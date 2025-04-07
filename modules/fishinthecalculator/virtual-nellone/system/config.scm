@@ -37,7 +37,8 @@
   (list prematurata-guix-key))
 
 (define %tandoor-port "3000")
-(define %tandoor-mediadir "/var/lib/mediafiles")
+(define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
+(define %tandoor-staticdir "/var/lib/tandoor/staticfiles")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
 
 (define subgids
@@ -119,6 +120,8 @@
                         (port %tandoor-port)
                         (mediadir
                          %tandoor-mediadir)
+                        (staticdir
+                         %tandoor-staticdir)
                         (postgres-password
                          tandoor-postgres-password-secret)
                         (secret-key
