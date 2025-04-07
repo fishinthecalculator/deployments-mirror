@@ -36,7 +36,7 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
-(define %tandoor-port "3000")
+(define %tandoor-port "8080")
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
 (define %tandoor-staticdir "/var/lib/tandoor/staticfiles")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
@@ -118,6 +118,7 @@
                        (oci-tandoor-configuration
                         (runtime 'podman)
                         (port %tandoor-port)
+                        (network "host")
                         (mediadir
                          %tandoor-mediadir)
                         (staticdir
