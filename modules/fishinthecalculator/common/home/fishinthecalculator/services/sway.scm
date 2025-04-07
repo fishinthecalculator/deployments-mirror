@@ -3,6 +3,7 @@
 
 (define-module (fishinthecalculator common home fishinthecalculator services sway)
   #:use-module (gnu)
+  #:use-module (gnu packages suckless)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages wm)
   #:use-module (gnu home services)
@@ -12,65 +13,66 @@
   #:export (fishinthecalculator-sway-configuration))
 
 (define fishinthecalculator-sway-configuration
-  (sway-configuration
-   (variables `((mod . "Mod4")         ; string
-                (left . "h")         ; string
-                (down . "j")         ; string
-                (up . "k")         ; string
-                (right . "l")         ; string
-                (term                     ; file-append
-                 . ,(file-append foot "/bin/foot"))
-                (Term                     ; G-expression
-                 . ,#~(string-append #$foot "/bin/foot"))))
-   (keybindings
-    `(;; Kill focused window
-      ($mod+Shift+q . "kill")
-      ;; Reload the configuration file
-      ($mod+Shift+c . "reload")
-      ;; Exit Sway
-      ($mod+Shift+e . "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'")
-      ;; Start your launcher
-      ($mod+d . "exec $menu")
-      ;; Start a terminal
-      ($mod+Return . "exec $term")))
-   (inputs
-    (list
-     ;; All keyboards use US layout by default
-     (sway-input (identifier "type:keyboard")
-                 (layout
-                  (keyboard-layout "us")))
-     (sway-input (identifier "1452:591:Keychron_K4_Keychron_K4")
-                 (layout
-                  (keyboard-layout "us"))
-                 (extra-content '("xkb_rules evdev" "xkb_model pc105")))))
-   (outputs
-    (list
-     (sway-output
-      (identifier 'eDP-1)
-      (resolution "1920x1080"))
-     (sway-output
-      (background
-       #~(string-append "`" #$fishinthecalculator-scripts "/bin/wallpaper`")))))
-   (bar
-    (sway-bar
-     (position 'top)
-     (colors
-      (sway-color
-       (statusline "#ffffff")
-       (background "#323232")
-       (inactive-workspace
-        (sway-border-color
-         (border "#32323200")
-         (background "#32323200")
-         (text "#5c5c5c")))))
+  (let ((dmenu (file-append dmenu "/bin/dmenu"))
+        (foot (file-append foot "/bin/foot")))
+    (sway-configuration
+     (variables `((mod . "Mod4")        ; string
+                  (left . "h")          ; string
+                  (down . "j")          ; string
+                  (up . "k")            ; string
+                  (right . "l")         ; string
+                  (menu . ,dmenu)
+                  (term . ,foot)
+                  (Term . ,foot)))
+     (keybindings
+      `( ;; Kill focused window
+        ($mod+Shift+q . "kill")
+        ;; Reload the configuration file
+        ($mod+Shift+c . "reload")
+        ;; Exit Sway
+        ($mod+Shift+e . "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'")
+        ;; Start your launcher
+        ($mod+d . "exec $menu")
+        ;; Start a terminal
+        ($mod+Return . "exec $term")))
+     (inputs
+      (list
+       ;; All keyboards use US layout by default
+       (sway-input (identifier "type:keyboard")
+                   (layout
+                    (keyboard-layout "us")))
+       (sway-input (identifier "1452:591:Keychron_K4_Keychron_K4")
+                   (layout
+                    (keyboard-layout "us"))
+                   (extra-content '("xkb_rules evdev" "xkb_model pc105")))))
+     (outputs
+      (list
+       (sway-output
+        (identifier 'eDP-1)
+        (resolution "1920x1080"))
+       (sway-output
+        (background
+         #~(string-append "`" #$fishinthecalculator-scripts "/bin/wallpaper`")))))
+     (bar
+      (sway-bar
+       (position 'top)
+       (colors
+        (sway-color
+         (statusline "#ffffff")
+         (background "#323232")
+         (inactive-workspace
+          (sway-border-color
+           (border "#32323200")
+           (background "#32323200")
+           (text "#5c5c5c")))))
 
-     (status-command
-      #~(string-append "while "
-                       #$coreutils "/bin/date"
-                       " +'%Y-%m-%d %X'; do sleep 1; done"))))
+       (status-command
+        #~(string-append "while "
+                         #$coreutils "/bin/date"
+                         " +'%Y-%m-%d %X'; do sleep 1; done"))))
 
-   (extra-content
-    '("    # Drag floating windows by holding down $mod and left mouse button.
+     (extra-content
+      '("    # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
     # Change normal to inverse to use left mouse button for resizing and right
@@ -187,8 +189,11 @@ exec_always sway-gtk-settings
 # Root dialogs
 exec /run/current-system/profile/libexec/polkit-gnome-authentication-agent-1
 
-# Start Guix home
-exec bash -l echo ciao
+# Dummy command to start Guix Home by sourcing .profile
+exec bash -l -c echo
 
 exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
-"))))
+
+# Clipboard manager
+exec wl-paste -t text --watch clipman store --no-persist
+")))))

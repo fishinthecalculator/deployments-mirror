@@ -54,6 +54,7 @@
                      "btop"
                      "calibre"
                      "catimg"
+                     "clipman"
                      "codeberg-cli"
                      "curl"
                      "dante"
