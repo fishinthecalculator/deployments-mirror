@@ -21,12 +21,12 @@
                 #:prefix mainline:)
   #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
+  #:use-module (nongnu packages password-utils)
   #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
   #:use-module (sops home services sops)
   #:use-module (oci services containers)
   #:use-module (oci home services containers)
-  #:use-module (small-guix packages bitwarden)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
