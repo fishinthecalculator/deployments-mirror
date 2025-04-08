@@ -297,7 +297,8 @@ without waiting for the scheduled time."))
                                           (user "paul")
                                           (extra-content
                                            "  LocalForward 5432 localhost:5432
-  LocalForward 3000 localhost:3000"))
+  LocalForward 3000 localhost:3000
+  LocalForward 9090 localhost:9090"))
                             (openssh-host (name "frastanato")
                                           (host-name "192.168.1.80")
                                           (user "paul"))

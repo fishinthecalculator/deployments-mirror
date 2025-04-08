@@ -4,7 +4,7 @@
 (define-module (fishinthecalculator virtual-nellone services nginx)
   #:use-module (gnu services web))
 
-(define-public (tandoor-nginx-server domain port mediadir)
+(define-public (tandoor-nginx-server domain port mediadir staticdir)
   (nginx-server-configuration
    (server-name (list domain))
    (listen '("443 ssl" "[::]:443"))
@@ -30,5 +30,10 @@
      (nginx-location-configuration
       (uri "/media/")
       (body
-       (list (string-append "root   " mediadir "/;")
+       (list (string-append "alias  " mediadir "/;")
+             "index  index.html index.htm;")))
+     (nginx-location-configuration
+      (uri "/static/")
+      (body
+       (list (string-append "alias  " staticdir "/;")
              "index  index.html index.htm;")))))))

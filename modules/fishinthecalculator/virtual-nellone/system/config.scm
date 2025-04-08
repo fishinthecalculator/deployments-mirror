@@ -174,7 +174,7 @@
                         (shepherd-requirement
                          '(podman-tandoor))
                         (server-blocks
-                         (list (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir)))))
+                         (list (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir %tandoor-staticdir)))))
 
 
               ;; Misc
