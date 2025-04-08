@@ -305,7 +305,7 @@ without waiting for the scheduled time."))
                                           (name "municipiozero.it")
                                           (user "paul")
                                           (extra-content
-                                           "  LocalForward 3000 localhost:3000
+                                           " LocalForward 3000 localhost:3000
   LocalForward 9090 localhost:9090"))
                             (openssh-host (name "remarkable")
                                           (user "root")
