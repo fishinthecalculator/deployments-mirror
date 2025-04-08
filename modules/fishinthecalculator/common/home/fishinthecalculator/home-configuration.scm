@@ -293,13 +293,11 @@ without waiting for the scheduled time."))
                                           (extra-content
                                            "  KexAlgorithms +diffie-hellman-group1-sha1"))
                             (openssh-host (name "virtual-nellone")
-                                          (host-name "2001:19f0:6c00:1e5b:5400:04ff:fee6:4e4e")
+                                          (host-name "2a02:c207:2253:4959::1")
                                           (user "paul")
                                           (extra-content
-                                           "  LocalForward 5432 localhost:5432"))
-                            (openssh-host (name "ug")
-                                          (host-name "y.ultima-generazione.com")
-                                          (user "amministrataru"))
+                                           "  LocalForward 5432 localhost:5432
+  LocalForward 3000 localhost:3000"))
                             (openssh-host (name "frastanato")
                                           (host-name "192.168.1.80")
                                           (user "paul"))
