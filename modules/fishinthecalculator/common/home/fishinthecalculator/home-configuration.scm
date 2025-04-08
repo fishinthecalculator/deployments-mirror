@@ -293,7 +293,7 @@ without waiting for the scheduled time."))
                                           (extra-content
                                            "  KexAlgorithms +diffie-hellman-group1-sha1"))
                             (openssh-host (name "virtual-nellone")
-                                          (host-name "2a02:c207:2253:4959::1")
+                                          (host-name "173.249.9.214")
                                           (user "paul")
                                           (extra-content
                                            "  LocalForward 5432 localhost:5432
