@@ -11,6 +11,7 @@
   #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
+  #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
   #:use-module (oci services tandoor)
@@ -113,6 +114,9 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-16)))
+              (service sops:postgresql-role-service-type
+                       (sops:postgresql-role-configuration
+                        (requirement '(sops-secrets))))
 
               (service oci-tandoor-service-type
                        (oci-tandoor-configuration

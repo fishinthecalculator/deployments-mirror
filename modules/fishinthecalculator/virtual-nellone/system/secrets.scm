@@ -52,11 +52,13 @@
    (key '("tandoor" "postgres_password"))
    (file virtual_nellone.yaml)
    (user "oci-container")
-   (permissions #o400)))
+   (group "postgres")
+   (permissions #o440)))
 
 (define-public tandoor-secret-key-secret
   (sops-secret
    (key '("tandoor" "secret_key"))
    (file virtual_nellone.yaml)
    (user "oci-container")
-   (permissions #o400)))
+   (group "postgres")
+   (permissions #o440)))
