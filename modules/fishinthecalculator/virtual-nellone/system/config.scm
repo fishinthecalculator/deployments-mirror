@@ -14,6 +14,7 @@
   #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
+  #:use-module (oci services prometheus)
   #:use-module (oci services tandoor)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
@@ -110,6 +111,36 @@
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)))
+
+              ;; Monitoring
+              (service prometheus-node-exporter-service-type)
+
+              (service oci-prometheus-service-type
+                       (oci-prometheus-configuration
+                        (image "prom/prometheus:v3.2.1")
+                        (runtime 'podman)
+                        (network "host")
+                        (datadir
+                         (oci-volume-configuration
+                          (name "prometheus")))
+                        (record
+                         (prometheus-configuration
+                          (global
+                           (prometheus-global-configuration
+                            (scrape-interval "30s")
+                            (scrape-timeout "12s")))
+                          (scrape-configs
+                           (list
+                            (prometheus-scrape-configuration
+                             (job-name "prometheus")
+                             (static-configs
+                              (list (prometheus-static-configuration
+                                     (targets '("localhost:9090"))))))
+                            (prometheus-scrape-configuration
+                             (job-name "node")
+                             (static-configs
+                              (list (prometheus-static-configuration
+                                     (targets '("localhost:9100"))))))))))))
 
               (service postgresql-service-type
                        (postgresql-configuration
