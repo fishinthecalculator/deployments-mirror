@@ -179,7 +179,7 @@
 
               ;; Misc
               (service common-unload-service-type
-                       '("nginx" "podman-tandoor" "postgres"))
+                       '("nginx" "podman-tandoor" "postgres" "podman-prometheus"))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30))
