@@ -31,10 +31,10 @@
   #:use-module (guix gexp)                   ;for #~ and #$
   #:use-module (guix packages)               ;for package-source
   #:use-module (guix utils)                  ;for current-source-directory
+  #:use-module (nongnu packages firmware)    ;for fwupd-nonfree
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix packages fwupd) ;for fwupd-nonfree
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
   #:use-module (small-guix home services backup) ;for home-restic-backup-service-type
