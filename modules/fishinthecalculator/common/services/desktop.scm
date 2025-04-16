@@ -36,6 +36,7 @@
 
 (define (common-desktop-services subuids subgids)
   (append (list (service gnome-desktop-service-type)
+                (service gnome-keyring-service-type)
 
                 (simple-service 'common-timers
                                 shepherd-root-service-type
