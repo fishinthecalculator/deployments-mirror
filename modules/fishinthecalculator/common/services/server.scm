@@ -10,20 +10,15 @@
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop) ;for elogind-service
   #:use-module (gnu services networking)
-  ;#:use-module (gnu services security)
+  #:use-module (gnu services security)
   #:use-module (gnu services shepherd)
   #:use-module (gnu services ssh)
-  #:use-module (guix channels)
   #:use-module (guix gexp)
-  #:use-module (guix inferior)
-  #:use-module (guix packages)
   #:use-module (small-guix packages btdu) ;for btdu
-  #:use-module (small-guix services security) ;for forked fail2ban-service-type
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
   #:use-module (fishinthecalculator common services timers)
-  #:use-module (srfi srfi-1)
   #:export (common-server-services))
 
 (define gc-job
@@ -47,23 +42,6 @@
 without waiting for the scheduled time.")
                                     (procedure #~trigger-timer))))))
 
-(define channels
-  ;; This is the old revision from which we want to
-  ;; extract guile-json.
-  (list (channel
-         (name 'guix)
-         (url "https://git.savannah.gnu.org/git/guix.git")
-         (commit
-          "06481c3e441268191bb8cada146b8f372ad88239"))))
-
-(define inferior
-  ;; An inferior representing the above revision.
-  (inferior-for-channels channels))
-
-(define fail2ban-from-the-past
-  (first
-   (lookup-inferior-packages inferior "fail2ban")))
-
 (define (common-server-services subuids subgids)
   (append %common-base-services
           (list (service dhcp-client-service-type)
@@ -79,7 +57,6 @@ without waiting for the scheduled time.")
 
                 (service fail2ban-service-type
                          (fail2ban-configuration
-                          (fail2ban fail2ban-from-the-past)
                           (extra-jails
                            (list
                             (fail2ban-jail-configuration
