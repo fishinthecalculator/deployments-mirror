@@ -16,6 +16,7 @@
   #:use-module (guix channels)
   #:use-module (guix gexp)
   #:use-module (guix inferior)
+  #:use-module (guix packages)
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common services base)
@@ -62,6 +63,11 @@ without waiting for the scheduled time.")
   (first
    (lookup-inferior-packages inferior "fail2ban")))
 
+(define fail2ban
+  (package
+    (inherit fail2ban-from-the-past)
+    (name "fail2ban-from-the-past")))
+
 (define (common-server-services subuids subgids)
   (append %common-base-services
           (list (service dhcp-client-service-type)
@@ -77,7 +83,7 @@ without waiting for the scheduled time.")
 
                 (service fail2ban-service-type
                          (fail2ban-configuration
-                          (fail2ban fail2ban-from-the-past)
+                          (fail2ban fail2ban)
                           (extra-jails
                            (list
                             (fail2ban-jail-configuration
