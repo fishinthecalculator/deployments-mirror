@@ -17,7 +17,6 @@
   #:use-module (gnu services virtualization) ;for qemu-binfmt-service-type
   #:use-module (gnu services vpn)            ;for wireguard-service-type
   #:use-module (sops secrets)
-  #:use-module ((sops services databases) #:prefix sops:)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
   #:use-module (oci services forgejo)
