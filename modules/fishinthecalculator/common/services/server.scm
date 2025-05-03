@@ -45,22 +45,16 @@
 without waiting for the scheduled time.")
                                     (procedure #~trigger-timer))))))
 
-(define channels
-  ;; This is the old revision from which we want to
-  ;; extract guile-json.
-  (list (channel
-         (name 'guix)
-         (url "https://git.savannah.gnu.org/git/guix.git")
-         (commit
-          "06481c3e441268191bb8cada146b8f372ad88239"))))
-
-(define inferior
-  ;; An inferior representing the above revision.
-  (inferior-for-channels channels))
-
 (define fail2ban-from-the-past
   (first
-   (lookup-inferior-packages inferior "fail2ban")))
+   (lookup-inferior-packages
+    (inferior-for-channels
+     (list (channel
+            (name 'guix)
+            (url "https://git.savannah.gnu.org/git/guix.git")
+            (commit
+             "06481c3e441268191bb8cada146b8f372ad88239"))))
+    "fail2ban")))
 
 (define (common-server-services subuids subgids)
   (append %common-base-services
