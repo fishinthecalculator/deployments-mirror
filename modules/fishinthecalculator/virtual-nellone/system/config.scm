@@ -145,9 +145,12 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-16)))
-              (service sops:postgresql-role-service-type
-                       (sops:postgresql-role-configuration
-                        (requirement '(sops-secrets))))
+              (service postgresql-role-service-type
+                       (postgresql-role-configuration
+                        (shepherd-requirement
+                         (append
+                          %default-postgresql-role-shepherd-requirement
+                          '(sops-secrets)))))
 
               (service oci-tandoor-service-type
                        (oci-tandoor-configuration
