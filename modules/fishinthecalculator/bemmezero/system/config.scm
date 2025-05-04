@@ -40,6 +40,7 @@
 (define %bonfire-port "4000")
 (define %bonfire-domain "bonfire.municipiozero.it")
 (define %bonfire-admin-email "labug.info@gmail.com")
+(define %bonfire-upload-data-directory "/var/lib/bonfire/uploads")
 (define %meilisearch-port "7700")
 (define %postgresql-port 5432)
 
@@ -142,38 +143,39 @@
                         (config sops.yaml)))
 
               ;; Bonfire
-              ;; (service oci-bonfire-service-type
-              ;;          (oci-bonfire-configuration
-              ;;           (configuration
-              ;;            (bonfire-configuration
-              ;;             (hostname %bonfire-domain)
-              ;;             (port %bonfire-port)
-              ;;             (public-port "443")
-              ;;             (postgres-user "bonfire")
-              ;;             (postgres-db "bonfire")
-              ;;             (mail-domain %bonfire-domain)
-              ;;             (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
-              ;;           (network "host")
-              ;;           (auto-start? #t)
-              ;;           (requirement
-              ;;            '(sops-secrets postgres-roles docker-meilisearch))
-              ;;           (extra-variables
-              ;;            `("INVITE_ONLY=true"
-              ;;              ("MAIL_BACKEND" . "sendgrid")
-              ;;              ("SERVER_PORT" . ,%bonfire-port)
-              ;;              ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
-              ;;           (meili-master-key
-              ;;            meilisearch-key-secret)
-              ;;           (postgres-password
-              ;;            postgres-password-secret)
-              ;;           (mail-password
-              ;;            mail-password-secret)
-              ;;           (secret-key-base
-              ;;            secret-key-base-secret)
-              ;;           (signing-salt
-              ;;            signing-salt-secret)
-              ;;           (encryption-salt
-              ;;            encryption-salt-secret)))
+              (service oci-bonfire-service-type
+                       (oci-bonfire-configuration
+                        (configuration
+                         (bonfire-configuration
+                          (hostname %bonfire-domain)
+                          (port %bonfire-port)
+                          (public-port "443")
+                          (postgres-user "bonfire")
+                          (postgres-db "bonfire")
+                          (mail-domain %bonfire-domain)
+                          (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
+                        (network "host")
+                        (upload-data-directory %bonfire-upload-data-directory)
+                        (auto-start? #t)
+                        (requirement
+                         '(sops-secrets postgres-roles docker-meilisearch))
+                        (extra-variables
+                         `("INVITE_ONLY=true"
+                           ;("MAIL_BACKEND" . "sendgrid")
+                           ("SERVER_PORT" . ,%bonfire-port)
+                           ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
+                        (meili-master-key
+                         meilisearch-key-secret)
+                        (postgres-password
+                         postgres-password-secret)
+                        (mail-password
+                         mail-password-secret)
+                        (secret-key-base
+                         secret-key-base-secret)
+                        (signing-salt
+                         signing-salt-secret)
+                        (encryption-salt
+                         encryption-salt-secret)))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
@@ -195,13 +197,13 @@
                           %default-postgresql-role-shepherd-requirement
                           '(sops-secrets)))))
 
-              ;; (service nginx-service-type
-              ;;          (nginx-configuration
-              ;;           ;; Wait for bonfire to start
-              ;;           (shepherd-requirement
-              ;;            '(docker-bonfire))
-              ;;           (server-blocks
-              ;;            (list (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-mediadir %bonfire-staticdir)))))
+              (service nginx-service-type
+                       (nginx-configuration
+                        ;; Wait for bonfire to start
+                        (shepherd-requirement
+                         '(docker-bonfire))
+                        (server-blocks
+                         (list (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-upload-data-directory)))))
 
 
               ;; Misc
