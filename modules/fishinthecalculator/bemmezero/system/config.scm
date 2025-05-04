@@ -14,6 +14,7 @@
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
+  #:use-module (oci services meilisearch)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common secrets)
@@ -21,6 +22,7 @@
   #:use-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common users)
+  #:use-module (fishinthecalculator bemmezero services nginx)
   #:use-module (fishinthecalculator bemmezero system secrets)
   #:export (bemmezero-system
             bemmezero-common-server-services))
