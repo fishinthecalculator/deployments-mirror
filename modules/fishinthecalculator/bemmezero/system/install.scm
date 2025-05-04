@@ -2,6 +2,7 @@
 ;;; Copyright © 2025 Giacomo Leidi <goodoldpaul@autistici.org>
 
 (define-module (fishinthecalculator bemmezero system install)
+  #:use-module (gnu)
   #:use-module (gnu services)
   #:use-module (gnu services base)
   #:use-module (gnu services ssh)
