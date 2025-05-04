@@ -19,6 +19,8 @@
 (define-public bemmezero-stage0
   (operating-system
     (inherit bemmezero-system)
+    (groups (cons* (user-group (name "docker") (system? #t))
+                   %base-groups))
     (services
      (modify-services bemmezero-common-server-services
        (openssh-service-type ssh-config =>
