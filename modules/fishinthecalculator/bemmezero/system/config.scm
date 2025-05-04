@@ -77,6 +77,9 @@
                   (plain-file-content %sudoers-specification)
                   "\n deploy ALL=(ALL) NOPASSWD: ALL\n")))
 
+    (groups (cons* (user-group (name "docker") (system? #t))
+                   %base-groups))
+
     ;; Packages installed system-wide.  Users can also install packages
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
