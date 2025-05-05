@@ -205,8 +205,17 @@
                         (shepherd-requirement
                          '(docker-bonfire))
                         (server-blocks
-                         (list (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-upload-data-directory)))))
-
+                         (list
+                          (nginx-server-configuration
+                           (server-name (list domain))
+                           (listen '("80"))
+                           (locations
+                            (list
+                             (nginx-location-configuration
+                              (uri "/c4675f4d88b774d8f032d4c763e00631.txt")
+                              (body
+                               (list (string-append "alias /tmp/c4675f4d88b774d8f032d4c763e00631.txt;")))))))
+                          (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-upload-data-directory)))))
 
               ;; Misc
               (service common-unload-service-type
