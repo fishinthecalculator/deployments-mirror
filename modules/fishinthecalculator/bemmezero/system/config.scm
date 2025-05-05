@@ -207,7 +207,7 @@
                         (server-blocks
                          (list
                           (nginx-server-configuration
-                           (server-name (list domain))
+                           (server-name (list %bonfire-domain))
                            (listen '("80"))
                            (locations
                             (list
