@@ -15,8 +15,7 @@
      (nginx-location-configuration
       (uri "/c4675f4d88b774d8f032d4c763e00631.txt")
       (body
-       (list (string-append "alias /tmp/c4675f4d88b774d8f032d4c763e00631.txt;")
-             "c4675f4d88b774d8f032d4c763e00631.txt;")))
+       (list (string-append "alias /tmp/c4675f4d88b774d8f032d4c763e00631.txt;"))))
      (nginx-location-configuration
       (uri "/")
       (body (list (string-append "proxy_pass http://localhost:" port ";")
