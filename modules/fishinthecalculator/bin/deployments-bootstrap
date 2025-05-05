@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-set -eu
+set -e
+
+if [ -z "${guix_host}" ]; then
+  guix_host="$(hostname)"
+fi
+
+set -u
 
 DEPLOYMENTS_PATH="/tmp/guix-deployments/modules"
 DEPLOYMENTS_BIN="${DEPLOYMENTS_PATH}/fishinthecalculator/bin"
@@ -8,9 +14,6 @@ DEPLOYMENTS_BIN="${DEPLOYMENTS_PATH}/fishinthecalculator/bin"
 cd /tmp && rm -rf guix-deployments && guix shell git -- git clone https://codeberg.org/fishinthecalculator/guix-deployments.git
 export PATH="${DEPLOYMENTS_BIN}:${PATH}"
 
-if [ -z "${guix_host}" ]; then
-  guix_host="$(hostname)"
-fi
 sudo guix system reconfigure -L "${DEPLOYMENTS_PATH}" -e "(@ (fishinthecalculator ${guix_host} system install) ${guix_host}-stage0)"
 sudo herd stop guix-daemon
 sudo herd start guix-daemon
