@@ -5,7 +5,9 @@
   #:use-module (gnu)
   #:use-module (gnu system accounts)
   #:use-module (gnu packages databases)      ;for postgresql-16
+  #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services certbot)        ;for certbot-service-type
+  #:use-module (gnu services containers)     ;for rootless-podman-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services docker)         ;for docker-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
