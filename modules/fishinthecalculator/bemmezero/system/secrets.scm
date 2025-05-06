@@ -26,9 +26,13 @@
 
 ;; Bonfire
 
-(define-public mail-password-secret
+(define-public mail-key-secret
   (sops-secret
-   (key '("mail" "password"))
+   (key '("bonfire" "mail" "key"))
+   (file bemmezero.yaml)))
+(define-public mail-api-key-secret
+  (sops-secret
+   (key '("bonfire" "mail" "api_key"))
    (file bemmezero.yaml)))
 
 (define-public secret-key-base-secret

@@ -162,16 +162,17 @@
                         (requirement
                          '(sops-secrets postgres-roles docker-meilisearch))
                         (extra-variables
-                         `("INVITE_ONLY=true"
-                           ;("MAIL_BACKEND" . "sendgrid")
+                         `(("MAIL_BACKEND" . "mailjet")
                            ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
                          meilisearch-key-secret)
                         (postgres-password
                          postgres-password-secret)
-                        (mail-password
-                         mail-password-secret)
+                        (mail-key
+                         mail-key-secret)
+                        (mail-api-key
+                         mail-api-key-secret)
                         (secret-key-base
                          secret-key-base-secret)
                         (signing-salt
