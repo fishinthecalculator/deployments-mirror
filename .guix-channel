@@ -42,15 +42,4 @@
     (channel-introduction
      (version 0)
      (commit "cdb78996334c4f63304ecce224e95bb96bfd4c7d")
-     (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
-  (channel
-   (name ocui)
-   (url "https://github.com/fishinthecalculator/ocui.git")
-   (branch "main")
-   ;; Enable signature verification:
-   (introduction
-    (channel-introduction
-     (version 0)
-     (commit"10ed759852825149eb4b08c9b75777111a92048e")
-     (signer
-      "97A2 CB8F B066 F894 9928  CF80 DE9B E0AC E824 6F08"))))))
+     (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))))

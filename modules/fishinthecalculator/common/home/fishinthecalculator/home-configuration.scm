@@ -44,7 +44,6 @@
   #:use-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (fishinthecalculator common home fishinthecalculator services doom-emacs)
   #:use-module (fishinthecalculator common home fishinthecalculator services sway)
-  #:use-module (ocui-service)
   #:use-module (ice-9 format))
 
 (define %home
@@ -222,11 +221,6 @@ without waiting for the scheduled time."))
 
            (service home-dbus-service-type)
            (service home-pipewire-service-type)
-           (service home-ocui-service-type
-                    (ocui-configuration
-                     (oci
-                      (ocui-oci-configuration
-                       (runtime "podman")))))
 
            (service home-restic-backup-service-type
                    (restic-backup-configuration
