@@ -171,8 +171,8 @@
                          postgres-password-secret)
                         (mail-key
                          mail-key-secret)
-                        (mail-api-key
-                         mail-api-key-secret)
+                        (mail-private-key
+                         mail-private-key-secret)
                         (secret-key-base
                          secret-key-base-secret)
                         (signing-salt

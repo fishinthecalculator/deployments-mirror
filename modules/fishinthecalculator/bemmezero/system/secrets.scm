@@ -30,9 +30,9 @@
   (sops-secret
    (key '("bonfire" "mail" "key"))
    (file bemmezero.yaml)))
-(define-public mail-api-key-secret
+(define-public mail-private-key-secret
   (sops-secret
-   (key '("bonfire" "mail" "api_key"))
+   (key '("bonfire" "mail" "private_key"))
    (file bemmezero.yaml)))
 
 (define-public secret-key-base-secret
