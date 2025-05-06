@@ -287,14 +287,13 @@ without waiting for the scheduled time."))
                                           (extra-content
                                            "  KexAlgorithms +diffie-hellman-group1-sha1"))
                             (openssh-host (name "virtual-nellone")
-                                          (host-name "173.249.9.214")
-                                          (user "paul")
-                                          (extra-content
-                                           "  LocalForward 5432 localhost:5432
-  LocalForward 3000 localhost:3000
-  LocalForward 9090 localhost:9090"))
+                                          (host-name "tandoor.fishinthecalculator.me")
+                                          (user "paul"))
                             (openssh-host (name "frastanato")
                                           (host-name "192.168.1.80")
+                                          (user "paul"))
+                            (openssh-host (host-name "bonfire.municipiozero.it")
+                                          (name "bonfire.municipiozero.it")
                                           (user "paul"))
                             (openssh-host (host-name "municipiozero.it")
                                           (name "municipiozero.it")
