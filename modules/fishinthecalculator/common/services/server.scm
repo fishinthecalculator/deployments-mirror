@@ -55,13 +55,13 @@ without waiting for the scheduled time.")
                 (service iptables-service-type
                          %common-iptables-configuration)
 
-                ;; (service fail2ban-service-type
-                ;;          (fail2ban-configuration
-                ;;           (extra-jails
-                ;;            (list
-                ;;             (fail2ban-jail-configuration
-                ;;              (name "sshd")
-                ;;              (enabled? #t))))))
+                (service fail2ban-service-type
+                         (fail2ban-configuration
+                          (extra-jails
+                           (list
+                            (fail2ban-jail-configuration
+                             (name "sshd")
+                             (enabled? #t))))))
 
                 ;; Preinstalled packages
                 (simple-service 'preinstalled-server-packages
