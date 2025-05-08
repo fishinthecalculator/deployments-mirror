@@ -180,7 +180,7 @@
                         (upload-data-directory %bonfire-upload-data-directory)
                         (auto-start? #t)
                         (requirement
-                         '(sops-secrets postgres-roles docker-meilisearch))
+                         '(user-processes postgresql postgres-roles sops-secrets podman-meilisearch))
                         (extra-variables
                          `(("MAIL_BACKEND" . "mailjet")
                            ("SERVER_PORT" . ,%bonfire-port)
