@@ -153,7 +153,7 @@
 
               (service postgresql-service-type
                        (postgresql-configuration
-                        (postgresql postgresql-15)
+                        (postgresql postgresql-16)
                         (extension-packages (list postgis))
                         (port %postgresql-port)))
               (service postgresql-role-service-type
