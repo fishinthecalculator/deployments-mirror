@@ -31,7 +31,9 @@
   (sops-secret
    (key '("meilisearch" "master"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 
 ;; Bonfire
 
@@ -39,30 +41,40 @@
   (sops-secret
    (key '("bonfire" "mail" "key"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 (define-public bonfire-mail-private-key-secret
   (sops-secret
    (key '("bonfire" "mail" "private_key"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 
 (define-public bonfire-secret-key-base-secret
   (sops-secret
    (key '("bonfire" "secret_key_base"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 
 (define-public bonfire-signing-salt-secret
   (sops-secret
    (key '("bonfire" "signing_salt"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 
 (define-public bonfire-encryption-salt-secret
   (sops-secret
    (key '("bonfire" "encryption_salt"))
    (user "oci-container")
-   (file virtual_nellone.yaml)))
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
 
 ;; tandoor
 (define-public tandoor-secret-key-secret
