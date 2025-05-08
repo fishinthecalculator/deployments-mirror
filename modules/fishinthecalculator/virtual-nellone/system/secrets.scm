@@ -13,9 +13,10 @@
 (define-public bonfire-postgres-password-secret
   (sops-secret
    (key '("postgres" "bonfire"))
-   (user "postgres")
+   (user "oci-container")
    (group "postgres")
-   (file virtual_nellone.yaml)))
+   (file virtual_nellone.yaml)
+   (permissions #o440)))
 
 (define-public tandoor-postgres-password-secret
   (sops-secret
