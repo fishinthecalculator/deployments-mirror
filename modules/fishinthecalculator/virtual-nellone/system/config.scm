@@ -238,7 +238,7 @@
 
               ;; Misc
               (service common-unload-service-type
-                       '("nginx" "podman-tandoor" "postgres" "podman-prometheus"))
+                       '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30))
