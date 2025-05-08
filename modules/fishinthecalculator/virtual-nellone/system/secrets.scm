@@ -10,12 +10,20 @@
 
 ;; PostgreSQL
 
-(define-public postgres-password-secret
+(define-public bonfire-postgres-password-secret
   (sops-secret
    (key '("postgres" "bonfire"))
    (user "postgres")
    (group "postgres")
    (file virtual_nellone.yaml)))
+
+(define-public tandoor-postgres-password-secret
+  (sops-secret
+   (key '("postgres" "tandoor"))
+   (file virtual_nellone.yaml)
+   (user "oci-container")
+   (group "postgres")
+   (permissions #o440)))
 
 ;; Meilisearch
 
@@ -26,35 +34,31 @@
 
 ;; Bonfire
 
-(define-public mail-password-secret
+(define-public bonfire-mail-key-secret
   (sops-secret
-   (key '("mail" "password"))
+   (key '("bonfire" "mail" "key"))
+   (file virtual_nellone.yaml)))
+(define-public bonfire-mail-private-key-secret
+  (sops-secret
+   (key '("bonfire" "mail" "private_key"))
    (file virtual_nellone.yaml)))
 
-(define-public secret-key-base-secret
+(define-public bonfire-secret-key-base-secret
   (sops-secret
    (key '("bonfire" "secret_key_base"))
    (file virtual_nellone.yaml)))
 
-(define-public signing-salt-secret
+(define-public bonfire-signing-salt-secret
   (sops-secret
    (key '("bonfire" "signing_salt"))
    (file virtual_nellone.yaml)))
 
-(define-public encryption-salt-secret
+(define-public bonfire-encryption-salt-secret
   (sops-secret
    (key '("bonfire" "encryption_salt"))
    (file virtual_nellone.yaml)))
 
 ;; tandoor
-(define-public tandoor-postgres-password-secret
-  (sops-secret
-   (key '("tandoor" "postgres_password"))
-   (file virtual_nellone.yaml)
-   (user "oci-container")
-   (group "postgres")
-   (permissions #o440)))
-
 (define-public tandoor-secret-key-secret
   (sops-secret
    (key '("tandoor" "secret_key"))

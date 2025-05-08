@@ -13,7 +13,9 @@
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
   #:use-module (oci services containers)
+  #:use-module (oci services bonfire)
   #:use-module (oci services prometheus)
+  #:use-module (oci services meilisearch)
   #:use-module (oci services tandoor)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
@@ -41,6 +43,13 @@
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
 (define %tandoor-staticdir "/var/lib/tandoor/staticfiles")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
+
+(define %bonfire-port "4000")
+(define %bonfire-domain "bonfire.fishinthecalculator.me")
+(define %bonfire-admin-email "goodoldpaul@autistici.org")
+(define %bonfire-upload-data-directory "/var/lib/bonfire/uploads")
+(define %meilisearch-port "7700")
+(define %postgresql-port 5432)
 
 (define subgids
   (list (subid-range (name (user-account-name paul-user)))))
@@ -143,13 +152,22 @@
 
               (service postgresql-service-type
                        (postgresql-configuration
-                        (postgresql postgresql-16)))
+                        (postgresql postgresql-15)
+                        (extension-packages (list postgis))
+                        (port %postgresql-port)))
               (service postgresql-role-service-type
                        (postgresql-role-configuration
                         (shepherd-requirement
                          (append
                           %default-postgresql-role-shepherd-requirement
                           '(sops-secrets)))))
+
+              (service oci-meilisearch-service-type
+                       (oci-meilisearch-configuration
+                        (network "host")
+                        (port %meilisearch-port)
+                        (master-key
+                         meilisearch-key-secret)))
 
               (service oci-tandoor-service-type
                        (oci-tandoor-configuration
