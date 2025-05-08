@@ -151,6 +151,7 @@
                               (list (prometheus-static-configuration
                                      (targets '("localhost:9100"))))))))))))
 
+              ;; Postgres
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-15)
@@ -163,6 +164,42 @@
                           %default-postgresql-role-shepherd-requirement
                           '(sops-secrets)))))
 
+              ;; Bonfire
+              (service oci-bonfire-service-type
+                       (oci-bonfire-configuration
+                        (configuration
+                         (bonfire-configuration
+                          (hostname %bonfire-domain)
+                          (port %bonfire-port)
+                          (public-port "443")
+                          (postgres-user "bonfire")
+                          (postgres-db "bonfire")
+                          (mail-domain %bonfire-domain)
+                          (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
+                        (network "host")
+                        (upload-data-directory %bonfire-upload-data-directory)
+                        (auto-start? #t)
+                        (requirement
+                         '(sops-secrets postgres-roles docker-meilisearch))
+                        (extra-variables
+                         `(("MAIL_BACKEND" . "mailjet")
+                           ("SERVER_PORT" . ,%bonfire-port)
+                           ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
+                        (meili-master-key
+                         meilisearch-key-secret)
+                        (postgres-password
+                         bonfire-postgres-password-secret)
+                        (mail-key
+                         bonfire-mail-key-secret)
+                        (mail-private-key
+                         bonfire-mail-private-key-secret)
+                        (secret-key-base
+                         bonfire-secret-key-base-secret)
+                        (signing-salt
+                         bonfire-signing-salt-secret)
+                        (encryption-salt
+                         bonfire-encryption-salt-secret)))
+
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
                         (network "host")
@@ -170,6 +207,7 @@
                         (master-key
                          meilisearch-key-secret)))
 
+              ;; Tandoor
               (service oci-tandoor-service-type
                        (oci-tandoor-configuration
                         (runtime 'podman)
