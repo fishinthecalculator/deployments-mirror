@@ -115,7 +115,7 @@
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains (list %tandoor-domain)))))))
+                           (domains (list %bonfire-domain %tandoor-domain)))))))
 
               (service sops-secrets-service-type
                        (sops-service-configuration
