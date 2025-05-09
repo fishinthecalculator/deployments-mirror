@@ -231,9 +231,12 @@
                        (nginx-configuration
                         ;; Wait for tandoor to start
                         (shepherd-requirement
-                         '(podman-tandoor))
+                         '(podman-bonfire
+                           podman-tandoor))
                         (server-blocks
-                         (list (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir %tandoor-staticdir)))))
+                         (list
+                          (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-upload-data-directory)
+                          (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir %tandoor-staticdir)))))
 
 
               ;; Misc
