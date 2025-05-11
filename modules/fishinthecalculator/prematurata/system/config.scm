@@ -40,7 +40,6 @@
   #:use-module (small-guix home services backup) ;for home-restic-backup-service-type
   #:use-module ((small-guix services backup-timers)) ;for Shepherd timers restic-backup-service-type
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
-  #:use-module (small-guix services unattended-reboot) ;for unattended-reboot-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
   #:use-module (fishinthecalculator common backup)
@@ -136,14 +135,6 @@ without waiting for the scheduled time."))
                                        (procedure #~trigger-timer))))))
    %restic-repositories))
 
-(define unload-allowed
-  '("cups"
-    "fwupd"
-    "guix-publish"
-    "libvirtd"
-    "nix-daemon"
-    "updatedb"))
-
 (define %common-desktop-system
   (common-desktop-system subuids subgids))
 (define %common-desktop-services
@@ -238,11 +229,6 @@ without waiting for the scheduled time."))
                    (simple-service 'prematurata-timers
                                    shepherd-root-service-type
                                    restic-prune-jobs)
-                   (service unattended-reboot-service-type
-                            (unattended-reboot-configuration
-                             (schedule "9 2 * * 1")
-                             (unload
-                              (map string->symbol unload-allowed))))
 
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
@@ -272,7 +258,12 @@ without waiting for the scheduled time."))
                              (auto-enable? #t)))
 
                    (service common-unload-service-type
-                            unload-allowed)
+                            '("cups"
+                              "fwupd"
+                              "guix-publish"
+                              "libvirtd"
+                              "nix-daemon"
+                              "updatedb"))
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
