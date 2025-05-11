@@ -274,8 +274,6 @@ without waiting for the scheduled time."))
                    (service common-unload-service-type
                             unload-allowed)
 
-                   (service syslog-service-type)
-
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
 
@@ -285,7 +283,6 @@ without waiting for the scheduled time."))
                                    (map package-source
                                          (list element-desktop signal-desktop zoom))))
              (modify-services %common-desktop-services
-               (delete shepherd-system-log-service-type)
 
                (gdm-service-type config =>
                                   (gdm-configuration (inherit config)
