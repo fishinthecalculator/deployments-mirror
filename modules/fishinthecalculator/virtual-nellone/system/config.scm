@@ -12,6 +12,7 @@
   #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
+  #:use-module (small-guix services unattended-reboot)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
   #:use-module (oci services bonfire)
