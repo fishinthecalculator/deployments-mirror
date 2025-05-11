@@ -34,6 +34,7 @@
   #:use-module (small-guix home services backup)
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
+  #:use-module (small-guix home services gcr)
   #:use-module (small-guix home services shells)
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common locales)
@@ -221,6 +222,8 @@ without waiting for the scheduled time."))
 
            (service home-dbus-service-type)
            (service home-pipewire-service-type)
+
+           (service home-gcr-ssh-agent-service-type)
 
            (service home-restic-backup-service-type
                    (restic-backup-configuration
