@@ -57,6 +57,9 @@
 (define subuids
   (list (subid-range (name (user-account-name paul-user)))))
 
+(define unload-allowed
+  '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
+
 (define virtual-nellone-common-server-services
   (common-server-services subuids subgids))
 (define virtual-nellone-system
@@ -238,10 +241,14 @@
                           (bonfire-nginx-server %bonfire-domain %bonfire-port %bonfire-upload-data-directory)
                           (tandoor-nginx-server %tandoor-domain %tandoor-port %tandoor-mediadir %tandoor-staticdir)))))
 
-
               ;; Misc
               (service common-unload-service-type
-                       '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
+                       unload-allowed)
+              (service unattended-reboot-service-type
+                       (unattended-reboot-configuration
+                        (schedule "0 6 * * *")
+                        (unload
+                         (map string->symbol unload-allowed))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30))
