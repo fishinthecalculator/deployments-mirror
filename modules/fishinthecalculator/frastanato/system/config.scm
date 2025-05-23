@@ -6,8 +6,7 @@
   #:use-module (gnu system accounts)
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
-  #:use-module ((gnu services backup)        ;for restic-backup-service-type
-                #:prefix mainline:)
+  #:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services cuirass)        ;for transmission-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
@@ -27,7 +26,6 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages rclone) ;for rclone-bin
-  #:use-module (small-guix services backup-timers) ;for restic-backup-service-type
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common secrets)
@@ -42,7 +40,7 @@
 
 (define-public backup-system-jobs
   (map (lambda (repo)
-         (mainline:restic-backup-job
+         (restic-backup-job
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)

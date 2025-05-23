@@ -17,8 +17,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu services)
-  #:use-module ((gnu services backup)
-                #:prefix mainline:)
+  #:use-module (gnu services backup)
   #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages password-utils)
@@ -30,8 +29,6 @@
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
-  #:use-module (small-guix services backup-timers)
-  #:use-module (small-guix home services backup)
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
   #:use-module (small-guix home services gcr)
@@ -64,7 +61,7 @@
 
 (define-public backup-home-jobs
   (map (lambda (repo)
-         (mainline:restic-backup-job
+         (restic-backup-job
           (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
           (restic restic-bin)
           (repository repo)
@@ -321,7 +318,7 @@ without waiting for the scheduled time."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define personal-restic-backup-job
-  (mainline:restic-backup-job
+  (restic-backup-job
    (name "personal-job")
    (restic restic-bin)
    (requirement '(home-sops-secrets))
@@ -351,7 +348,7 @@ without waiting for the scheduled time."))
                           (string-append #+bash-minimal "/bin/bash")
                           "-l" "-c"
                           (string-append
-                           "restic-guix prune " #$(mainline:restic-backup-job-name personal-restic-backup-job))))))
+                           "restic-guix prune " #$(restic-backup-job-name personal-restic-backup-job))))))
                     (stop
                      #~(make-timer-destructor))
                     (actions (list (shepherd-action

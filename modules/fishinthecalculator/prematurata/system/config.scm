@@ -10,8 +10,7 @@
   #:use-module ((gnu services)
                 #:hide (delete))             ;for modify-services
   #:use-module (gnu services base)           ;for guix-daemon-service-type
-  #:use-module ((gnu services backup)        ;for restic-backup-service-type
-                #:prefix mainline:)
+  #:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services dbus)           ;for dbus-root-service-type
   #:use-module (gnu services desktop)        ;for gnome-service-type
   #:use-module (gnu services guix)           ;for guix-home-service-type
@@ -37,8 +36,6 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix packages moolticute) ;for my-moolticute
-  #:use-module (small-guix home services backup) ;for home-restic-backup-service-type
-  #:use-module ((small-guix services backup-timers)) ;for Shepherd timers restic-backup-service-type
   #:use-module (small-guix services fwupd) ;for fwupd-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
@@ -86,7 +83,7 @@
 
 (define-public backup-system-jobs
   (map (lambda (repo)
-         (mainline:restic-backup-job
+         (restic-backup-job
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
