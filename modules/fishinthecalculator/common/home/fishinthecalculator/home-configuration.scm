@@ -6,6 +6,7 @@
   #:use-module (guix utils)
   #:use-module (gnu home)
   #:use-module (gnu home services)
+  #:use-module (gnu home services backup)
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services fontutils)
   #:use-module (gnu home services guix)
