@@ -85,3 +85,11 @@
    (user "oci-container")
    (group "postgres")
    (permissions #o440)))
+
+(define-public tandoor-email-host-password
+  (sops-secret
+   (key '("bonfire" "mail" "private_key"))
+   (user "oci-container")
+   (group "users")
+   (file virtual_nellone.yaml)
+   (permissions #o400)))

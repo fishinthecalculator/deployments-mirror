@@ -221,10 +221,22 @@
                          %tandoor-mediadir)
                         (staticdir
                          %tandoor-staticdir)
+                        (email-host-password
+                         tandoor-email-host-password)
                         (postgres-password
                          tandoor-postgres-password-secret)
                         (secret-key
-                         tandoor-secret-key-secret)))
+                         tandoor-secret-key-secret)
+                        (configuration
+                         (tandoor-configuration
+                          (email-host
+                           "in-v3.mailjet.com")
+                          (email-port "587")
+                          (email-host-user
+                           "5485f1c8cabfd7cbc6d92669f7120275")
+                          (email-use-tls? #t)
+                          (default-from-email
+                           "friendlyadmin@tandoor.fishinthecalculator.me")))))
 
               (service oci-service-type
                        (oci-configuration
