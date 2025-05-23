@@ -236,7 +236,7 @@
                            "5485f1c8cabfd7cbc6d92669f7120275")
                           (email-use-tls? #t)
                           (default-from-email
-                           "leidigiacomo@gmail.com")))))
+                           "friendlyadmin@tandoor.fishinthecalculator.me")))))
 
               (service oci-service-type
                        (oci-configuration
