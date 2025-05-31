@@ -182,6 +182,10 @@
                         (encryption-salt
                          encryption-salt-secret)))
 
+              (service oci-service-type
+                       (oci-configuration
+                        (verbose? #t)))
+
               (simple-service 'oci-provisioning
                               oci-service-type
                               (oci-extension
