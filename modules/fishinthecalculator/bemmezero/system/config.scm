@@ -7,8 +7,7 @@
   #:use-module (gnu packages databases)      ;for postgresql-16
   #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services certbot)        ;for certbot-service-type
-  #:use-module ((gnu services containers)    ;for rootless-podman-service-type
-                #:prefix mainline:)
+  #:use-module (gnu services containers)     ;for rootless-podman-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services docker)         ;for docker-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
@@ -16,7 +15,6 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
-  #:use-module (oci services containers)
   #:use-module (oci services bonfire)
   #:use-module (oci services meilisearch)
   #:use-module (fishinthecalculator common keys)
@@ -182,59 +180,6 @@
                         (encryption-salt
                          encryption-salt-secret)))
 
-              (simple-service 'oci-provisioning
-                              oci-service-type
-                              (oci-extension
-                               (networks
-                                (list (oci-network-configuration (name "my-network"))))
-                               (volumes
-                                (list (oci-volume-configuration (name "my-volume"))))
-                               (containers
-                                (list
-                                 (mainline:oci-container-configuration
-                                  (provision "first")
-                                  (image
-                                   (mainline:oci-image
-                                    (repository "guile")
-                                    (value
-                                     (specifications->manifest '("guile")))
-                                    (pack-options
-                                     '(#:symlinks (("/bin" -> "bin"))))))
-                                  (entrypoint "/bin/guile")
-                                  (network "my-network")
-                                  (command
-                                   '("-c" "(use-modules (web server))
-(define (handler request request-body)
-  (values '((content-type . (text/plain))) \"out of office\"))
-(run-server handler 'http `(#:addr ,(inet-pton AF_INET \"0.0.0.0\")))"))
-                                  (host-environment
-                                   '(("VARIABLE" . "value")))
-                                  (volumes
-                                   '(("my-volume" . "/my-volume")))
-                                  (extra-arguments
-                                   '("--env" "VARIABLE")))
-                                 (mainline:oci-container-configuration
-                                  (provision "second")
-                                  (image
-                                   (mainline:oci-image
-                                    (repository "guile")
-                                    (value
-                                     (specifications->manifest '("guile")))
-                                    (pack-options
-                                     '(#:symlinks (("/bin" -> "bin"))))))
-                                  (entrypoint "/bin/guile")
-                                  (network "my-network")
-                                  (command
-                                   '("-c" "(let l ((c 300))
-(display c)
-(newline)
-(sleep 1)
-(when (positive? c)
-  (l (- c 1))))"))
-                                  (volumes
-                                   '(("my-volume" . "/my-volume")
-                                     ("/shared.txt" . "/shared.txt:ro"))))))))
-
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
                         (network "host")
@@ -274,7 +219,7 @@
              ;; This is the default list of services we
              ;; are appending to.
              (modify-services bemmezero-common-server-services
-               (delete mainline:rootless-podman-service-type)
+               (delete rootless-podman-service-type)
                (iptables-service-type iptables-config =>
                                      (iptables-configuration
                                       (ipv4-rules (plain-file "iptables.rules" "*filter
