@@ -22,7 +22,7 @@
   #:export (common-server-services))
 
 (define gc-job
-  ;; Run 'guix gc' at 1AM every day.
+  ;; Run 'guix gc' at 4AM on Monday.
   (shepherd-service (provision '(guix-gc-timer))
                     (requirement '(user-processes file-systems guix-daemon))
                     (documentation
@@ -30,7 +30,7 @@
                     (modules '((shepherd service timer)))
                     (start
                      #~(make-timer-constructor
-                        (cron-string->calendar-event "0 1 * * *")
+                        (cron-string->calendar-event "0 4 * * 1")
                         (command
                          (list
                           "/run/current-system/profile/bin/guix" "gc"))))
