@@ -12,6 +12,8 @@
   #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
+  #:use-module (small-guix packages databases)
+  #:use-module (small-guix services databases)
   #:use-module (small-guix services unattended-reboot)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
@@ -45,11 +47,13 @@
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
 (define %tandoor-staticdir "/var/lib/tandoor/staticfiles")
 (define %tandoor-domain "tandoor.fishinthecalculator.me")
+(define %tandoor-postgres-db "tandoor_db")
 
 (define %bonfire-port "4000")
 (define %bonfire-domain "bonfire.fishinthecalculator.me")
 (define %bonfire-admin-email "goodoldpaul@autistici.org")
 (define %bonfire-upload-data-directory "/var/lib/bonfire/uploads")
+(define %bonfire-postgres-db "bonfire")
 (define %meilisearch-port "7700")
 (define %postgresql-port 5432)
 
@@ -60,6 +64,10 @@
 
 (define unload-allowed
   '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
+
+(define %databases-to-backup
+  (list %bonfire-postgres-db
+        %tandoor-postgres-db))
 
 (define virtual-nellone-common-server-services
   (common-server-services subuids subgids))
@@ -167,6 +175,11 @@
                          (append
                           %default-postgresql-role-shepherd-requirement
                           '(sops-secrets)))))
+              (service postgresql-backup-service-type
+                       (postgresql-backup-configuration
+                        (schedule "0 5 * * *")
+                        (databases
+                         %databases-to-backup)))
 
               ;; Bonfire
               (service oci-bonfire-service-type
@@ -177,7 +190,7 @@
                           (port %bonfire-port)
                           (public-port "443")
                           (postgres-user "bonfire")
-                          (postgres-db "bonfire")
+                          (postgres-db %bonfire-postgres-db)
                           (mail-domain %bonfire-domain)
                           (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
                         (network "host")
@@ -229,6 +242,7 @@
                          tandoor-secret-key-secret)
                         (configuration
                          (tandoor-configuration
+                          (postgres-db %tandoor-postgres-db)
                           (email-host
                            "in-v3.mailjet.com")
                           (email-port "587")
