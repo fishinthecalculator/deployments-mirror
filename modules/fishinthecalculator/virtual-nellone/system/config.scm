@@ -181,7 +181,10 @@
                           (postgresql-backup-scripts/postgres postgresql-15))
                         (schedule "0 5 * * *")
                         (databases
-                         %databases-to-backup)))
+                         %databases-to-backup)
+                        (day-of-week-to-keep 6)
+                        (days-to-keep 7)
+                        (weeks-to-keep 5)))
 
               ;; Bonfire
               (service oci-bonfire-service-type
