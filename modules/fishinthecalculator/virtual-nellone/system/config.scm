@@ -178,7 +178,7 @@
               (service postgresql-backup-service-type
                        (postgresql-backup-configuration
                         (package
-                          (postgresql-backup-scripts/postgresql postgresql-15))
+                          (postgresql-backup-scripts/postgres postgresql-15))
                         (schedule "0 5 * * *")
                         (databases
                          %databases-to-backup)))
