@@ -224,22 +224,22 @@ without waiting for the scheduled time."))
            (service home-gcr-ssh-agent-service-type)
 
            (service home-restic-backup-service-type
-                   (restic-backup-configuration
-                    (jobs backup-home-jobs)))
+                    (restic-backup-configuration
+                     (jobs backup-home-jobs)))
 
            (service home-sway-service-type
                     fishinthecalculator-sway-configuration)
 
            (service home-sops-secrets-service-type
-                   (home-sops-service-configuration
-                    (config sops.yaml)
-                    (verbose? #t)
-                    (secrets
-                     (list
-                      (sops-secret
-                       (key '("codeberg"))
-                       (file home-paul.yaml)
-                       (permissions #o400))))))
+                    (home-sops-service-configuration
+                     (config sops.yaml)
+                     (verbose? #t)
+                     (secrets
+                      (list
+                       (sops-secret
+                        (key '("codeberg"))
+                        (file home-paul.yaml)
+                        (permissions #o400))))))
 
            (service home-oci-service-type
                     (for-home
