@@ -16,5 +16,5 @@
                (* expiration-days 24 3600))
               (channels channels)
               (operating-system-expression
-               #~(@ (#$host-name-symbol system config)
+               #~(@ (fishinthecalculator #$host-name-symbol system config)
                     #$(symbol-append host-name-symbol '-system)))))))
