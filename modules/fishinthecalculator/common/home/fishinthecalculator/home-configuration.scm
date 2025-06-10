@@ -167,7 +167,7 @@ REPO_HOME=\"${CACHE}/guix-mirror-sync\"
 
 set -u
 
-export SSH_AUTH_SOCK=\"/run/user/${UID}/keyring/ssh\"
+export SSH_AUTH_SOCK=\"/run/user/${UID}/gcr/ssh\"
 
 if ! [ -d \"${REPO_HOME}/.git\" ]; then
     rm -rfv \"${REPO_HOME}\"

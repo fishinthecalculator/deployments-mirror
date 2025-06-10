@@ -47,14 +47,4 @@
 ;; ...or multiple packages
 ;; (unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
-;(unpin! t)
-
-;(require 'projectile)
-;(require 'treemacs)
-;(require 'flycheck-guile)
-(require 'extempore-mode)
-(require 'guix-autoloads nil t)
-(require 'wisp-mode)
-(require 'bug-reference)
-(require 'debbugs)
-(require 'just-mode)
+;; (unpin! t)
