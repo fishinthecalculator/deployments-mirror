@@ -225,25 +225,25 @@ without waiting for the scheduled time."))
                      (git-sync-configuration
                       (ssh-auth-sock
                        "/run/user/${UID}/gcr/ssh"))))
-           (simple-service 'sync-jobs
-                           home-git-sync-service-type
-                           (git-sync-extension
-                            (jobs
-                             (list
-                              (git-sync-job
-                               (debug? #t)
-                               (schedule "0 0,6,12,18 * * *")
-                               (branch "master")
-                               (source
-                                (git-sync-remote
-                                 (name "upstream")
-                                 (default-branch "master")
-                                 (url "https://git.guix.gnu.org/guix.git")))
-                               (destination
-                                (git-sync-remote
-                                 (name "codeberg")
-                                 (default-branch "master")
-                                 (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
+           ;; (simple-service 'sync-jobs
+           ;;                 home-git-sync-service-type
+           ;;                 (git-sync-extension
+           ;;                  (jobs
+           ;;                   (list
+           ;;                    (git-sync-job
+           ;;                     (debug? #t)
+           ;;                     (schedule "0 0,6,12,18 * * *")
+           ;;                     (branch "master")
+           ;;                     (source
+           ;;                      (git-sync-remote
+           ;;                       (name "upstream")
+           ;;                       (default-branch "master")
+           ;;                       (url "https://git.guix.gnu.org/guix.git")))
+           ;;                     (destination
+           ;;                      (git-sync-remote
+           ;;                       (name "codeberg")
+           ;;                       (default-branch "master")
+           ;;                       (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
 
            (service home-dbus-service-type)
            (service home-pipewire-service-type)
