@@ -27,12 +27,14 @@
   #:use-module (sops home services sops)
   #:use-module (oci services containers)
   #:use-module (oci home services containers)
+  #:use-module (small-guix services git)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
   #:use-module (small-guix home services gcr)
+  #:use-module (small-guix home services git)
   #:use-module (small-guix home services shells)
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common locales)
@@ -217,6 +219,31 @@ without waiting for the scheduled time."))
            (service home-dotfiles-service-type
                     (home-dotfiles-environment
                      (directories (list fishinthecalculator-stow-dir))))
+
+           (service home-git-sync-service-type
+                    (for-home
+                     (git-sync-configuration
+                      (ssh-auth-sock
+                       "/run/user/${UID}/gcr/ssh"))))
+           (simple-service 'sync-jobs
+                           home-git-sync-service-type
+                           (git-sync-extension
+                            (jobs
+                             (list
+                              (git-sync-job
+                               (debug? #t)
+                               (schedule "0 0,6,12,18 * * *")
+                               (branch "master")
+                               (source
+                                (git-sync-remote
+                                 (name "upstream")
+                                 (default-branch "master")
+                                 (url "https://git.guix.gnu.org/guix.git")))
+                               (destination
+                                (git-sync-remote
+                                 (name "codeberg")
+                                 (default-branch "master")
+                                 (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
 
            (service home-dbus-service-type)
            (service home-pipewire-service-type)
