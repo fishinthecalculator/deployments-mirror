@@ -177,7 +177,7 @@ without waiting for the scheduled time."))
                             (jobs
                              (list
                               (git-sync-job
-                               (name "gocix")
+                               (provision "gocix")
                                (schedule "0,15,30,45 * * * *")
                                (branch "main")
                                (source
@@ -189,7 +189,7 @@ without waiting for the scheduled time."))
                                  (name "codeberg")
                                  (url "ssh://git@codeberg.org/fishinthecalculator/gocix.git"))))
                               (git-sync-job
-                               (name "guix")
+                               (provision "guix")
                                (schedule "0 0,6,12,18 * * *")
                                (branch "master")
                                (source
