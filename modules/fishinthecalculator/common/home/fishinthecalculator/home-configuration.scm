@@ -187,7 +187,7 @@ without waiting for the scheduled time."))
                                (destination
                                 (git-sync-remote
                                  (name "codeberg")
-                                 (url "ssh://git@codeberg.org/fishinthecalculator/gocix.git"))))))))
+                                 (url "ssh://git@codeberg.org/fishinthecalculator/gocix.git"))))
                               (git-sync-job
                                (name "guix")
                                (schedule "0 0,6,12,18 * * *")
