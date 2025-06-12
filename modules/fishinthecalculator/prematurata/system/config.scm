@@ -159,14 +159,7 @@ without waiting for the scheduled time."))
 
     (host-name "prematurata")
 
-    (users (cons* (user-account
-                   (name "charlie")
-                   (group "users")
-
-                   ;; Specify a SHA-512-hashed initial password.
-                   (password (crypt "test" "$6$abc"))
-                   (home-directory "/home/charlie"))
-                  paul-user
+    (users (cons* paul-user
                   %base-user-accounts))
 
     ;; Operating system with encrypted boot partition
