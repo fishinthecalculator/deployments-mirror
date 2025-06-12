@@ -154,47 +154,6 @@ without waiting for the scheduled time."))
 without waiting for the scheduled time."))
                                     (procedure #~trigger-timer))))))
 
-(define guix-fork-sync-job
-  ;; Run 'guix-fork-sync' at a given hour every day.
-  (shepherd-service (provision '(guix-fork-sync))
-                    (documentation
-                     (string-append "Run @command{guix-fork-sync} regularly."))
-                    (modules '((shepherd service timer)))
-                    (start
-                     #~(make-timer-constructor
-                        (cron-string->calendar-event
-                         "0 0,6,12,18 * * *")
-                        (command
-                         (list
-                          (string-append #$bash-minimal "/bin/bash")
-                          "-l" #$(git-sync-script
-                                  (git-sync-job
-                                   (debug? #t)
-                                   (schedule "0 0,6,12,18 * * *")
-                                   (branch "master")
-                                   (source
-                                    (git-sync-remote
-                                     (name "upstream")
-                                     (default-branch "master")
-                                     (url "https://git.guix.gnu.org/guix.git")))
-                                   (destination
-                                    (git-sync-remote
-                                     (name "codeberg")
-                                     (default-branch "master")
-                                     (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))
-                                  git-minimal
-                                  "${HOME}/.cache"
-                                  "/run/user/${UID}/gcr/ssh")))
-                        #:wait-for-termination? #t))
-                    (stop
-                     #~(make-timer-destructor))
-                    (actions (list (shepherd-action
-                                    (name 'trigger)
-                                    (documentation
-                                     (string-append "Manually trigger a @command{guix-fork-sync} run,
-without waiting for the scheduled time."))
-                                    (procedure #~trigger-timer))))))
-
 (define-public fishinthecalculator-home-environment
   (home-environment
    (packages fishinthecalculator-packages)
@@ -266,7 +225,6 @@ without waiting for the scheduled time."))
            (simple-service 'fishinthecalculator-timers
                            home-shepherd-service-type
                            (list (cleanup-job)
-                                 guix-fork-sync-job
                                  nix-update-job))
 
            (simple-service 'fishinthecalculator-fonts
