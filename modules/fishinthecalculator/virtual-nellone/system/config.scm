@@ -255,7 +255,7 @@
                            "5485f1c8cabfd7cbc6d92669f7120275")
                           (email-use-tls? #t)
                           (default-from-email
-                           "friendlyadmin@tandoor.fishinthecalculator.me")))))
+                            "friendlyadmin@tandoor.fishinthecalculator.me")))))
 
               (service oci-service-type
                        (oci-configuration
@@ -289,8 +289,8 @@
              ;; are appending to.
              (modify-services virtual-nellone-common-server-services
                (iptables-service-type iptables-config =>
-                                     (iptables-configuration
-                                      (ipv4-rules (plain-file "iptables.rules" "*filter
+                                      (iptables-configuration
+                                       (ipv4-rules (plain-file "iptables.rules" "*filter
 :INPUT ACCEPT
 :FORWARD ACCEPT
 :OUTPUT ACCEPT
@@ -302,7 +302,7 @@
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 COMMIT
 "))
-                                      (ipv6-rules (plain-file "ip6tables.rules" "*filter
+                                       (ipv6-rules (plain-file "ip6tables.rules" "*filter
 :INPUT ACCEPT
 :FORWARD ACCEPT
 :OUTPUT ACCEPT
