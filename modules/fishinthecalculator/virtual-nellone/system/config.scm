@@ -33,11 +33,13 @@
   #:export (virtual-nellone-system
             virtual-nellone-common-server-services))
 
+(define paul-name
+  (user-account-name paul-user))
+
 (define authorized-ssh-keys
-  (let ((paul (user-account-name paul-user)))
-    ;; List of authorized SSH keys.
-    `((,paul ,paul-ssh-key)
-      ("deploy" ,paul-ssh-key))))
+  ;; List of authorized SSH keys.
+  `((,paul-name ,paul-ssh-key)
+    ("deploy" ,paul-ssh-key)))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -58,9 +60,9 @@
 (define %postgresql-port 5432)
 
 (define subgids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 (define subuids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 
 (define unload-allowed
   '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
