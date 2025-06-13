@@ -131,6 +131,27 @@
                           (certificate-configuration
                            (domains (list %bonfire-domain %tandoor-domain)))))))
 
+              (service git-sync-service-type
+                       (git-sync-configuration
+                        (user paul-name)))
+              (simple-service 'sync-jobs
+                              git-sync-service-type
+                              (git-sync-extension
+                               (jobs
+                                (list
+                                 (git-sync-job
+                                  (provision "gocix")
+                                  (schedule "0,15,30,45 * * * *")
+                                  (branch "main")
+                                  (source
+                                   (git-sync-remote
+                                    (name "github")
+                                    (url "git@github.com:fishinthecalculator/gocix.git")))
+                                  (destination
+                                   (git-sync-remote
+                                    (name "codeberg")
+                                    (url "ssh://git@codeberg.org/fishinthecalculator/gocix-mirror.git"))))))))
+
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)))
