@@ -141,7 +141,6 @@
                                (jobs
                                 (list
                                  (git-sync-job
-                                  (debug? #t)
                                   (provision "gocix")
                                   (schedule "0,15,30,45 * * * *")
                                   (branch "main")
