@@ -189,7 +189,9 @@
 
               (service sops-secrets-service-type
                        (sops-service-configuration
-                        (config sops.yaml)))
+                        (config sops.yaml)
+                        (secrets
+                         (list restic-repository-secret))))
 
               ;; Backups
               (service restic-backup-service-type

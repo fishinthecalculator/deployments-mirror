@@ -8,6 +8,14 @@
 (define-public virtual_nellone.yaml
   (secrets-file "virtual_nellone.yaml"))
 
+;; restic
+
+(define-public restic-repository-secret
+  (sops-secret
+   (key '("virtual_nellone" "restic"))
+   (file virtual_nellone.yaml)
+   (permissions #o400)))
+
 ;; PostgreSQL
 
 (define-public bonfire-postgres-password-secret
