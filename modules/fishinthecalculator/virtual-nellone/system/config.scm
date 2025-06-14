@@ -22,6 +22,7 @@
   #:use-module (sops services sops)
   #:use-module (oci services containers)
   #:use-module (oci services bonfire)
+  #:use-module (oci services grafana)
   #:use-module (oci services prometheus)
   #:use-module (oci services meilisearch)
   #:use-module (oci services tandoor)
