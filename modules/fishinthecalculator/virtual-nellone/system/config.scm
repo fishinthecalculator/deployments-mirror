@@ -216,6 +216,7 @@
                           (name "prometheus")))
                         (record
                          (prometheus-configuration
+                          (retention-time "90d")
                           (global
                            (prometheus-global-configuration
                             (scrape-interval "30s")
