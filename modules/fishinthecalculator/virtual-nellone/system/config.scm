@@ -245,6 +245,18 @@
                         (image "docker.io/bitnami/grafana:12.0.1")
                         (network "host")
                         (port %grafana-port)
+                        (configuration
+                         (grafana-configuration
+                          (smtp
+                           (grafana-smtp-configuration
+                            (enabled? #t)
+                            (host "in-v3.mailjet.com:587")
+                            (from-address
+                             "monitoring@tandoor.fishinthecalculator.me")
+                            (user
+                             "5485f1c8cabfd7cbc6d92669f7120275")
+                            (password-file
+                             bonfire-mail-private-key-secret)))))
                         (datadir
                          (oci-volume-configuration
                           (name "grafana")))))
