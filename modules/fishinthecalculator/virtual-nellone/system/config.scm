@@ -245,7 +245,7 @@
                         (image "docker.io/bitnami/grafana:12.0.1")
                         (network "host")
                         (port %grafana-port)
-                        (configuration
+                        (grafana.ini
                          (grafana-configuration
                           (smtp
                            (grafana-smtp-configuration
