@@ -60,6 +60,7 @@
   (let ((paul (user-account-name paul-user)))
     ;; List of authorized SSH keys.
     `((,paul ,paul-ssh-key)
+      (,paul ,paul-ed25519-ssh-key)
       ("deploy" ,paul-ssh-key))))
 
 (define authorized-guix-keys

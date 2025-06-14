@@ -44,6 +44,7 @@
 (define authorized-ssh-keys
   ;; List of authorized SSH keys.
   `((,paul-name ,paul-ssh-key)
+    (,paul-name ,paul-ed25519-ssh-key)
     ("deploy" ,paul-ssh-key)))
 
 (define authorized-guix-keys

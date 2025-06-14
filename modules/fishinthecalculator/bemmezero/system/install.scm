@@ -15,7 +15,8 @@
 (define authorized-ssh-keys
   (let ((paul (user-account-name paul-user)))
     ;; List of authorized SSH keys.
-    `((,paul ,paul-ssh-key))))
+    `((,paul ,paul-ssh-key)
+      (,paul ,paul-ed25519-ssh-key))))
 
 (define-public bemmezero-stage0
   (operating-system
