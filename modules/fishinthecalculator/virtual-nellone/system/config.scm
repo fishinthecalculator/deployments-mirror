@@ -6,6 +6,7 @@
   #:use-module (gnu system accounts)
   #:use-module (gnu packages databases)      ;for postgresql-15
   #:use-module (gnu packages geo)            ;for postgis
+  #:use-module (gnu services backup)         ;for restic-backup-service-type
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
@@ -13,6 +14,8 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (small-guix packages databases)
+  #:use-module (small-guix packages rclone)
+  #:use-module (small-guix packages scripts)
   #:use-module (small-guix services databases)
   #:use-module (small-guix services git)
   #:use-module (small-guix services unattended-reboot)
@@ -57,8 +60,13 @@
 (define %bonfire-admin-email "goodoldpaul@autistici.org")
 (define %bonfire-upload-data-directory "/var/lib/bonfire/uploads")
 (define %bonfire-postgres-db "bonfire")
+
 (define %meilisearch-port "7700")
+
 (define %postgresql-port 5432)
+
+(define %postgresql-backups-directory
+  "/var/lib/postgresql-backups")
 
 (define subgids
   (list (subid-range (name paul-name))))
@@ -71,6 +79,30 @@
 (define %databases-to-backup
   (list %bonfire-postgres-db
         %tandoor-postgres-db))
+
+(define-public backup-system-jobs
+  (list
+   (restic-backup-job
+    (name "onedrive")
+    (restic restic-bin)
+    (repository "rclone:onedrive:backup/virtual-nellone")
+    (requirement '(user-processes file-systems sops-secrets))
+    (password-file "/run/secrets/virtual-nellone/restic")
+    ;; Every day at 6.
+    (schedule "0 6 * * *")
+    (files `("/root/.config/rclone"
+             "/root/.config/sops/age/keys.txt"
+             "/home/paul/.ssh/"
+             "/home/paul/.config/sops/age/keys.txt"
+             "/etc/ssh/ssh_host_rsa_key"
+             "/etc/ssh/ssh_host_rsa_key.pub"
+             "/etc/guix/signing-key.pub"
+             "/etc/guix/signing-key.sec"
+             ,%postgresql-backups-directory
+             ,%bonfire-upload-data-directory
+             ,%tandoor-mediadir
+             ,%tandoor-staticdir))
+    (verbose? #t))))
 
 (define virtual-nellone-common-server-services
   (common-server-services subuids subgids))
@@ -117,7 +149,8 @@
                              "tcpdump"
                              "net-tools"
                              "ripgrep"))
-                      (list common-deploy-scripts)
+                      (list common-deploy-scripts
+                            rclone-bin)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
@@ -156,6 +189,11 @@
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)))
+
+              ;; Backups
+              (service restic-backup-service-type
+                       (restic-backup-configuration
+                        (jobs backup-system-jobs)))
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
