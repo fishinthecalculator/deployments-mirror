@@ -155,6 +155,7 @@
                              "bind:utils"
                              "ripgrep"))
                       (list common-deploy-scripts
+                            restic-bin
                             rclone-bin)
                       %base-packages))
 
