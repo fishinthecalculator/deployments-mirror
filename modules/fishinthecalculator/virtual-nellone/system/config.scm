@@ -65,6 +65,8 @@
 
 (define %postgresql-port 5432)
 
+(define %grafana-port "3000")
+
 (define %postgresql-backups-directory
   "/var/lib/postgresql-backups")
 (define %databases-to-backup
@@ -233,6 +235,16 @@
                              (static-configs
                               (list (prometheus-static-configuration
                                      (targets '("localhost:9100"))))))))))))
+
+              (service oci-grafana-service-type
+                       (oci-grafana-configuration
+                        (runtime 'podman)
+                        (image "docker.io/bitnami/grafana:12.0.1")
+                        (network "host")
+                        (port %grafana-port)
+                        (datadir
+                         (oci-volume-configuration
+                          (name "grafana")))))
 
               ;; Postgres
               (service postgresql-service-type
