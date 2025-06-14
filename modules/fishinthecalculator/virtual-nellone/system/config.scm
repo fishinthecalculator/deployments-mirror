@@ -67,6 +67,9 @@
 
 (define %postgresql-backups-directory
   "/var/lib/postgresql-backups")
+(define %databases-to-backup
+  (list %bonfire-postgres-db
+        %tandoor-postgres-db))
 
 (define subgids
   (list (subid-range (name paul-name))))
@@ -75,10 +78,6 @@
 
 (define unload-allowed
   '("nginx" "podman-bonfire" "podman-tandoor" "postgres" "podman-prometheus"))
-
-(define %databases-to-backup
-  (list %bonfire-postgres-db
-        %tandoor-postgres-db))
 
 (define-public backup-system-jobs
   (list
