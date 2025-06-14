@@ -275,7 +275,7 @@ without waiting for the scheduled time."))
                                           (host-name "bonfire.fishinthecalculator.me")
                                           (user "paul")
                                           (extra-content
-                                           " LocalForward 3000 localhost:3000"))
+                                           "  LocalForward 3000 localhost:3000"))
                             (openssh-host (name "frastanato")
                                           (host-name "192.168.1.80")
                                           (user "paul"))
