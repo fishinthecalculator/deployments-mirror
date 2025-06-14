@@ -94,6 +94,7 @@
     (files `("/root/.config/rclone"
              "/root/.config/sops/age/keys.txt"
              "/home/paul/.ssh/"
+             "/home/paul/.config/rclone"
              "/home/paul/.config/sops/age/keys.txt"
              "/etc/ssh/ssh_host_ecdsa_key"
              "/etc/ssh/ssh_host_ecdsa_key.pub"
