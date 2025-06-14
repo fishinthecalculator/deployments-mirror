@@ -148,6 +148,8 @@
                              "vim"
                              "tcpdump"
                              "net-tools"
+                             "bind"
+                             "bind:utils"
                              "ripgrep"))
                       (list common-deploy-scripts
                             rclone-bin)
