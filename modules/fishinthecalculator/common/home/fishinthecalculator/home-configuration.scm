@@ -272,8 +272,10 @@ without waiting for the scheduled time."))
                                           (extra-content
                                            "  KexAlgorithms +diffie-hellman-group1-sha1"))
                             (openssh-host (name "virtual-nellone")
-                                          (host-name "tandoor.fishinthecalculator.me")
-                                          (user "paul"))
+                                          (host-name "bonfire.fishinthecalculator.me")
+                                          (user "paul")
+                                          (extra-content
+                                           " LocalForward 3000 localhost:3000"))
                             (openssh-host (name "frastanato")
                                           (host-name "192.168.1.80")
                                           (user "paul"))
