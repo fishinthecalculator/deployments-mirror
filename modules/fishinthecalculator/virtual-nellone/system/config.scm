@@ -256,7 +256,7 @@
                             (user
                              "5485f1c8cabfd7cbc6d92669f7120275")
                             (password-file
-                             bonfire-mail-private-key-secret)))))
+                             grafana-mail-private-key-secret)))))
                         (datadir
                          (oci-volume-configuration
                           (name "grafana")))))
