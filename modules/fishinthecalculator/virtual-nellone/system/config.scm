@@ -91,8 +91,8 @@
     (repository "rclone:onedrive:backup/virtual-nellone")
     (requirement '(user-processes file-systems sops-secrets))
     (password-file "/run/secrets/virtual_nellone/restic")
-    ;; Every day at 6.
-    (schedule "0 6 * * *")
+    ;; Every day at 5:30.
+    (schedule "30 5 * * *")
     (files `("/root/.config/rclone"
              "/root/.config/sops/age/keys.txt"
              "/home/paul/.ssh/"
