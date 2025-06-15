@@ -7,7 +7,7 @@
 (define-public (bonfire-nginx-server domain port upload-data-dir)
   (nginx-server-configuration
    (server-name (list domain))
-   (listen '("443 ssl"))
+   (listen '("443 ssl" "[::]:443 ssl"))
    (ssl-certificate (string-append "/etc/certs/" domain "/fullchain.pem"))
    (ssl-certificate-key (string-append "/etc/certs/" domain "/privkey.pem"))
    (locations
@@ -31,7 +31,7 @@
 (define-public (tandoor-nginx-server domain port mediadir staticdir)
   (nginx-server-configuration
    (server-name (list domain))
-   (listen '("443 ssl" "[::]:443"))
+   (listen '("443 ssl" "[::]:443 ssl"))
    (ssl-certificate (string-append "/etc/certs/" domain "/fullchain.pem"))
    (ssl-certificate-key (string-append "/etc/certs/" domain "/privkey.pem"))
    (locations
