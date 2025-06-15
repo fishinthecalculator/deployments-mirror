@@ -47,7 +47,7 @@
 ;; Grafana
 (define-public grafana-mail-private-key-secret
   (sops-secret
-   (key '("bonfire" "mail" "private_key"))
+   (key '("grafana" "mail" "private_key"))
    (user "oci-container")
    (group "users")
    (file virtual_nellone.yaml)
