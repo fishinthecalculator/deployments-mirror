@@ -6,7 +6,7 @@ rm -rfv build-aux/ Makefile.am configure.ac pre-inst-env.in
 
 for com in clean build;
 do
-    hall "$com" -x
+    guix shell hall.git -- hall "$com" -x
 done
 
 exit 0
