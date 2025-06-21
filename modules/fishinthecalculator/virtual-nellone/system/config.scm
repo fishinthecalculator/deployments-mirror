@@ -18,6 +18,7 @@
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix services databases)
   #:use-module (small-guix services git)
+  #:use-module (small-guix services monitoring)
   #:use-module (small-guix services unattended-reboot)
   #:use-module (sops services sops)
   #:use-module (oci services containers)
@@ -210,6 +211,7 @@
 
               ;; Monitoring
               (service prometheus-node-exporter-service-type)
+              (service prometheus-postgres-exporter-service-type)
 
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
@@ -237,7 +239,12 @@
                              (job-name "node")
                              (static-configs
                               (list (prometheus-static-configuration
-                                     (targets '("localhost:9100"))))))))))))
+                                     (targets '("localhost:9100"))))))
+                            (prometheus-scrape-configuration
+                             (job-name "postgres")
+                             (static-configs
+                              (list (prometheus-static-configuration
+                                     (targets '("localhost:9187"))))))))))))
 
               (service oci-grafana-service-type
                        (oci-grafana-configuration
