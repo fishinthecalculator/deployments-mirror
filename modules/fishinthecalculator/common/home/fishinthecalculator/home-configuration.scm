@@ -22,7 +22,6 @@
   #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages password-utils)
-  #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
   #:use-module (sops home services sops)
   #:use-module (oci services containers)
@@ -337,7 +336,7 @@ without waiting for the scheduled time."))
   (home-environment
    ;; Below is the list of packages that will show up in your
    ;; Home profile, under ~/.guix-home/profile.
-   (packages (append (list anytype
+   (packages (append (list anytype-latest
                            bitwarden-desktop
                            common-glibc-locales
                            fishinthecalculator-scripts
