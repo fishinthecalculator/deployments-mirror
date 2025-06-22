@@ -27,6 +27,7 @@
   #:use-module (oci services containers)
   #:use-module (oci home services containers)
   #:use-module (small-guix services git)
+  #:use-module (small-guix packages anytype)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
