@@ -11,7 +11,7 @@
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages password-utils)
-  #:use-module (nongnu packages productivity)
+  #:use-module (small-guix packages anytype)
   #:use-module (small-guix packages guile-xyz)
   #:use-module (small-guix packages moar)
   #:use-module (small-guix packages scripts)
