@@ -32,7 +32,7 @@
                         #:version "0.1.1"))
 
 (define-public fishinthecalculator-packages
-  (append (list anytype
+  (append (list anytype-latest
                 bitwarden-desktop
                 moar
                 google-chrome-stable
