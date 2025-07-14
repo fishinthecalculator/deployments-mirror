@@ -9,6 +9,7 @@
   #:use-module (gnu home services backup)
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services fontutils)
+  #:use-module (gnu home services gnupg)
   #:use-module (gnu home services guix)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services shepherd)
@@ -17,6 +18,7 @@
   #:use-module (gnu home services sway)
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages gnupg)
   #:use-module (gnu services)
   #:use-module (gnu services backup)
   #:use-module (gnu system accounts)
@@ -55,6 +57,18 @@
 
 (define fishinthecalculator-stow-dir
   (stow-dotfiles-directory
+   (packages (list "aerc"
+                   "doom"
+                   "git"
+                   "guile"
+                   "kitty"
+                   "vim"
+                   "aria2"
+                   "direnv"
+                   "foot"
+                   "nix"
+                   "tmux"
+                   "vscode"))
    (name
     (string-append %here
                    "/etc"))))
@@ -379,6 +393,7 @@ without waiting for the scheduled time."))
                        ("ls-l" . "ls -l")
                        ("md" . "mkdir -p")
                        ("o" . "less")
+                       ("nix-update" . "nix-channel --update && nix-env -u")
                        ("rd" . "rmdir")
                        ("rehash" . "hash -r")
                        ("unmount" . "echo \"Error: Try the command: umount\" 1>&2; false")
@@ -415,6 +430,11 @@ without waiting for the scheduled time."))
                           home-shepherd-service-type
                           (list (cleanup-job)
                                 (restic-prune-job)))
+
+          (service home-gpg-agent-service-type
+           (home-gpg-agent-configuration
+            (pinentry-program
+             (file-append pinentry-gnome3 "/bin/pinentry-gnome3"))))
 
           (simple-service 'paul-environment-variables
                           home-environment-variables-service-type

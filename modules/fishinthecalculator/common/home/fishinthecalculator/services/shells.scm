@@ -40,7 +40,8 @@
   (list (file-append %dotfiles-dir "/bash/bash_functions")
         (file-append %dotfiles-dir "/bash/profile_guix_foreign_distros")
         (file-append %dotfiles-dir "/bash/profile_guix_extra")
-        (file-append %dotfiles-dir "/bash/profile_nix")))
+        (file-append %dotfiles-dir "/bash/profile_nix")
+        (file-append %dotfiles-dir "/bash/profile_nix_foreign_distros")))
 
 (define-public fishinthecalculator-environment
   `(("EDITOR" . "emacs")

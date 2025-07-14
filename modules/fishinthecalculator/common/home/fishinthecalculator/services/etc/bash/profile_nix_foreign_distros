@@ -1,0 +1,4 @@
+# If this is a foreign distribution
+if test -f /etc/profile.d/nix.sh; then
+  . /etc/profile.d/nix.sh
+fi
