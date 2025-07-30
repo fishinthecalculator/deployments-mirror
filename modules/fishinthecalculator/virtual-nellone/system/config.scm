@@ -175,7 +175,9 @@
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains (list %bonfire-domain %tandoor-domain)))))))
+                           (domains (list %tandoor-domain)))
+                          (certificate-configuration
+                           (domains (list %bonfire-domain)))))))
 
               (service git-sync-service-type
                        (git-sync-configuration
