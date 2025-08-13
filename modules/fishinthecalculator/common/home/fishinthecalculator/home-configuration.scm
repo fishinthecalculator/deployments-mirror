@@ -363,7 +363,10 @@ without waiting for the scheduled time."))
                                                      "texinfo"
                                                      "man-db"
                                                      "guile"
-                                                     "nss-certs"))))
+                                                     "nss-certs"
+                                                     "signal-desktop"
+                                                     "qbittorrent"
+                                                     "vlc"))))
 
    ;; Below is the list of Home services.  To search for available
    ;; services, run 'guix home search KEYWORD' in a terminal.
