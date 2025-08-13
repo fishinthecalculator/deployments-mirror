@@ -23,6 +23,7 @@
   #:use-module (gnu services backup)
   #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
+  #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages password-utils)
   #:use-module (sops secrets)
   #:use-module (sops home services sops)
@@ -357,6 +358,7 @@ without waiting for the scheduled time."))
                            common-glibc-locales
                            fishinthecalculator-scripts
                            guix-dev-tools
+                           signal-desktop
                            vscodium)
                      (specifications->packages (list "guile-readline"
                                                      "guile-colorized"
@@ -364,7 +366,6 @@ without waiting for the scheduled time."))
                                                      "man-db"
                                                      "guile"
                                                      "nss-certs"
-                                                     "signal-desktop"
                                                      "qbittorrent"
                                                      "vlc"))))
 
