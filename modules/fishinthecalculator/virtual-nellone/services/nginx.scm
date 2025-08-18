@@ -57,6 +57,11 @@
        (list (string-append "alias  " mediadir "/;")
              "index  index.html index.htm;")))
      (nginx-location-configuration
+      (uri "/tmp/")
+      (body
+       (list "alias /test-serve/;"
+             "autoindex on;")))
+     (nginx-location-configuration
       (uri "/static/")
       (body
        (list (string-append "alias  " staticdir "/;")
