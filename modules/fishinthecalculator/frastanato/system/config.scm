@@ -351,7 +351,7 @@
              ;; This is the default list of services we
              ;; are appending to.
              (modify-services %common-server-services
-               (delete dhcp-client-service-type)
+               (delete dhcpd-service-type)
                (iptables-service-type iptables-config =>
                                       (iptables-configuration
                                        (ipv4-rules (plain-file "iptables.rules" "*filter
