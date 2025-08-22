@@ -44,7 +44,7 @@ without waiting for the scheduled time.")
 
 (define (common-server-services subuids subgids)
   (append %common-base-services
-          (list (service dhcpd-service-type)
+          (list (service dhcpcd-service-type)
                 (service ntp-service-type)
                 (service openssh-service-type
                          (openssh-configuration
