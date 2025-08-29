@@ -7,6 +7,7 @@
   #:use-module (gnu packages admin) ;for shadow
   #:use-module (gnu packages databases)      ;for postgresql-13
   #:use-module (gnu services backup)         ;for restic-backup-service-type
+  #:use-module (gnu services containers)     ;for oci-service-type
   #:use-module (gnu services cuirass)        ;for transmission-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services file-sharing)   ;for transmission-service-type
@@ -17,7 +18,6 @@
   #:use-module (gnu services vpn)            ;for wireguard-service-type
   #:use-module (sops secrets)
   #:use-module (sops services sops)
-  #:use-module (oci services containers)
   #:use-module (oci services forgejo)
   #:use-module (oci services grafana)
   #:use-module (oci services prometheus)

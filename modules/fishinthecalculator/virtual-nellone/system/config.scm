@@ -7,6 +7,7 @@
   #:use-module (gnu packages databases)      ;for postgresql-15
   #:use-module (gnu packages geo)            ;for postgis
   #:use-module (gnu services backup)         ;for restic-backup-service-type
+  #:use-module (gnu services containers)     ;for oci-service-type
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
@@ -21,7 +22,6 @@
   #:use-module (small-guix services monitoring)
   #:use-module (small-guix services unattended-reboot)
   #:use-module (sops services sops)
-  #:use-module (oci services containers)
   #:use-module (oci services bonfire)
   #:use-module (oci services grafana)
   #:use-module (oci services prometheus)
