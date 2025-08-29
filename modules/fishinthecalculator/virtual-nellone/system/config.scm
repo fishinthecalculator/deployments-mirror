@@ -373,7 +373,9 @@
                        (nginx-configuration
                         ;; Wait for tandoor to start
                         (shepherd-requirement
-                         '(podman-bonfire
+                         '(networking
+                           host-name
+                           podman-bonfire
                            podman-tandoor))
                         (server-blocks
                          (list
