@@ -200,14 +200,13 @@ without waiting for the scheduled time."))
                          home-shell-profile-service-type
                          fishinthecalculator-shell-profile-extensions)
 
-         (simple-service 'fishinthecalculator-env-vars
+         (simple-service 'common-home-env-vars
                          home-environment-variables-service-type
                          (append (filter
                                   (lambda (pair)
                                     (not (equal? (car pair) "PATH")))
                                   fishinthecalculator-environment)
                                  '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
-                                   ("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")
                                    ("BONFIRE_DEV_GUIX" . "true")
                                    ("COLORTERM" . "truecolor")
                                    ("MOAR" . "--statusbar=bold --no-linenumbers"))))
@@ -287,6 +286,10 @@ without waiting for the scheduled time."))
                                  (default-branch "master")
                                  (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
 
+           (simple-service 'fishinthecalculator-env-vars
+                           home-environment-variables-service-type
+                           '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")))
+
            (service home-restic-backup-service-type
                     (restic-backup-configuration
                      (jobs backup-home-jobs)))
@@ -321,7 +324,10 @@ without waiting for the scheduled time."))
      (list (service home-gpg-agent-service-type
                     (home-gpg-agent-configuration
                      (pinentry-program
-                      (file-append pinentry-gnome3 "/bin/pinentry-gnome3")))))
+                      (file-append pinentry-gnome3 "/bin/pinentry-gnome3"))))
+           (simple-service 'fishinthecalculator-env-vars
+                home-environment-variables-service-type
+                '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) framework-13-home-environment)"))))
      %common-home-services))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
