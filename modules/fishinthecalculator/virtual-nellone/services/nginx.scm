@@ -14,7 +14,7 @@
     (list
      (nginx-location-configuration
       (uri "/")
-      (body (list (string-append "proxy_pass http://localhost:" port ";")
+      (body (list (string-append "proxy_pass http://127.0.0.1:" port ";")
                   ;; Taken from https://www.nginx.com/resources/wiki/start/topics/examples/full/
                   ;; Those settings are used when proxies are involved
                   "proxy_redirect          off;"
@@ -38,7 +38,7 @@
     (list
      (nginx-location-configuration
       (uri "/")
-      (body (list (string-append "proxy_pass http://localhost:" port ";")
+      (body (list (string-append "proxy_pass http://127.0.0.1:" port ";")
                   ;; Taken from https://www.nginx.com/resources/wiki/start/topics/examples/full/
                   ;; Those settings are used when proxies are involved
                   "proxy_redirect          off;"
