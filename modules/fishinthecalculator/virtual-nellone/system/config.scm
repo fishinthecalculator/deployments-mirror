@@ -215,6 +215,28 @@
               (service prometheus-node-exporter-service-type)
               (service prometheus-postgres-exporter-service-type)
 
+              (simple-service oci-service-type
+                              'test-container
+                              (list (oci-container-configuration
+                                     (user "paul")
+                                     (group "users")
+                                     (image
+                                      (oci-image
+                                       (repository "guile")
+                                       (value
+                                        (specifications->manifest '("guile")))
+                                       (pack-options
+                                        '(#:symlinks (("/bin" -> "bin"))))))
+                                     (entrypoint "/bin/guile")
+                                     (command
+                                      '("-c" "(let l ((c 300))
+(display c)
+(newline)
+(sleep 1)
+(when (positive? c)
+  (l (- c 1))))"))
+                                     (extra-arguments '("-e" "HOME")))))
+
               (service oci-prometheus-service-type
                        (oci-prometheus-configuration
                         (image "prom/prometheus:v3.2.1")
