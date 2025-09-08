@@ -215,8 +215,8 @@
               (service prometheus-node-exporter-service-type)
               (service prometheus-postgres-exporter-service-type)
 
-              (simple-service oci-service-type
-                              'test-container
+              (simple-service 'test-container
+                              oci-service-type
                               (oci-extension
                                (containers
                                 (list (oci-container-configuration
