@@ -5,6 +5,7 @@ keys:
     - &host_frastanato age1puglnvqv3h0r456rjqwyc2ggn545gagkheqt3r34rnnp7lc3rcas5vp2rx
     - &host_virtual_nellone age1eec3sumg78yw07cc69k577ug9uqu8dqnk9urhmvtatah27yvjqpqrqu3l2
     - &host_bemmezero age1guy7csxcfajf67h33mv4kt36l36hksvemz82kx772ntgw3l3lymsqe2a8u
+    - &host_skibidi age1zhx4fqy84ek67zdpque2l5vnhna4yyj8wm7mmtdlytaq60thqg5qlfx3gf
 
 creation_rules:
     - path_regex: .*common\.yaml$
@@ -12,6 +13,7 @@ creation_rules:
           - age:
                 - *user_paul_age
                 - *host_frastanato
+                - *host_skibidi
             pgp:
                 - *user_paul
                 - *host_prematurata
@@ -45,3 +47,8 @@ creation_rules:
           - age:
                 - *user_paul_age
                 - *host_bemmezero
+    - path_regex: .*skibidi\.yaml$
+      key_groups:
+          - age:
+                - *user_paul_age
+                - *host_skibidi

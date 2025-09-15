@@ -4,6 +4,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages networking)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu services backup)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop)
   #:use-module (gnu services guix)
@@ -13,9 +14,13 @@
   #:use-module (nongnu packages firmware)    ;for fwupd-nonfree
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix services fwupd) ;for fwupd-service-type
+  #:use-module (small-guix packages scripts) ;for restic-bin
+  #:use-module (small-guix services fwupd)   ;for fwupd-service-type
+  #:use-module (sops services sops)
+  #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common home fishinthecalculator home-configuration)
   #:use-module (fishinthecalculator common keys)
+  #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common self)
   #:use-module (fishinthecalculator common services desktop)
   #:use-module (fishinthecalculator common services unattended-upgrades)
@@ -41,6 +46,28 @@
                                        (delete "docker"
                                                (user-account-supplementary-groups
                                                 paul-user))))))))
+
+(define-public backup-system-jobs
+  (map (lambda (repo)
+         (restic-backup-job
+          (name (list-ref (string-split repo #\:) 1))
+          (restic restic-bin)
+          (repository repo)
+          (password-file "/run/secrets/restic")
+          (requirement '(sops-secrets))
+          ;; Every day at 23.
+          (schedule "0 23 * * *")
+          (files '("/crypto.cpio"
+                   "/crypto.key"
+                   "/root/.gnupg"
+                   "/root/.config/rclone"
+                   "/root/.config/sops/age/keys.txt"
+                   "/etc/ssh/ssh_host_rsa_key"
+                   "/etc/ssh/ssh_host_rsa_key.pub"
+                   "/etc/guix/signing-key.pub"
+                   "/etc/guix/signing-key.sec"))
+          (verbose? #t)))
+       %restic-repositories))
 
 (define guix-home-environments
   (list
@@ -109,6 +136,17 @@
                               "libvirtd"
                               "nix-daemon"
                               "updatedb"))
+
+                   (service restic-backup-service-type
+                            (restic-backup-configuration
+                             (jobs backup-system-jobs)))
+
+                   (service sops-secrets-service-type
+                            (sops-service-configuration
+                             (config sops.yaml)
+                             (secrets
+                              (list
+                               restic-secret))))
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))

@@ -182,8 +182,26 @@ without waiting for the scheduled time."))
 
          (service home-gcr-ssh-agent-service-type)
 
-         (service home-sway-service-type
-                  fishinthecalculator-sway-configuration)
+         (service home-restic-backup-service-type
+                    (restic-backup-configuration
+                     (jobs backup-home-jobs)))
+
+         (service home-sops-secrets-service-type
+                  (home-sops-service-configuration
+                   (config sops.yaml)
+                   (verbose? #t)
+                   (secrets
+                    (list
+                     (sops-secret
+                      (key '("codeberg"))
+                      (file home-paul.yaml)
+                      (permissions #o400))))))
+
+         (service home-oci-service-type
+                  (for-home
+                   (oci-configuration
+                    (runtime 'podman)
+                    (verbose? #t))))
 
          (service home-doom-emacs-service-type)
 
@@ -286,30 +304,13 @@ without waiting for the scheduled time."))
                                  (default-branch "master")
                                  (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
 
+         (service home-sway-service-type
+                  fishinthecalculator-sway-configuration
+
            (simple-service 'fishinthecalculator-env-vars
                            home-environment-variables-service-type
-                           '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")))
+                           '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")))))
 
-           (service home-restic-backup-service-type
-                    (restic-backup-configuration
-                     (jobs backup-home-jobs)))
-
-           (service home-sops-secrets-service-type
-                    (home-sops-service-configuration
-                     (config sops.yaml)
-                     (verbose? #t)
-                     (secrets
-                      (list
-                       (sops-secret
-                        (key '("codeberg"))
-                        (file home-paul.yaml)
-                        (permissions #o400))))))
-
-           (service home-oci-service-type
-                    (for-home
-                     (oci-configuration
-                      (runtime 'podman)
-                      (verbose? #t)))))
      %common-home-services))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
