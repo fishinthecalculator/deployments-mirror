@@ -381,7 +381,7 @@ without waiting for the scheduled time."))
   (home-environment
    ;; Below is the list of packages that will show up in your
    ;; Home profile, under ~/.guix-home/profile.
-   (packages (append (list anytype-latest
+   (packages (append (list anytype
                            bitwarden-desktop
                            common-glibc-locales
                            fishinthecalculator-scripts
