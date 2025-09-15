@@ -27,6 +27,7 @@
   #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common system desktop)
   #:use-module (fishinthecalculator common users)
+  #:use-module (rosenthal services networking)
   #:export (skibidi-system))
 
 (define authorized-guix-keys
@@ -150,6 +151,10 @@
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
+
+                   (service tailscale-service-type
+                            (tailscale-configuration
+                             (iptables iptables)))
 
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14))
