@@ -27,10 +27,10 @@
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages password-utils)
+  #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
   #:use-module (sops home services sops)
   #:use-module (small-guix services git)
-  #:use-module (small-guix packages anytype)
   #:use-module (small-guix packages compose)
   #:use-module (small-guix packages docker-credentials)
   #:use-module (small-guix packages scripts)  ;for restic-bin
