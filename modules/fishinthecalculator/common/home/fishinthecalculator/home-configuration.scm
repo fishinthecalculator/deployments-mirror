@@ -305,11 +305,11 @@ without waiting for the scheduled time."))
                                  (url "ssh://git@codeberg.org/fishinthecalculator/guix-mirror.git"))))))))
 
          (service home-sway-service-type
-                  fishinthecalculator-sway-configuration
+                  fishinthecalculator-sway-configuration)
 
-           (simple-service 'fishinthecalculator-env-vars
-                           home-environment-variables-service-type
-                           '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)")))))
+         (simple-service 'fishinthecalculator-env-vars
+                         home-environment-variables-service-type
+                         '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) fishinthecalculator-home-environment)"))))
 
      %common-home-services))))
 
