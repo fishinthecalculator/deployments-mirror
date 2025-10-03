@@ -14,6 +14,7 @@
   #:use-module (nongnu packages productivity)
   #:use-module (small-guix packages guile-xyz)
   #:use-module (small-guix packages moar)
+  #:use-module (small-guix packages rquickshare)
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix packages scheme-lsp)
   #:use-module (small-guix utils)
@@ -46,6 +47,7 @@
                 vscodium
                 guile-3.0
                 fishinthecalculator-scripts
+                rquickshare
                 guix-dev-tools)
           (map specification->package+output
                (list "aerc"
