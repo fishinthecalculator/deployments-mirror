@@ -86,7 +86,7 @@
                      "imagemagick"
                      "libnotify"
                      "lolcat"
-                     "nicotine"
+                     "nicotine+"
                      "nmap"
                      "papirus-icon-theme"
                      "python-wrapper"
