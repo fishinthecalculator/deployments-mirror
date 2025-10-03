@@ -16,7 +16,6 @@
   #:use-module (small-guix packages moar)
   #:use-module (small-guix packages rquickshare)
   #:use-module (small-guix packages scripts)
-  #:use-module (small-guix packages scheme-lsp)
   #:use-module (small-guix utils)
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common home fishinthecalculator const))
@@ -41,7 +40,6 @@
                 signal-desktop
                 common-deploy-scripts
                 unrar
-                guile-lsp-server.git
                 zoom
                 guile-hall.git
                 vscodium
@@ -59,8 +57,6 @@
                      "clipman"
                      "codeberg-cli"
                      "curl"
-                     "dante"
-                     "dino"
                      "direnv"
                      "fd"
                      "file"
@@ -83,6 +79,7 @@
                      "gnome-shell-extension-dash-to-panel"
                      "gparted"
                      "guile-colorized"
+                     "guile-lsp-server"
                      "guile-readline"
                      "hexchat"
                      "imagemagick"
