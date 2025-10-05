@@ -92,6 +92,7 @@
                         ".config/libvirt/qemu"
                         ".config/rclone"
                         ".config/guix/channels.scm"
+                        ".config/hexchat/certs"
                         ".config/sops/age/keys.txt"
                         ".electrum/wallets"
                         ".guix-manifests"
