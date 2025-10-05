@@ -10,6 +10,7 @@
   #:use-module (gnu services containers)     ;for oci-service-type
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
+  #:use-module (gnu services messaging)      ;for pounce-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -51,6 +52,8 @@
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
+
+(define %pounce-domain "irc.fishinthecalculator.me")
 
 (define %tandoor-port "8080")
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
@@ -175,6 +178,8 @@
                         (certificates
                          (list
                           (certificate-configuration
+                           (domains (list %pounce-domain)))
+                          (certificate-configuration
                            (domains (list %tandoor-domain)))
                           (certificate-configuration
                            (domains (list %bonfire-domain)))))))
@@ -204,7 +209,8 @@
                        (sops-service-configuration
                         (config sops.yaml)
                         (secrets
-                         (list restic-repository-secret))))
+                         (list restic-repository-secret
+                               irc-certificate-secret))))
 
               ;; Backups
               (service restic-backup-service-type
@@ -293,6 +299,20 @@
                         (datadir
                          (oci-volume-configuration
                           (name "grafana")))))
+
+              ;; Pounce
+              (service pounce-service-type
+               (pounce-configuration
+                (host "irc.libera.chat")
+                (client-cert "/run/secrets/irc")
+                (nick "finthecalculator")
+                (shepherd-requirement
+                 '(user-processes networking sops-secrets))
+                (local-cert
+                 (string-append "/etc/letsencrypt/live/" %pounce-domain "/cert.pem"))
+                (local-priv
+                 (string-append "/etc/letsencrypt/live/" %pounce-domain "/privkey.pem"))
+                (join (list "#guix" "#guix-offtopic" "#guile" "#nonguix" "#spritely"))))
 
               ;; Postgres
               (service postgresql-service-type

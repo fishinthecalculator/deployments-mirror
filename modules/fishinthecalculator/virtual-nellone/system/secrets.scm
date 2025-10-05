@@ -8,6 +8,13 @@
 (define-public virtual_nellone.yaml
   (secrets-file "virtual_nellone.yaml"))
 
+;; Pounce - IRC
+
+(define-public irc-certificate-secret
+  (sops-secret
+   (key '("irc"))
+   (file virtual_nellone.yaml)))
+
 ;; restic
 
 (define-public restic-repository-secret
