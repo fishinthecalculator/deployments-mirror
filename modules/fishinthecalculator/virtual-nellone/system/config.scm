@@ -209,8 +209,18 @@
                        (sops-service-configuration
                         (config sops.yaml)
                         (secrets
-                         (list restic-repository-secret
-                               irc-certificate-secret))))
+                         (list ;; Restic backups
+                               restic-repository-secret
+                               ;; IRC bouncer client certificate
+                               irc-certificate-secret
+                               ;; Bonfire
+                               meilisearch-key-secret
+                               bonfire-postgres-password-secret
+                               bonfire-mail-key-secret
+                               bonfire-mail-private-key-secret
+                               bonfire-secret-key-base-secret
+                               bonfire-signing-salt-secret
+                               bonfire-encryption-salt-secret))))
 
               ;; Backups
               (service restic-backup-service-type
@@ -353,25 +363,25 @@
                         (upload-data-directory %bonfire-upload-data-directory)
                         (auto-start? #t)
                         (requirement
-                         '(postgresql postgres-roles sops-secrets podman-meilisearch))
+                         '(user-processes postgresql postgres-roles sops-secrets podman-meilisearch))
                         (extra-variables
                          `(("MAIL_BACKEND" . "mailjet")
                            ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
-                         meilisearch-key-secret)
+                         "/run/secrets/meilisearch/master")
                         (postgres-password
-                         bonfire-postgres-password-secret)
+                         "/run/secrets/postgres/bonfire")
                         (mail-key
-                         bonfire-mail-key-secret)
+                         "/run/secrets/bonfire/mail/key")
                         (mail-private-key
-                         bonfire-mail-private-key-secret)
+                         "/run/secrets/bonfire/mail/private_key")
                         (secret-key-base
-                         bonfire-secret-key-base-secret)
+                         "/run/secrets/bonfire/secret_key_base")
                         (signing-salt
-                         bonfire-signing-salt-secret)
+                         "/run/secrets/bonfire/signing_salt")
                         (encryption-salt
-                         bonfire-encryption-salt-secret)))
+                         "/run/secrets/bonfire/encryption_salt")))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
