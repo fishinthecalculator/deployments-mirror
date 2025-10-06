@@ -363,8 +363,9 @@
                        (oci-meilisearch-configuration
                         (network "host")
                         (port %meilisearch-port)
-                        (master-key
-                         meilisearch-key-secret)))
+                        (shepherd-requirement
+                         '(user-processes sops-secrets))
+                        (master-key "/run/secrets/meilisearch/master")))
 
               ;; Tandoor
               (service oci-tandoor-service-type
