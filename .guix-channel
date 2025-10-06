@@ -44,6 +44,16 @@
      (commit "cdb78996334c4f63304ecce224e95bb96bfd4c7d")
      (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
   (channel
+   (name bonfire)
+   (url "https://github.com/bonfire-networks/bonfire-guix")
+   (branch "main")
+   ;; Enable signature verification:
+   (introduction
+    (channel-introduction
+     (version 0)
+     (commit "2cc6f76adafb6333f0ec3e5fe4835fa0f0d9a0ff")
+     (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
+  (channel
     (name rosenthal)
     (url "https://codeberg.org/hako/rosenthal.git")
     (branch "trunk")
