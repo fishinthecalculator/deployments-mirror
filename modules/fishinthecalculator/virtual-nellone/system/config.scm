@@ -289,7 +289,7 @@
               ;; IRC bouncer
               (service soju-service-type
                (soju-configuration
-                (hostname "irc.fishinthecalculator.me")
+                (hostname %soju-domain)
                 (listen '("ircs://" "unix+admin:///var/lib/soju/soju.sock"))
                 (ssl-certificate (string-append "/etc/certs/" %soju-domain "/fullchain.pem"))
                 (ssl-certificate-key (string-append "/etc/certs/" %soju-domain "/privkey.pem"))
