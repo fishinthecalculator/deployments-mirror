@@ -291,6 +291,9 @@
                (soju-configuration
                 (hostname "irc.fishinthecalculator.me")
                 (listen '("unix:///tmp/soju.sock"))
+                (shepherd-requirement
+                 (append '(sops-secrets)
+                         %default-soju-shepherd-requirement))
                 (title "virtual-nellone IRC bouncer")))
 
               ;; Postgres
