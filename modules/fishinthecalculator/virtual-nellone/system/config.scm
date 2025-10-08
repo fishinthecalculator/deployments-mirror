@@ -10,7 +10,6 @@
   #:use-module (gnu services containers)     ;for oci-service-type
   #:use-module (gnu services certbot)        ;for certbot-service-type
   #:use-module (gnu services databases)      ;for postgresql-service-type
-  #:use-module (gnu services messaging)      ;for pounce-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for iptables-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
@@ -21,6 +20,7 @@
   #:use-module (small-guix services databases)
   #:use-module (small-guix services git)
   #:use-module (small-guix services monitoring)
+  #:use-module (small-guix services soju)
   #:use-module (small-guix services unattended-reboot)
   #:use-module (sops services sops)
   #:use-module (oci services grafana)
@@ -53,7 +53,7 @@
   ;; List of authorized 'guix archive' keys.
   (list prematurata-guix-key))
 
-(define %pounce-domain "irc.fishinthecalculator.me")
+(define %soju-domain "irc.fishinthecalculator.me")
 
 (define %tandoor-port "8080")
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
@@ -178,7 +178,7 @@
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains (list %pounce-domain)))
+                           (domains (list %soju-domain)))
                           (certificate-configuration
                            (domains (list %tandoor-domain)))
                           (certificate-configuration
@@ -286,19 +286,12 @@
                          (oci-volume-configuration
                           (name "grafana")))))
 
-              ;; Pounce
-              (service pounce-service-type
-               (pounce-configuration
-                (host "irc.libera.chat")
-                (client-cert "/run/secrets/irc")
-                (nick "finthecalculator")
-                (shepherd-requirement
-                 '(user-processes networking sops-secrets))
-                (local-cert
-                 (string-append "/etc/letsencrypt/live/" %pounce-domain "/cert.pem"))
-                (local-priv
-                 (string-append "/etc/letsencrypt/live/" %pounce-domain "/privkey.pem"))
-                (join (list "#guix" "#guix-offtopic" "#guile" "#nonguix" "#spritely"))))
+              ;; IRC bouncer
+              (service soju-service-type
+               (soju-configuration
+                (hostname "irc.fishinthecalculator.me")
+                (listen '("unix:///tmp/soju.sock"))
+                (title "virtual-nellone IRC bouncer")))
 
               ;; Postgres
               (service postgresql-service-type
