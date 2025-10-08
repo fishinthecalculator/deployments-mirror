@@ -288,12 +288,12 @@
 
               ;; IRC bouncer
               (service soju-service-type
-               (soju-configuration
-                (hostname %soju-domain)
-                (listen '("ircs://" "unix+admin:///var/lib/soju/soju.sock"))
-                (ssl-certificate (string-append "/etc/certs/" %soju-domain "/fullchain.pem"))
-                (ssl-certificate-key (string-append "/etc/certs/" %soju-domain "/privkey.pem"))
-                (title "virtual-nellone IRC bouncer")))
+                       (soju-configuration
+                        (hostname %soju-domain)
+                        (listen '("ircs://" "unix+admin:///var/lib/soju/soju.sock"))
+                        (ssl-certificate (string-append "/etc/certs/" %soju-domain "/fullchain.pem"))
+                        (ssl-certificate-key (string-append "/etc/certs/" %soju-domain "/privkey.pem"))
+                        (title "virtual-nellone IRC bouncer")))
 
               ;; Postgres
               (service postgresql-service-type
