@@ -290,10 +290,9 @@
               (service soju-service-type
                (soju-configuration
                 (hostname "irc.fishinthecalculator.me")
-                (listen '("unix:///tmp/soju.sock"))
-                (shepherd-requirement
-                 (append '(sops-secrets)
-                         %default-soju-shepherd-requirement))
+                (listen '("ircs://" "unix+admin:///var/lib/soju/soju.sock"))
+                (ssl-certificate (string-append "/etc/certs/" %soju-domain "/fullchain.pem"))
+                (ssl-certificate-key (string-append "/etc/certs/" %soju-domain "/privkey.pem"))
                 (title "virtual-nellone IRC bouncer")))
 
               ;; Postgres
@@ -432,6 +431,7 @@
 -A INPUT -p tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp --dport 6697 -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 COMMIT
@@ -444,6 +444,7 @@ COMMIT
 -A INPUT -p tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp --dport 6697 -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp6-port-unreachable
 COMMIT
