@@ -380,6 +380,7 @@
                          tandoor-secret-key-secret)
                         (configuration
                          (tandoor-configuration
+                          (tandoor-port "8080")
                           (postgres-db %tandoor-postgres-db)
                           (email-host
                            "in-v3.mailjet.com")
