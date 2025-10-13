@@ -29,6 +29,7 @@
   #:use-module (nongnu packages password-utils)
   #:use-module (nongnu packages productivity)
   #:use-module (sops secrets)
+  #:use-module (sops services sops)
   #:use-module (sops home services sops)
   #:use-module (small-guix services git)
   #:use-module (small-guix packages compose)
@@ -83,7 +84,7 @@
           (name (string-append "home-" (list-ref (string-split repo #\:) 1)))
           (restic restic-bin)
           (repository repo)
-          (password-file "/run/secrets/restic")
+          (password-file (sops-secret->secret-file restic-secret))
           ;; Every day at 21.
           (schedule "0 21 * * *")
           (files (map (lambda (p) (string-append (user-account-home-directory paul-user) "/" p))

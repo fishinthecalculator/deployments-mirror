@@ -44,7 +44,7 @@
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
-          (password-file "/run/secrets/restic")
+          (password-file (sops-secret->secret-file restic-secret))
           ;; Every day at 6.
           (schedule "0 6 * * *")
           (files '("/root/.config/rclone"

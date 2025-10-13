@@ -94,7 +94,7 @@
     (restic restic-bin)
     (repository "rclone:onedrive:backup/virtual-nellone")
     (requirement '(user-processes file-systems sops-secrets))
-    (password-file "/run/secrets/virtual_nellone/restic")
+    (password-file (sops-secret->secret-file restic-repository-secret))
     ;; Every day at 5:30.
     (schedule "30 5 * * *")
     (files `("/root/.config/rclone"
@@ -340,19 +340,19 @@
                            ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
-                         "/run/secrets/meilisearch/master")
+                         (sops-secret->secret-file meilisearch-key-secret))
                         (postgres-password
-                         "/run/secrets/postgres/bonfire")
+                         (sops-secret->secret-file bonfire-postgres-password-secret))
                         (mail-key
-                         "/run/secrets/bonfire/mail/key")
+                         (sops-secret->secret-file bonfire-mail-key-secret))
                         (mail-private-key
-                         "/run/secrets/bonfire/mail/private_key")
+                         (sops-secret->secret-file bonfire-mail-private-key-secret))
                         (secret-key-base
-                         "/run/secrets/bonfire/secret_key_base")
+                         (sops-secret->secret-file bonfire-secret-key-base-secret))
                         (signing-salt
-                         "/run/secrets/bonfire/signing_salt")
+                         (sops-secret->secret-file bonfire-signing-salt-secret))
                         (encryption-salt
-                         "/run/secrets/bonfire/encryption_salt")))
+                         (sops-secret->secret-file bonfire-encryption-salt-secret))))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
@@ -360,7 +360,8 @@
                         (port %meilisearch-port)
                         (shepherd-requirement
                          '(user-processes sops-secrets))
-                        (master-key "/run/secrets/meilisearch/master")))
+                        (master-key
+                         (sops-secret->secret-file meilisearch-key-secret))))
 
               ;; Tandoor
               (service oci-tandoor-service-type

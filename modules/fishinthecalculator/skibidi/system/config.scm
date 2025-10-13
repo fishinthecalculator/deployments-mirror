@@ -54,7 +54,7 @@
           (name (list-ref (string-split repo #\:) 1))
           (restic restic-bin)
           (repository repo)
-          (password-file "/run/secrets/restic")
+          (password-file (sops-secret->secret-file restic-secret))
           (requirement '(sops-secrets))
           ;; Every day at 23.
           (schedule "0 23 * * *")
