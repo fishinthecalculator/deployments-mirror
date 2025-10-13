@@ -5,6 +5,6 @@ set -eux
 rm -rfv build-aux/ Makefile.am configure.ac pre-inst-env.in
 
 hall clean
-hall "$com" -xf
+hall build -xf
 
 exit 0
