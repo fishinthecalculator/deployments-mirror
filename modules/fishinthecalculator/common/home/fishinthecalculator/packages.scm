@@ -48,13 +48,8 @@
                 rquickshare
                 guix-dev-tools)
           (map specification->package+output
-               (list "aerc"
-                     "arc-theme"
-                     "bat"
-                     "btop"
+               (list "arc-theme"
                      "calibre"
-                     "catimg"
-                     "clipman"
                      "codeberg-cli"
                      "curl"
                      "direnv"
@@ -83,13 +78,11 @@
                      "guile-readline"
                      "imagemagick"
                      "libnotify"
-                     "lolcat"
                      "nicotine+"
                      "nmap"
                      "papirus-icon-theme"
                      "python-wrapper"
                      "qbittorrent"
-                     "rhythmbox"
                      "ripgrep"
                      "rsync"
                      "senpai"
@@ -100,9 +93,6 @@
                      "unzip"
                      "vim"
                      "vlc"
-                     "w3m"
                      "wget"
                      "xlsfonts"
-                     "xrandr"
-                     "xset"
                      "zip"))))
