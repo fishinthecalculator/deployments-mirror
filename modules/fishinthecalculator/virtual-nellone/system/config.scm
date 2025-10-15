@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024, 2025 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2024, 2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator virtual-nellone system config)
   #:use-module (gnu)
@@ -63,7 +63,7 @@
 
 (define %bonfire-port "4000")
 (define %bonfire-domain "bonfire.fishinthecalculator.me")
-(define %bonfire-admin-email "goodoldpaul@autistici.org")
+(define %bonfire-admin-email "therewasa@fishinthecalculator.me")
 (define %bonfire-upload-data-directory "/var/lib/bonfire/uploads")
 (define %bonfire-postgres-db "bonfire")
 
@@ -174,7 +174,7 @@
      (append (list
               (service certbot-service-type
                        (certbot-configuration
-                        (email "goodoldpaul@autistici.org")
+                        (email "therewasa@fishinthecalculator.me")
                         (certificates
                          (list
                           (certificate-configuration

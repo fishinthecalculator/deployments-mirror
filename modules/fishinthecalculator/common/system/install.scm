@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2024 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 ;; Generate a bootable image (e.g. for USB sticks, etc.) with:
 ;; $ guix system image -L `pwd`/modules --image-type=iso9660 modules/fishinthecalculator/common/system/install.scm

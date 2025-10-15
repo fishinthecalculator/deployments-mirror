@@ -1,12 +1,12 @@
 [user]
-	email = goodoldpaul@autistici.org
+	email = therewasa@fishinthecalculator.me
 	name = Giacomo Leidi
 	signingkey = 8D1060B96BB8292E829B7249AED41CC193B701E2
 [core]
 	editor = emacs
 [sendemail]
-	smtpServer = smtp.autistici.org
-	smtpuser = goodoldpaul@autistici.org
+	smtpServer = smtp.mailbox.org
+	smtpuser = therewasa@fishinthecalculator.me
 	smtpencryption = tls
 	smtpserverport = 587
 [pull]

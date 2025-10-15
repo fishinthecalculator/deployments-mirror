@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2023-2025 Giacomo Leidi <goodoldpaul@autistici.org>
+;;; Copyright © 2023-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common services timers)
   #:use-module (gnu packages base)  ;for findutils
