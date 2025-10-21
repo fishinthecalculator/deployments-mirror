@@ -1,6 +1,7 @@
 (define-module (fishinthecalculator skibidi system config)
   #:use-module (gnu)
   #:use-module (gnu packages audio)
+  #:use-module (gnu packages authentication)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages networking)
   #:use-module (gnu packages ssh)
@@ -151,6 +152,9 @@
 
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
+
+                   ;; Fingerprint reader
+                   (service fprintd-service-type)
 
                    (service tailscale-service-type
                             (tailscale-configuration
