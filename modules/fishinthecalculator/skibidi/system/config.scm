@@ -137,6 +137,7 @@
                               "guix-publish"
                               "libvirtd"
                               "nix-daemon"
+                              "tailscaled"
                               "updatedb"))
 
                    (service restic-backup-service-type
