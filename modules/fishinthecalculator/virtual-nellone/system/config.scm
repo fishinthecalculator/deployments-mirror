@@ -54,6 +54,12 @@
   (list prematurata-guix-key))
 
 (define %soju-domain "irc.fishinthecalculator.me")
+(define %soju-certbot-deploy-hook
+  (program-file "soju-certbot-deploy-hook.scm"
+    (with-imported-modules '((gnu services herd))
+      #~(begin
+         (use-modules (gnu services herd)
+          (with-shepherd-action 'soju ('reload) result result))))))
 
 (define %tandoor-port "8080")
 (define %tandoor-mediadir "/var/lib/tandoor/mediafiles")
@@ -178,7 +184,8 @@
                         (certificates
                          (list
                           (certificate-configuration
-                           (domains (list %soju-domain)))
+                           (domains (list %soju-domain))
+                           (deploy-hook %soju-certbot-deploy-hook))
                           (certificate-configuration
                            (domains (list %tandoor-domain)))
                           (certificate-configuration
