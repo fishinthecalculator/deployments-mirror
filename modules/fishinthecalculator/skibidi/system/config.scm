@@ -156,10 +156,7 @@
                    ;; Fingerprint reader
                    (service fprintd-service-type)
 
-                   (service tailscale-service-type
-                            (tailscale-configuration
-                             (iptables iptables)))
-
+                   (service tailscale-service-type)
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14))
 
