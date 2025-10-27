@@ -88,7 +88,7 @@
                      "senpai"
                      "sl"
                      "syncthing"
-                     ;"telegram-desktop"
+                     "telegram-desktop"
                      "tmux"
                      "unzip"
                      "vim"
