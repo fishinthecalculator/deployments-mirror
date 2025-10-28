@@ -86,7 +86,7 @@ without waiting for the scheduled time.")
                                                "curl"
                                                "fd"
                                                "git"
-                                               "htop"
+                                               "btop"
                                                "ripgrep"
                                                "tmux"
                                                "vim"
