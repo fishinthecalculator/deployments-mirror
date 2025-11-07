@@ -26,7 +26,12 @@
                   "proxy_set_header        Upgrade $http_upgrade;"
                   "proxy_set_header        Connection \"upgrade\";"
                   "proxy_set_header        X-Forwarded-Proto $scheme;"
-                  "proxy_set_header        X-Forwarded-Host  $host;")))))))
+                  "proxy_set_header        X-Forwarded-Host  $host;")))
+     (nginx-location-configuration
+      (uri "/data/uploads/")
+      (body
+       (list (string-append "alias  " upload-data-dir "/;")
+             "index  index.html index.htm;")))))))
 
 (define-public (tandoor-nginx-server domain port mediadir staticdir)
   (nginx-server-configuration
