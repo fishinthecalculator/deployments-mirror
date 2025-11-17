@@ -143,7 +143,16 @@
 
               (service sops-secrets-service-type
                        (sops-service-configuration
-                        (config sops.yaml)))
+                        (config sops.yaml)
+                        (secrets
+                         (list ;; Bonfire
+                               meilisearch-key-secret
+                               postgres-password-secret
+                               mail-key-secret
+                               mail-private-key-secret
+                               secret-key-base-secret
+                               signing-salt-secret
+                               encryption-salt-secret))))
 
               ;; Bonfire
               (service oci-bonfire-service-type
@@ -151,6 +160,7 @@
                         (configuration
                          (bonfire-configuration
                           (hostname %bonfire-domain)
+                          (flavour "open_science")
                           (port %bonfire-port)
                           (public-port "443")
                           (postgres-user "bonfire")
@@ -159,34 +169,34 @@
                           (mail-from (string-append "friendlyadmin@" %bonfire-domain))))
                         (network "host")
                         (upload-data-directory %bonfire-upload-data-directory)
-                        (auto-start? #t)
+                        (auto-start? #f)
                         (requirement
-                         '(sops-secrets postgres-roles docker-meilisearch))
+                         '(sops-secrets postgres-roles user-processes docker-meilisearch))
                         (extra-variables
                          `(("MAIL_BACKEND" . "mailjet")
                            ("SERVER_PORT" . ,%bonfire-port)
                            ("SEARCH_MEILI_INSTANCE" . ,(string-append "http://localhost:" %meilisearch-port))))
                         (meili-master-key
-                         meilisearch-key-secret)
+                         (sops-secret->secret-file meilisearch-key-secret))
                         (postgres-password
-                         postgres-password-secret)
+                         (sops-secret->secret-file postgres-password-secret))
                         (mail-key
-                         mail-key-secret)
+                         (sops-secret->secret-file mail-key-secret))
                         (mail-private-key
-                         mail-private-key-secret)
+                         (sops-secret->secret-file mail-private-key-secret))
                         (secret-key-base
-                         secret-key-base-secret)
+                         (sops-secret->secret-file secret-key-base-secret))
                         (signing-salt
-                         signing-salt-secret)
+                         (sops-secret->secret-file signing-salt-secret))
                         (encryption-salt
-                         encryption-salt-secret)))
+                         (sops-secret->secret-file encryption-salt-secret))))
 
               (service oci-meilisearch-service-type
                        (oci-meilisearch-configuration
                         (network "host")
                         (port %meilisearch-port)
                         (master-key
-                         meilisearch-key-secret)))
+                         (sops-secret->secret-file meilisearch-key-secret))))
 
               (service postgresql-service-type
                        (postgresql-configuration
