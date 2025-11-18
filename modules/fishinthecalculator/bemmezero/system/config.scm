@@ -16,6 +16,7 @@
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (sops services sops)
   #:use-module (oci services bonfire)
+  #:use-module (small-guix packages databases)
   #:use-module (oci services meilisearch)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common scripts)
@@ -201,7 +202,7 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-15)
-                        (extension-packages (list postgis))
+                        (extension-packages (list (postgis-for-postgres postgresql-15)))
                         (port %postgresql-port)))
 
               (service postgresql-role-service-type
