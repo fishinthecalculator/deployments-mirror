@@ -58,7 +58,7 @@
                                  "ncurses" ;for the search path
 
                                  ;; Wayland
-                                 "waypipe"
+                                 ; FIXME: "waypipe"
                                  ;"xdg-desktop-portal-gtk"
 
                                  ;; Audio
