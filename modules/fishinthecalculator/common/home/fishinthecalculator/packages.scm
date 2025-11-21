@@ -49,7 +49,6 @@
                 guix-dev-tools)
           (map specification->package+output
                (list "arc-theme"
-                     "calibre"
                      "codeberg-cli"
                      "curl"
                      "direnv"
