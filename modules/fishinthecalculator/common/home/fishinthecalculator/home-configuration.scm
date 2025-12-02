@@ -10,6 +10,7 @@
   #:use-module (gnu home services containers)
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services fontutils)
+  #:use-module (gnu home services gnome)
   #:use-module (gnu home services gnupg)
   #:use-module (gnu home services guix)
   #:use-module (gnu home services shells)
@@ -37,7 +38,6 @@
   #:use-module (small-guix packages scripts)  ;for restic-bin
   #:use-module (small-guix home services docker-cli)
   #:use-module (small-guix home services dotfiles)
-  #:use-module (small-guix home services gcr)
   #:use-module (small-guix home services git)
   #:use-module (small-guix home services shells)
   #:use-module (fishinthecalculator common backup)
