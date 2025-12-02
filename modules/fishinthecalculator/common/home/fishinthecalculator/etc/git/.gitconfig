@@ -1,7 +1,7 @@
 [user]
 	email = therewasa@fishinthecalculator.me
 	name = Giacomo Leidi
-	signingkey = 8D1060B96BB8292E829B7249AED41CC193B701E2
+	signingkey = 50E17BE0D210C883D67531504A3D07EFD05C4045
 [core]
 	editor = emacs
 [sendemail]
