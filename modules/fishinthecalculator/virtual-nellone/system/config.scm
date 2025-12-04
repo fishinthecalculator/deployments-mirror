@@ -306,7 +306,7 @@
               (service postgresql-service-type
                        (postgresql-configuration
                         (postgresql postgresql-15)
-                        (extension-packages (postgis-for-postgres postgresql-15))
+                        (extension-packages (list (postgis-for-postgres postgresql-15)))
                         (port %postgresql-port)))
               (service postgresql-role-service-type
                        (postgresql-role-configuration
