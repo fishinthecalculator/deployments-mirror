@@ -129,6 +129,8 @@
 (load-file (format "%s/etc/copyright.el" (getenv "GUIX_CHECKOUT")))
 (setq copyright-names-regexp
       (format "%s <%s>" user-full-name user-mail-address))
+;; Automatically update copyright after each buffer save
+(add-hook 'after-save-hook 'copyright-update)
 ;;; Bug references.
 (add-hook 'prog-mode-hook #'bug-reference-prog-mode)
 (add-hook 'gnus-mode-hook #'bug-reference-mode)
