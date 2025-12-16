@@ -52,6 +52,7 @@
                      "codeberg-cli"
                      "curl"
                      "direnv"
+                     "dino"
                      "fd"
                      "file"
                      "flatpak"
