@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2021, 2022, 2024 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2021-2022, 2024-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common system desktop)
   #:use-module (gnu)
@@ -58,7 +58,7 @@
                                  "ncurses" ;for the search path
 
                                  ;; Wayland
-                                 ; FIXME: "waypipe"
+                                 "waypipe"
                                  ;"xdg-desktop-portal-gtk"
 
                                  ;; Audio
