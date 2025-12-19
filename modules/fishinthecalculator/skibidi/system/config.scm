@@ -4,7 +4,6 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages networking)
   #:use-module (gnu packages ssh)
-  #:use-module (gnu services authentication)
   #:use-module (gnu services backup)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop)
@@ -154,10 +153,8 @@
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
 
-                   ;; Fingerprint reader
-                   (service fprintd-service-type)
-
                    (service tailscale-service-type)
+
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14))
 
