@@ -84,46 +84,13 @@
 (define %common-desktop-services
   (common-desktop-services subuids subgids))
 
-;;; New kernel breaks HDMI somehow?
-
-(use-modules (guix inferior) (guix channels)
-             (srfi srfi-1))   ;for 'first'
-
-(define channels
-  ;; This is the old revision from which we want to
-  ;; extract linux.
-  (list (channel
-         (name 'guix)
-         (url "https://git.guix.gnu.org/guix.git")
-         (commit
-          "74e902849934fbdfd63316e39e5d180d58dcc514"))
-        (channel
-         (name 'nonguix)
-         (url "https://gitlab.com/nonguix/nonguix")
-         (commit "1a9423530362ff898683fd9e29894d926587f85f")
-         ;; Enable signature verification:
-         (introduction
-          (make-channel-introduction
-           "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-           (openpgp-fingerprint
-            "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
-
-(define inferior
-  ;; An inferior representing the above revision.
-  (inferior-for-channels channels))
-
-(define skibidi-linux
-  (first (lookup-inferior-packages inferior "linux")))
-
-;;; End kernel
-
 (define skibidi-system
   (operating-system
     (inherit %common-desktop-system)
 
     (keyboard-layout (keyboard-layout "us" "altgr-intl"))
 
-    (kernel skibidi-linux)
+    (kernel linux)
     (kernel-arguments
      (cons* "resume=/dev/nvme0n1p2"     ;device that holds /swapfile
             "resume_offset=9245919"    ;offset of /swapfile on device
