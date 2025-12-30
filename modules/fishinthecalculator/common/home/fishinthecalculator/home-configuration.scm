@@ -18,12 +18,14 @@
   #:use-module (gnu home services sound)
   #:use-module (gnu home services ssh)
   #:use-module (gnu home services sway)
+  #:use-module (gnu home services upnp)
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu services)
   #:use-module (gnu services backup)
   #:use-module (gnu services containers)
+  #:use-module (gnu services upnp)
   #:use-module (gnu system accounts)
   #:use-module (nongnu packages editors)
   #:use-module (nongnu packages messaging)
@@ -328,9 +330,15 @@ without waiting for the scheduled time."))
                     (home-gpg-agent-configuration
                      (pinentry-program
                       (file-append pinentry-gnome3 "/bin/pinentry-gnome3"))))
+           (service home-readymedia-service-type
+                    (for-home
+                     (readymedia-configuration
+                      (media-directories
+                       (list (readymedia-media-directory
+                              (path "/home/paul/torrents")))))))
            (simple-service 'fishinthecalculator-env-vars
-                home-environment-variables-service-type
-                '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) framework-13-home-environment)"))))
+                           home-environment-variables-service-type
+                           '(("HOME_RECONFIGURE_EXPRESSION" . "(@ (fishinthecalculator common home fishinthecalculator home-configuration) framework-13-home-environment)"))))
      %common-home-services))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
