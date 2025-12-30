@@ -333,6 +333,8 @@ without waiting for the scheduled time."))
            (service home-readymedia-service-type
                     (for-home
                      (readymedia-configuration
+                      (cache-directory
+                       "/home/paul/.cache/readymedia")
                       (log-directory
                        "/home/paul/.local/state/readymedia")
                       (media-directories
