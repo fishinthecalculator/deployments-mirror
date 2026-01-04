@@ -133,22 +133,7 @@
 
                    (service tuned-service-type
                             (tuned-configuration
-                             (power-profiles-daemon-support? #t)
-                             (auto-start? #f)
-                             (profiles
-                              (list
-                               (computed-file "test2"
-                                              #~(let ((bin (string-append #$output "/bin2")))
-                                                  (mkdir #$output)
-                                                  (mkdir bin)
-                                                  (symlink #$fwupd-nonfree
-                                                           (string-append bin "/hello"))))
-                               (computed-file "test1"
-                                              #~(let ((bin (string-append #$output "/bin1")))
-                                                  (mkdir #$output)
-                                                  (mkdir bin)
-                                                  (symlink #$hello
-                                                           (string-append bin "/hello"))))))))
+                             (power-profiles-daemon-support? #t)))
 
                    (service common-unload-service-type
                             '("cups"
