@@ -16,6 +16,7 @@
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
   #:use-module (small-guix services fwupd)   ;for fwupd-service-type
+  #:use-module (small-guix services tuned)   ;for tuned-service-type
   #:use-module (sops services sops)
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common home fishinthecalculator home-configuration)
@@ -129,6 +130,10 @@
                    (service fwupd-service-type
                             (fwupd-configuration
                              (fwupd fwupd-nonfree)))
+
+                   (service tuned-service-type
+                            (tuned-configuration
+                             (power-profiles-daemon-support? #t)))
 
                    (service common-unload-service-type
                             '("cups"
