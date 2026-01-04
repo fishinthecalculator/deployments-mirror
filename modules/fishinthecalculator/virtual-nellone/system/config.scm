@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024, 2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2024-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator virtual-nellone system config)
   #:use-module (gnu)
@@ -328,6 +328,7 @@
               ;; Bonfire
               (service oci-bonfire-service-type
                        (oci-bonfire-configuration
+                        (image "docker.io/bonfirenetworks/bonfire:1.0.1-beta.11-social-amd64")
                         (configuration
                          (bonfire-configuration
                           (hostname %bonfire-domain)
