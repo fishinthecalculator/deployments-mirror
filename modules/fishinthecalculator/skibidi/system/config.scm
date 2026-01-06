@@ -173,10 +173,16 @@
                                              (if (string=? (pam-service-name pam) "gdm-password")
                                                  (pam-service
                                                   (inherit pam)
-                                                  (auth (cons (pam-entry
-                                                               (control "sufficient")
-                                                               (module (file-append fprintd "/lib/security/pam_fprintd.so")))
-                                                              (pam-service-auth pam))))
+                                                  ;; Try fingerprint and fallback to password in case of failure.
+                                                  (auth (cons* (pam-entry
+                                                                (control "sufficient")
+                                                                (module "pam_unix.so")
+                                                                (arguments
+                                                                 '("try_first_pass" "likeauth" "nullok")))
+                                                               (pam-entry
+                                                                (control "sufficient")
+                                                                (module (file-append fprintd "/lib/security/pam_fprintd.so")))
+                                                               (pam-service-auth pam))))
                                                  pam))))))
 
                    (deployments-unattended-upgrades host-name
