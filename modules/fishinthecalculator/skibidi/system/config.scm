@@ -11,12 +11,13 @@
   #:use-module (gnu services virtualization)
   #:use-module (gnu services xorg)
   #:use-module (gnu system accounts)
-  #:use-module (nongnu packages firmware)    ;for fwupd-nonfree
+  #:use-module (nongnu packages firmware)      ;for fwupd-nonfree
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
-  #:use-module (small-guix packages scripts) ;for restic-bin
-  #:use-module (small-guix services fwupd)   ;for fwupd-service-type
-  #:use-module (small-guix services tuned)   ;for tuned-service-type
+  #:use-module (small-guix packages framework) ;for framework-tool
+  #:use-module (small-guix packages scripts)   ;for restic-bin
+  #:use-module (small-guix services fwupd)     ;for fwupd-service-type
+  #:use-module (small-guix services tuned)     ;for tuned-service-type
   #:use-module (sops services sops)
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common home fishinthecalculator home-configuration)
@@ -113,7 +114,7 @@
     (users (cons* paul-user
                   %base-user-accounts))
 
-    (packages (append (list bluez bluez-alsa blueman openssh)
+    (packages (append (list bluez bluez-alsa blueman framework-tool openssh)
                       (operating-system-packages %common-desktop-system)))
 
     (services
