@@ -1,9 +1,11 @@
 (define-module (fishinthecalculator skibidi system config)
   #:use-module (gnu)
   #:use-module (gnu packages audio)
+  #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages networking)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu services authentication)
   #:use-module (gnu services backup)
   #:use-module (gnu services dbus)
   #:use-module (gnu services desktop)
@@ -159,7 +161,23 @@
                    (simple-service 'blueman-dbus dbus-root-service-type
                                    (list blueman))
 
-                   (service tailscale-service-type)
+                   ;; Fingerprint reader
+                   (service fprintd-service-type)
+                   ;; and related PAM rules
+                   ;; from https://gofranz.com/blog/the-perfect-linux-setup-guix-framework/
+                   (simple-service 'fprintd-pam-login
+                                   pam-root-service-type
+                                   (list (pam-extension
+                                          (transformer
+                                           (lambda (pam)
+                                             (if (string=? (pam-service-name pam) "gdm-password")
+                                                 (pam-service
+                                                  (inherit pam)
+                                                  (auth (cons (pam-entry
+                                                               (control "sufficient")
+                                                               (module (file-append fprintd "/lib/security/pam_fprintd.so")))
+                                                              (pam-service-auth pam))))
+                                                 pam))))))
 
                    (deployments-unattended-upgrades host-name
                                                     #:expiration-days 14))
