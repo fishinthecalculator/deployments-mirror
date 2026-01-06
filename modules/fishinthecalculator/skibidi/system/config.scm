@@ -1,8 +1,8 @@
 (define-module (fishinthecalculator skibidi system config)
   #:use-module (gnu)
-  #:use-module (gnu packages audio)
-  #:use-module (gnu packages linux)
-  #:use-module (gnu packages networking)
+  #:use-module (gnu packages audio)            ;for bluez
+  #:use-module (gnu packages linux)            ;for bluez-alsa
+  #:use-module (gnu packages networking)       ;for blueman
   #:use-module (gnu packages ssh)
   #:use-module (gnu services backup)
   #:use-module (gnu services dbus)
