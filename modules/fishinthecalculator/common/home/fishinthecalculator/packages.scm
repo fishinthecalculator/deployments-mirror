@@ -31,26 +31,8 @@
                         #:propagated-inputs (list common-deploy-scripts)
                         #:version "0.1.1"))
 
-(use-modules (guix packages)
-             (guix download))
-(define-public anytype-latest
-  (package
-    (inherit anytype)
-    (name "anytype")
-    (version "0.52.4")
-    (source
-     (origin
-       (method url-fetch)
-       (uri
-        (string-append "https://anytype-release.fra1.cdn.digitaloceanspaces.com/"
-                       name "_" version "_amd64.deb"))
-       (file-name (string-append "anytype-" version ".deb"))
-       (sha256
-        (base32
-         "0b6x20wqi428qki6379sjrvq7xfp7g4ghcxc0d2j9nv7vspqmyy6"))))))
-
 (define-public fishinthecalculator-packages
-  (append (list anytype-latest
+  (append (list anytype
                 bitwarden-desktop
                 moar
                 google-chrome-stable
