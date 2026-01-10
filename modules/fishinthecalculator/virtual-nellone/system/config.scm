@@ -422,7 +422,7 @@
               (service unattended-reboot-service-type
                        (unattended-reboot-configuration
                         (schedule "0 6 * * *")
-                        (unload
+                        (stop
                          (map string->symbol unload-allowed))))
 
               (deployments-unattended-upgrades host-name
