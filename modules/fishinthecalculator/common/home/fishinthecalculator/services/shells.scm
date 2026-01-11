@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2022-2024 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2022-2024, 2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common home fishinthecalculator services shells)
   #:use-module (guix gexp)
@@ -16,7 +16,9 @@
 (define-public fishinthecalculator-bash-configuration
   (home-bash-configuration
    (guix-defaults? #t)
-   (aliases '(("la" . "ls -la") ("lr" . "ls -ltr")
+   (aliases '(("ls" . "eza") ("ll" . "eza -l") ("la" . "eza -la") ("lr" . "eza -ltr")
+              ("cat" . "bat")
+              ("less" . "moar")
               ("g" . "cd ~/code/guix") ("gg" . "cd ~/code/guile")
               ("nix-update" . "nix-channel --update && nix-env -u")))
    (bash-profile

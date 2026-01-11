@@ -49,10 +49,12 @@
                 guix-dev-tools)
           (map specification->package+output
                (list "arc-theme"
+                     "bat"
                      "codeberg-cli"
                      "curl"
                      "direnv"
                      "dino"
+                     "eza"
                      "fd"
                      "file"
                      "flatpak"
