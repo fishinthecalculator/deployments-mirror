@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2021-2022, 2024-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2021-2022, 2024-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common system desktop)
   #:use-module (gnu)
@@ -9,7 +9,6 @@
   #:use-module (gnu system nss)
   #:use-module (small-guix packages btdu)
   #:use-module (small-guix packages gnome)
-  #:use-module (small-guix packages rclone)
   #:use-module (small-guix packages solo)
   #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common services desktop)
@@ -45,7 +44,7 @@
                             (system? #t)
                             (name "realtime")))))
 
-    (packages (append (list rclone-bin gnome-browser-connector ;; solo2
+    (packages (append (list gnome-browser-connector ;; solo2
                             btdu common-glibc-locales)
                       (map specification->package+output
                            (list "wireguard-tools"
@@ -77,6 +76,8 @@
                                  "font-dejavu"
                                  "font-gnu-freefont"
                                  "font-ghostscript"
+
+                                 "rclone"
 
                                  ;; Filesystems
                                  "ntfs-3g"

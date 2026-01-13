@@ -15,7 +15,6 @@
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (small-guix packages databases)
-  #:use-module (small-guix packages rclone)
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix services databases)
   #:use-module (small-guix services git)
@@ -168,10 +167,10 @@
                              "net-tools"
                              "bind"
                              "bind:utils"
-                             "ripgrep"))
+                             "ripgrep"
+                             "rclone"))
                       (list common-deploy-scripts
-                            restic-bin
-                            rclone-bin)
+                            restic-bin)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available

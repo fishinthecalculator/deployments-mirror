@@ -25,7 +25,6 @@
   #:use-module (nongnu packages nvidia) ;for nvidia-module
   #:use-module (nongnu system linux-initrd)
   #:use-module (small-guix packages scripts) ;for restic-bin
-  #:use-module (small-guix packages rclone) ;for rclone-bin
   #:use-module (fishinthecalculator common backup)
   #:use-module (fishinthecalculator common keys)
   #:use-module (fishinthecalculator common secrets)
@@ -201,9 +200,8 @@
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
     (packages (append (map specification->package+output
-                           '("btrfs-progs"))
+                           '("btrfs-progs" "rclone"))
                              ;;"compsize"))
-                      (list rclone-bin)
                       %base-packages))
 
     ;; Below is the list of system services.  To search for available
