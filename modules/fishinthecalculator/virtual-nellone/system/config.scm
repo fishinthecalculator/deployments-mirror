@@ -327,7 +327,7 @@
               ;; Bonfire
               (service oci-bonfire-service-type
                        (oci-bonfire-configuration
-                        (image "docker.io/bonfirenetworks/bonfire:1.0.1-beta.11-social-amd64")
+                        (image "docker.io/bonfirenetworks/bonfire:1.0.1-beta.33-social-amd64")
                         (configuration
                          (bonfire-configuration
                           (hostname %bonfire-domain)
