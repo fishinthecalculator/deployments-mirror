@@ -134,7 +134,18 @@
 
                    (service tuned-service-type
                             (tuned-configuration
-                             (power-profiles-daemon-support? #t)))
+                             (power-profiles-daemon-support? #t)
+                             (ppd-settings
+                              (tuned-ppd-settings
+                               ;; Customize default profiles to use laptop specific ones.
+                               (profiles
+                                '(("power-saver" . "laptop-ac-powersave")
+                                  ("balanced" . "balanced")
+                                  ("performance" . "throughput-performance")))
+                               (battery
+                                ;; Customize battery profiles to use laptop specific ones.
+                                '(("power-saver" . "laptop-battery-powersave")
+                                  ("balanced" . "balanced-battery")))))))
 
                    (service common-unload-service-type
                             '("cups"
