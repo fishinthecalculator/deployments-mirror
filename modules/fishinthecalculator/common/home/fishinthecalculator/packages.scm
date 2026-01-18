@@ -12,6 +12,7 @@
   #:use-module (nongnu packages messaging)
   #:use-module (nongnu packages password-utils)
   #:use-module (nongnu packages productivity)
+  #:use-module (small-guix packages contabo)
   #:use-module (small-guix packages guile-xyz)
   #:use-module (small-guix packages moar)
   #:use-module (small-guix packages rquickshare)
@@ -34,6 +35,7 @@
 (define-public fishinthecalculator-packages
   (append (list anytype
                 bitwarden-desktop
+                cntb
                 moar
                 google-chrome-stable
                 element-desktop
