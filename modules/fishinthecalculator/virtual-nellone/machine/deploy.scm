@@ -7,14 +7,13 @@
 (define %user
   "deploy")
 (define %host
-  "forgejo.fishinthecalculator.me")
+  "bonfire.fishinthecalculator.me")
 (define %host-key
   (string-append
    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqYltn2v1Ks9jrHGnOaxZaIsfB5CI1/s28eKymNwigF " %user "@" %host))
 
-(define nellone-local
-  (machine (operating-system
-             virtual-nellone-system)
+(define virtual-nellone-machine
+  (machine (operating-system virtual-nellone-system)
            (environment managed-host-environment-type)
            (configuration (machine-ssh-configuration (host-name %host)
                                                      (host-key
@@ -22,6 +21,6 @@
                                                      (user %user)
                                                      (system "x86_64-linux")
                                                      (identity
-                                                      "../../../keys/ssh/id_rsa.pub")))))
+                                                      "../../../keys/ssh/id_ed25519.pub")))))
 
-(list nellone-local)
+(list virtual-nellone-machine)
