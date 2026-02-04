@@ -162,6 +162,7 @@
 
                    (service sops-secrets-service-type
                             (sops-service-configuration
+                             (verbose? #t)
                              (config sops.yaml)
                              (secrets
                               (list
