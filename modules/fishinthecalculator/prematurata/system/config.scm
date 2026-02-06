@@ -194,6 +194,7 @@ without waiting for the scheduled time."))
                    (service sops-secrets-service-type
                             (sops-service-configuration
                              (config sops.yaml)
+                             (log-directory "/var/log/sops")
                              (secrets
                               (list
                                restic-secret

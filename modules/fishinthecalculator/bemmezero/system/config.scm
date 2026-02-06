@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2025, 2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator bemmezero system config)
   #:use-module (gnu)
@@ -145,6 +145,7 @@
               (service sops-secrets-service-type
                        (sops-service-configuration
                         (config sops.yaml)
+                        (log-directory "/var/log/sops")
                         (secrets
                          (list ;; Bonfire
                                meilisearch-key-secret
