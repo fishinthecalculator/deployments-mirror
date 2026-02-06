@@ -163,9 +163,7 @@
                    (service sops-secrets-service-type
                             (sops-service-configuration
                              (verbose? #t)
-                             (generate-key? #t)
                              (log-directory "/var/log/sops")
-                             (host-ssh-key "/home/paul/.ssh/id_rsa")
                              (config sops.yaml)
                              (secrets
                               (list
