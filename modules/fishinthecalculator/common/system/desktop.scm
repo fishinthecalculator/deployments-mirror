@@ -60,6 +60,8 @@
                                  "waypipe"
                                  ;"xdg-desktop-portal-gtk"
 
+                                 "font-nerd-symbols"
+
                                  ;; Audio
                                  "alsa-utils"
                                  "alsa-plugins"
