@@ -30,6 +30,9 @@
 [alias]
 	staash = "stash --all"
 	bblame = "blame -w -C -C -C"
+        wta = "!f() { git worktree add -b \"$1\" \"../$1\"; }; f"
+        wtr = "!f() { git worktree remove \"../$1\"; }; f"
+        wtl = "!f() { git worktree list; }; f"
 
 # REuse REcorded REsolution
 [rerere]
