@@ -122,7 +122,7 @@
                             guix-home-environments)
                    (service bluetooth-service-type
                             (bluetooth-configuration
-                             (auto-enable? #t)))
+                              (auto-enable? #t)))
                    (service qemu-binfmt-service-type
                             (qemu-binfmt-configuration (platforms (lookup-qemu-platforms
                                                                    "arm"
@@ -158,7 +158,7 @@
 
                    (service restic-backup-service-type
                             (restic-backup-configuration
-                             (jobs backup-system-jobs)))
+                              (jobs backup-system-jobs)))
 
                    (service sops-secrets-service-type
                             (sops-service-configuration
@@ -184,14 +184,14 @@
                                                         authorized-guix-keys
                                                         (guix-configuration-authorized-keys config))))))))
     (bootloader (bootloader-configuration
-                 (bootloader grub-efi-bootloader)
-                 (targets (list "/boot/efi"))
-                 (keyboard-layout keyboard-layout)))
+                  (bootloader grub-efi-bootloader)
+                  (targets (list "/boot/efi"))
+                  (keyboard-layout keyboard-layout)))
     (mapped-devices (list (mapped-device
-                           (source (uuid
-                                    "80e77c30-1cdd-4a41-8bff-af97f682b8f5"))
-                           (target "cryptroot")
-                           (type luks-device-mapping))))
+                            (source (uuid
+                                     "80e77c30-1cdd-4a41-8bff-af97f682b8f5"))
+                            (target "cryptroot")
+                            (type luks-device-mapping))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
@@ -209,8 +209,8 @@
     (swap-devices
      (list
       (swap-space
-       ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
-       ;; for swapfile on Btrfs
-       (target "/swap/swapfile")
-       (dependencies (filter (file-system-mount-point-predicate "/")
-                             file-systems)))))))
+        ;; See https://wiki.archlinux.org/title/Btrfs#Swap_file
+        ;; for swapfile on Btrfs
+        (target "/swap/swapfile")
+        (dependencies (filter (file-system-mount-point-predicate "/")
+                              file-systems)))))))
