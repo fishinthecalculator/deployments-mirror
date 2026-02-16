@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2022-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2022-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common services desktop)
   #:use-module (gnu)
@@ -10,6 +10,7 @@
   #:use-module (gnu packages hardware) ;for ddcutil, brillo
   #:use-module (gnu packages libusb) ;for libmtp
   #:use-module (gnu packages printers) ;for brlaser
+  #:use-module (gnu packages virtualization) ;for libvirt
   #:use-module (gnu packages vpn) ;for wireguard
   #:use-module (gnu system)
   #:use-module (gnu system accounts)
@@ -90,6 +91,8 @@
                 (service libvirt-service-type
                          (libvirt-configuration (unix-sock-group "libvirt")
                                                 (listen-tls? #f)))
+                (extra-special-file "/etc/libvirt/qemu/networks/default.xml"
+                                    (file-append libvirt "/etc/libvirt/qemu/networks/default.xml"))
 
                 ;; Slight FHS compatibility
                 (extra-special-file "/usr/bin/env"
