@@ -91,6 +91,7 @@
                 (service libvirt-service-type
                          (libvirt-configuration (unix-sock-group "libvirt")
                                                 (listen-tls? #f)))
+                ;; FIXME: until https://codeberg.org/guix/guix/pulls/6496 is merged
                 (extra-special-file "/etc/libvirt/qemu/networks/default.xml"
                                     (file-append libvirt "/etc/libvirt/qemu/networks/default.xml"))
 
