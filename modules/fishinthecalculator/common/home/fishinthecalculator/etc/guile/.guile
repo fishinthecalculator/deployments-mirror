@@ -7,12 +7,50 @@
        (display "Consider installing the 'guile-readline' package for
 convenient interactive line editing and input history.\n\n")))
 
-      (unless (getenv "INSIDE_EMACS")
-        (cond ((false-if-exception (resolve-interface '(ice-9 colorized)))
-               =>
-               (lambda (module)
-                 ;; Enable completion and input history at the REPL.
-                 ((module-ref module 'activate-colorized))))
-              (else
-               (display "Consider installing the 'guile-colorized' package
+(unless (getenv "INSIDE_EMACS")
+  (cond ((false-if-exception (resolve-interface '(ice-9 colorized)))
+         =>
+         (lambda (module)
+           ;; Enable completion and input history at the REPL.
+           ((module-ref module 'activate-colorized))))
+        (else
+         (display "Consider installing the 'guile-colorized' package
 for a colorful Guile experience.\n\n"))))
+
+;; https://web.archive.org/web/20260217223312/https://lists.gnu.org/archive/html/guile-user/2026-01/msg00009.html
+(eval-when (eval)
+
+  (let-syntax ((redefine-syntax-transformer
+                (syntax-rules ()
+                  ((_ id who)
+                   (let* ((guile-module the-root-module)
+                          (original-transformer (macro-binding (module-ref guile-module (quote id)))))
+                     (module-define!
+                      guile-module
+                      (quote id)
+                      (make-syntax-transformer
+                       (quote id)
+                       'core
+                       (lambda (e r w s mod)
+                         (with-exception-handler
+                             (lambda (exn)
+                               ((@ (ice-9 exceptions) raise-exception)
+                                (cond
+                                 (((@ (ice-9 exceptions) syntax-error?) exn)
+                                  (let* ((args (exception-args exn)))
+                                    (if (syntax-violation 'who
+                                                          (cadr args)
+                                                          (datum->syntax #f e #:source s)
+                                                          (cadddr args))
+
+                                        exn))))))
+                           (lambda ()
+                             (original-transformer e r w s mod))
+                           #:unwind? #f)))))))))
+    (redefine-syntax-transformer lambda lambda)
+    (redefine-syntax-transformer lambda* lambda)
+    (redefine-syntax-transformer let let)
+    (redefine-syntax-transformer letrec letrec)
+    (redefine-syntax-transformer letrec* letrec*)
+    (redefine-syntax-transformer case-lambda case-lambda)
+    (redefine-syntax-transformer case-lambda* case-lambda)))
