@@ -19,10 +19,10 @@
    (branch "main")
    ;; Enable signature verification:
    (introduction
-    (make-channel-introduction
-     "02ccd93eff6a82a50b5748b6016efb9a24684348"
-     (openpgp-fingerprint
-      "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
+    (channel-introduction
+     (version 0)
+     (commit "02ccd93eff6a82a50b5748b6016efb9a24684348")
+     (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
   (channel
    (name small-guix)
    (url "https://codeberg.org/fishinthecalculator/small-guix.git")
