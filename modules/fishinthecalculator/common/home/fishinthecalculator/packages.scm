@@ -18,7 +18,6 @@
   #:use-module (small-guix packages rquickshare)
   #:use-module (small-guix packages scripts)
   #:use-module (small-guix utils)
-  #:use-module (guix-compose)
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common home fishinthecalculator const))
 
@@ -38,7 +37,6 @@
                 bitwarden-desktop
                 cntb
                 moar
-                guix-compose.git
                 google-chrome-stable
                 element-desktop
                 signal-desktop

@@ -10,6 +10,7 @@
   #:use-module (small-guix packages btdu)
   #:use-module (small-guix packages gnome)
   #:use-module (small-guix packages solo)
+  #:use-module (guix-compose)
   #:use-module (fishinthecalculator common locales)
   #:use-module (fishinthecalculator common services desktop)
   #:use-module (fishinthecalculator common system input)
@@ -45,7 +46,8 @@
                             (name "realtime")))))
 
     (packages (append (list gnome-browser-connector ;; solo2
-                            btdu common-glibc-locales)
+                            btdu common-glibc-locales
+                            guix-compose.git)
                       (map specification->package+output
                            (list "wireguard-tools"
                                  "brillo"
