@@ -123,10 +123,12 @@
 
 ;; Assuming the Guix checkout is in ~/code/guix.
 ;; Yasnippet configuration
+(setq guix-checkout "/home/paul/code/guix/guix/master")
+
 (with-eval-after-load 'yasnippet
-  (add-to-list 'yas-snippet-dirs (format "%s/etc/snippet/yas" (getenv "GUIX_CHECKOUT"))))
+  (add-to-list 'yas-snippet-dirs (format "%s/etc/snippet/yas" guix-checkout)))
 ;; Copyright configuration
-(load-file (format "%s/etc/copyright.el" (getenv "GUIX_CHECKOUT")))
+(load-file (format "%s/etc/copyright.el" guix-checkout))
 (setq copyright-names-regexp
       (format "%s <%s>" user-full-name user-mail-address))
 ;; Automatically update copyright after each buffer save
