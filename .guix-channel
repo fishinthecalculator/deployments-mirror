@@ -21,7 +21,7 @@
    (introduction
     (channel-introduction
      (version 0)
-     (commit "02ccd93eff6a82a50b5748b6016efb9a24684348")
+     (commit "770b90897bde036329bdb325e5eb1c16c34e985d")
      (signer "8D10 60B9 6BB8 292E 829B  7249 AED4 1CC1 93B7 01E2"))))
   (channel
    (name small-guix)
