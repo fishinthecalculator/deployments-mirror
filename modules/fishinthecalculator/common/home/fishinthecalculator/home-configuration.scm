@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2024-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common home fishinthecalculator home-configuration)
   #:use-module (guix gexp)
@@ -228,8 +228,7 @@ without waiting for the scheduled time."))
                                   (lambda (pair)
                                     (not (equal? (car pair) "PATH")))
                                   fishinthecalculator-environment)
-                                 '(("GUIX_CHECKOUT" . "${HOME}/code/guix/guix")
-                                   ("BONFIRE_DEV_GUIX" . "true")
+                                 '(("BONFIRE_DEV_GUIX" . "true")
                                    ("COLORTERM" . "truecolor")
                                    ("MOAR" . "--statusbar=bold --no-linenumbers"))))
 
@@ -333,10 +332,6 @@ without waiting for the scheduled time."))
            (service home-readymedia-service-type
                     (for-home
                      (readymedia-configuration
-                      (cache-directory
-                       "/home/paul/.cache/readymedia")
-                      (log-directory
-                       "/home/paul/.local/state/readymedia")
                       (media-directories
                        (list (readymedia-media-directory
                               (path "/home/paul/torrents")))))))
