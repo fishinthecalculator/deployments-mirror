@@ -31,6 +31,7 @@
   #:use-module (fishinthecalculator common scripts)
   #:use-module (fishinthecalculator common secrets)
   #:use-module (fishinthecalculator common services server)
+  #:use-module (fishinthecalculator common services unattended-reboot)
   #:use-module (fishinthecalculator common services unattended-upgrades)
   #:use-module (fishinthecalculator common services unload)
   #:use-module (fishinthecalculator common users)
@@ -421,8 +422,9 @@
               (service unattended-reboot-service-type
                        (unattended-reboot-configuration
                         (schedule "0 6 * * *")
-                        (stop
-                         (map string->symbol unload-allowed))))
+                        (pre-script
+                         (common-unattended-reboot-script
+                          (map string->symbol unload-allowed)))))
 
               (deployments-unattended-upgrades host-name
                                                #:expiration-days 30))
