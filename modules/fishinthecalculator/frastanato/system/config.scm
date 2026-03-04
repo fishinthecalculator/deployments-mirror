@@ -49,8 +49,9 @@
           (password-file (sops-secret->secret-file restic-secret))
           ;; Every day at 6.
           (schedule "0 6 * * *")
-          (files '("/root/.config/rclone"
+          (files `("/root/.config/rclone"
                    "/root/.config/sops/age/keys.txt"
+                   ,%common-secrets-dir
                    "/etc/ssh/ssh_host_rsa_key"
                    "/etc/ssh/ssh_host_rsa_key.pub"
                    "/etc/guix/signing-key.pub"

@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2024, 2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common secrets)
   #:use-module (gnu)
@@ -9,17 +9,17 @@
   #:use-module (fishinthecalculator common self)
   #:use-module (fishinthecalculator common users))
 
-(define-public %common-secrets-dir
-  (local-file (string-append %deployments-channel-root "/secrets")
-              "common-secrets-dir"
-              #:recursive? #t))
+(define paul-name (user-account-name paul-user))
 
-(define-public sops.yaml
-  (local-file (string-append %deployments-channel-root "/.sops.yaml")
-              "sops.yaml"))
+(define-public %common-secrets-dir
+  (string-append "/home/" paul-name "/.secrets"))
 
 (define-public (secrets-file file-name)
-  (file-append %common-secrets-dir "/" file-name))
+  (file-append
+   (local-file %common-secrets-dir
+               "common-secrets-dir"
+               #:recursive? #t)
+   "/" file-name))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Common Secrets
@@ -32,5 +32,5 @@
 (define-public restic-secret
   (sops-secret
    (key '("restic"))
-   (user (user-account-name paul-user))
+   (user paul-name)
    (file common.yaml)))

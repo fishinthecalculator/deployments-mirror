@@ -63,11 +63,12 @@
           (requirement '(sops-secrets))
           ;; Every day at 23.
           (schedule "0 23 * * *")
-          (files '("/crypto.cpio"
+          (files `("/crypto.cpio"
                    "/crypto.key"
                    "/root/.gnupg"
                    "/root/.config/rclone"
                    "/root/.config/sops/age/keys.txt"
+                   ,%common-secrets-dir
                    "/etc/ssh/ssh_host_rsa_key"
                    "/etc/ssh/ssh_host_rsa_key.pub"
                    "/etc/guix/signing-key.pub"

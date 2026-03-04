@@ -105,6 +105,7 @@
     (schedule "30 5 * * *")
     (files `("/root/.config/rclone"
              "/root/.config/sops/age/keys.txt"
+             ,%common-secrets-dir
              "/home/paul/.ssh/"
              "/home/paul/.config/rclone"
              "/home/paul/.config/sops/age/keys.txt"

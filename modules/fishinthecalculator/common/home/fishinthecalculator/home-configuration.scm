@@ -98,6 +98,7 @@
                         ".config/hexchat/certs"
                         ".config/sops/age/keys.txt"
                         ".electrum/wallets"
+                        ".secrets"
                         ".guix-manifests"
                         ".gnupg"
                         ".icedove"
