@@ -69,9 +69,9 @@
   (user-account-name paul-user))
 
 (define subgids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 (define subuids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name)))
 
 (define authorized-guix-keys
   (list
@@ -136,9 +136,9 @@ without waiting for the scheduled time."))
    %restic-repositories))
 
 (define %common-desktop-system
-  (common-desktop-system subuids subgids))
+  (common-desktop-system subuids subgids paul-name))
 (define %common-desktop-services
-  (common-desktop-services subuids subgids))
+  (common-desktop-services subuids subgids paul-name))
 (define prematurata-system
   (operating-system
     (inherit %common-desktop-system)

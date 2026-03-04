@@ -54,7 +54,7 @@
   (list))
 
 (define bemmezero-common-server-services
-  (common-server-services subuids subgids))
+  (common-server-services subuids subgids paul-name))
 (define bemmezero-system
   (operating-system
     (locale "en_US.utf8")

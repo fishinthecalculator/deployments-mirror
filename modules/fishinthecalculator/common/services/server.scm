@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2023-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2023-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common services server)
   #:use-module (gnu)
@@ -16,8 +16,11 @@
   #:use-module (guix gexp)
   #:use-module (small-guix packages btdu) ;for btdu
   #:use-module (fishinthecalculator common scripts)
+  #:use-module ((fishinthecalculator common secrets)
+                #:select (%common-secrets-dir))
   #:use-module (fishinthecalculator common services base)
   #:use-module (fishinthecalculator common services firewall)
+  #:use-module (fishinthecalculator common services secrets)
   #:use-module (fishinthecalculator common services timers)
   #:export (common-server-services))
 
@@ -42,7 +45,7 @@
 without waiting for the scheduled time.")
                                     (procedure #~trigger-timer))))))
 
-(define (common-server-services subuids subgids)
+(define (common-server-services subuids subgids secrets-user)
   (append %common-base-services
           (list (service dhcpcd-service-type)
                 (service ntp-service-type)
@@ -62,6 +65,11 @@ without waiting for the scheduled time.")
                             (fail2ban-jail-configuration
                              (name "sshd")
                              (enabled? #t))))))
+
+                ;; Secrets directory
+                (service common-secrets-service-type
+                         (common-secrets-configuration
+                          (user secrets-user)))
 
                 ;; Preinstalled packages
                 (simple-service 'preinstalled-server-packages

@@ -59,11 +59,10 @@
        %restic-repositories))
 
 (define authorized-ssh-keys
-  (let ((paul (user-account-name paul-user)))
-    ;; List of authorized SSH keys.
-    `((,paul ,paul-ssh-key)
-      (,paul ,paul-ed25519-ssh-key)
-      ("deploy" ,paul-ssh-key))))
+  ;; List of authorized SSH keys.
+  `((,paul-name ,paul-ssh-key)
+    (,paul-name ,paul-ed25519-ssh-key)
+    ("deploy" ,paul-ssh-key)))
 
 (define authorized-guix-keys
   ;; List of authorized 'guix archive' keys.
@@ -157,11 +156,11 @@
              %default-channels)))))
 
 (define subgids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 (define subuids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 (define %common-server-services
-  (common-server-services subuids subgids))
+  (common-server-services subuids subgids paul-name))
 (define frastanato-system
   (operating-system
     (locale "en_US.utf8")

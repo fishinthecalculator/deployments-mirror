@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2022-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2022-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator common services desktop)
   #:use-module (gnu)
@@ -28,13 +28,14 @@
   #:use-module (small-guix packages moolticute) ;for mooltipass-udev-rules
   #:use-module (small-guix packages solo) ;for solo2
   #:use-module (fishinthecalculator common channels)
+  #:use-module (fishinthecalculator common services secrets)
   #:use-module (fishinthecalculator common services substitute)
   #:use-module (fishinthecalculator common services timers)
   #:use-module (fishinthecalculator common system input)
   #:use-module (srfi srfi-1)
   #:export (common-desktop-services))
 
-(define (common-desktop-services subuids subgids)
+(define* (common-desktop-services subuids subgids secrets-user)
   (append (list (service gnome-desktop-service-type)
                 (service gnome-keyring-service-type)
 
@@ -56,6 +57,11 @@
                 (simple-service 'hid-apple-config etc-service-type
                                 (list `("modprobe.d/hid_apple.conf"
                                         ,common-hid-apple-config)))
+
+                ;; Secrets directory
+                (service common-secrets-service-type
+                         (common-secrets-configuration
+                          (user secrets-user)))
 
                 ;; CUPS
                 (service cups-service-type

@@ -80,14 +80,14 @@
    `(,(user-account-name paul-user) ,framework-13-home-environment)))
 
 (define subgids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 (define subuids
-  (list (subid-range (name (user-account-name paul-user)))))
+  (list (subid-range (name paul-name))))
 
 (define %common-desktop-system
-  (common-desktop-system subuids subgids))
+  (common-desktop-system subuids subgids paul-name))
 (define %common-desktop-services
-  (common-desktop-services subuids subgids))
+  (common-desktop-services subuids subgids paul-name))
 
 (define skibidi-system
   (operating-system

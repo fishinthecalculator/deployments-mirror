@@ -123,7 +123,7 @@
     (verbose? #t))))
 
 (define virtual-nellone-common-server-services
-  (common-server-services subuids subgids))
+  (common-server-services subuids subgids paul-name))
 (define virtual-nellone-system
   (operating-system
     (locale "en_US.utf8")
