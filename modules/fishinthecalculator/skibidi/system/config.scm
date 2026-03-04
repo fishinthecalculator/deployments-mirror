@@ -164,7 +164,6 @@
                             (sops-service-configuration
                              (verbose? #t)
                              (log-directory "/var/log/sops")
-                             (config sops.yaml)
                              (secrets
                               (list
                                restic-secret))))

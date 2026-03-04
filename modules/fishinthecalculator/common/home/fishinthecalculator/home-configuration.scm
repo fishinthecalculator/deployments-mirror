@@ -192,7 +192,6 @@ without waiting for the scheduled time."))
 
          (service home-sops-secrets-service-type
                   (home-sops-service-configuration
-                   (config sops.yaml)
                    (verbose? #t)
                    (secrets
                     (list
@@ -447,7 +446,6 @@ without waiting for the scheduled time."))
 
           (service home-sops-secrets-service-type
                    (home-sops-service-configuration
-                    (config sops.yaml)
                     (gnupg "/usr/bin/gpg")
                     (gnupg-home "/home/paul/.gnupg")
                     (verbose? #t)
