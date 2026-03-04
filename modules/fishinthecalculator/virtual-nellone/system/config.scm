@@ -423,7 +423,7 @@
                        (unattended-reboot-configuration
                         (schedule "0 6 * * *")
                         (pre-script
-                         (common-unattended-reboot-script
+                         (common-unattended-reboot-command
                           (map string->symbol unload-allowed)))))
 
               (deployments-unattended-upgrades host-name
