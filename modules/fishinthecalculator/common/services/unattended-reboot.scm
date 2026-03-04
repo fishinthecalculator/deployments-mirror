@@ -13,7 +13,7 @@
        #~(begin
            (use-modules (gnu services herd)
                         (ice-9 format))
-           (let ((services (list #$@services)))
+           (let ((services '#$services))
              (for-each
               (lambda (service)
                 (format (current-error-port) "Stopping ~a~%" service)
