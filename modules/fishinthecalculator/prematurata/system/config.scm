@@ -65,6 +65,9 @@
                                (user-account-supplementary-groups
                                 paul-user))))))
 
+(define paul-name
+  (user-account-name paul-user))
+
 (define subgids
   (list (subid-range (name (user-account-name paul-user)))))
 (define subuids

@@ -32,6 +32,9 @@
   #:use-module (rosenthal services networking)
   #:export (skibidi-system))
 
+(define paul-name
+  (user-account-name paul-user))
+
 (define authorized-guix-keys
   (list
    prematurata-guix-key))

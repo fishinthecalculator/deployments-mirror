@@ -1,5 +1,5 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
-;;; Copyright © 2024-2025 Giacomo Leidi <therewasa@fishinthecalculator.me>
+;;; Copyright © 2024-2026 Giacomo Leidi <therewasa@fishinthecalculator.me>
 
 (define-module (fishinthecalculator frastanato system config)
   #:use-module (gnu)
@@ -36,6 +36,9 @@
   #:use-module (fishinthecalculator frastanato secrets)
   #:use-module (srfi srfi-1)
   #:export (frastanato-system))
+
+(define paul-name
+  (user-account-name paul-user))
 
 (define-public backup-system-jobs
   (map (lambda (repo)
