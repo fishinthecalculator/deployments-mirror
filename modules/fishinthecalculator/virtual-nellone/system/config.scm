@@ -12,6 +12,7 @@
   #:use-module (gnu services databases)      ;for postgresql-service-type
   #:use-module (gnu services monitoring)     ;for prometheus-node-exporter-service-type
   #:use-module (gnu services networking)     ;for iptables-service-type
+  #:use-module (gnu services syncthing)      ;for syncthing-service-type
   #:use-module (gnu services ssh)            ;for ssh-service-type
   #:use-module (gnu services web)            ;for nginx-service-type
   #:use-module (small-guix packages databases)
@@ -228,7 +229,25 @@
                                bonfire-mail-private-key-secret
                                bonfire-secret-key-base-secret
                                bonfire-signing-salt-secret
-                               bonfire-encryption-salt-secret))))
+                               bonfire-encryption-salt-secret)))
+
+                   ;; Syncthing
+                   (service syncthing-service-type
+                            (syncthing-configuration
+                             (user paul-name)
+                             (config-file
+                              (syncthing-config-file
+                               (start-browser? #f)
+                               (folders
+                                (list
+                                 (syncthing-folder
+                                  (id "weapw-rjelk")
+                                  (label "secrets")
+                                  (path "~/.secrets")
+                                  (devices
+                                   (list (syncthing-device
+                                          (name "skibidi")
+                                          (id "UJYN5HQ-U5BN3QR-STOGFV3-YV4NDYY-PEUHV36-LDVVWXA-OXY4ZL3-ECCKKQM"))))))))))))
 
               ;; Backups
               (service restic-backup-service-type
