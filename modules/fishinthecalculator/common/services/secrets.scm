@@ -35,7 +35,7 @@
   #~(begin
       (use-modules (guix build utils))
       (mkdir-p #$directory)
-      (chmod #$directory #o644)
+      (chmod #$directory #o744)
       (invoke
        (string-append #$coreutils-minimal "/bin/chown")
        "-R" #$(string-append user ":" group ) #$directory)))
